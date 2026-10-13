@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}عملية الفرز — ExpoGreen{% endblock %}
+
+{% block content %}
+    {% if simulation %}
+        <p class="hint">
+            وضع المحاكاة: التصنيف والفتح وإشارة الحساس تجريبية.
+        </p>
+    {% endif %}
+
+    {% if error %}
+        <p class="error" role="alert">{{ error }}</p>
+    {% endif %}
+
+    {% if session.visitor %}
+        <p>
+            التذكرة:
+            <bdi>{{ session.visitor.ticket_code }}</bdi>
+        </p>
+        <p>رصيدك: {{ session.visitor.points_balance }} نقطة</p>
+    {% endif %}
+
+    {% if session.status == "started" %}
+        {% if session.mode == "sort" %}
+            <h1>التعرف على المخلف</h1>
+            <p>اختاري نوعًا لتجربة نتيجة الكاميرا مؤقتًا.</p>
+
+            {% if simulation %}
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="classify">
+
+                    <label for="waste_type">نوع المخلف التجريبي</label>
+                    <select id="waste_type" name="waste_type" required>
+                        {% for value, label in waste_types %}
+                            <option value="{{ value }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <button type="submit">محاكاة نتيجة التصنيف</button>
+                </form>
+            {% endif %}
+        {% else %}
+            <h1>التخلص السريع</h1>
+            <p>سنستخدم الحاوية المختلطة، بدون نقاط.</p>
+
+            {% if simulation %}
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="classify">
+                    <button type="submit">تحديد الحاوية المختلطة</button>
+                </form>
+            {% endif %}
+        {% endif %}
+
+    {% elif session.status == "classified" %}
+        <h1>تم تحديد الحاوية</h1>
+        <p>الحاوية: {{ session.bin.name }}</p>
+        <p>معرّف الجهاز: <bdi>{{ session.bin.hardware_id }}</bdi></p>
+
+        {% if simulation %}
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="open">
+                <button type="submit">محاكاة تأكيد فتح الحاوية</button>
+            </form>
+        {% endif %}
+
+    {% elif session.status == "waiting" %}
+        <h1>بانتظار رمي المخلف</h1>
+        <p>الحاوية المختارة: {{ session.bin.name }}</p>
+        <p>لن تُضاف النقاط حتى تصل إشارة تأكيد الرمي.</p>
+
+        {% if simulation %}
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="confirm">
+                <button type="submit">محاكاة إشارة الحساس</button>
+            </form>
+        {% endif %}
+
+    {% elif session.status == "completed" %}
+        <h1>اكتملت العملية ✅</h1>
+
+        {% if reward %}
+            <p>كسبت {{ reward }} نقاط بهذه العملية!</p>
+        {% else %}
+            <p>تم تسجيل التخلص من المخلف بدون نقاط.</p>
+        {% endif %}
+
+        <p>شكرًا لمساهمتك في الفرز.</p>
+
+    {% else %}
+        <h1>العملية غير نشطة</h1>
+        <p>الحالة: {{ session.get_status_display }}</p>
+    {% endif %}
+
+    <p>
+        <a href="{% url 'recycling:home' %}">العودة للبداية</a>
+    </p>
+{% endblock %}

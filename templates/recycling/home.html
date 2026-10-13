@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}البداية — ExpoGreen{% endblock %}
+
+{% block content %}
+    <h1>فرزك اليوم يصنع فرقًا</h1>
+    <p>عرّف مخلفك، ضعه في الحاوية المناسبة، واكسب نقاطًا.</p>
+
+    {% if error %}
+        <p class="error" role="alert">{{ error }}</p>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="mode" value="sort">
+
+        <label for="ticket_code">كود التذكرة</label>
+        <input
+            id="ticket_code"
+            name="ticket_code"
+            maxlength="100"
+            placeholder="EXPO-DEMO-001"
+            required
+        >
+
+        <button type="submit">افرز واكسب نقاط</button>
+    </form>
+
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="mode" value="quick">
+
+        <button class="secondary" type="submit">
+            تخلص سريع بدون نقاط
+        </button>
+    </form>
+
+    <p class="hint">
+        نسخة تجريبية — كود التذكرة:
+        <bdi>EXPO-DEMO-001</bdi>
+    </p>
+{% endblock %}
