@@ -8,99 +8,201 @@
     <title>{% block title %}ExpoGreen{% endblock %}</title>
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/interface-language.js' %}" defer></script>
 </head>
+
 <body>
+    <header class="site-header">
+        <a class="brand" href="{% url 'recycling:home' %}" dir="ltr">
+            <svg class="brand-symbol" viewBox="0 0 40 40" aria-hidden="true">
+                <path
+                    d="M20 33V19"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                />
+                <path
+                    d="M20 23C10 23 6 17 8 7C18 7 23 13 20 23Z"
+                    fill="currentColor"
+                />
+                <path
+                    d="M20 18C20 9 25 5 34 6C34 15 29 20 20 18Z"
+                    fill="currentColor"
+                    opacity=".65"
+                />
+            </svg>
+
+            <span class="brand-wordmark">Expo<span>Green</span></span>
+        </a>
+
+        <div class="language-switch" role="group" aria-label="Language">
+            <button
+                type="button"
+                class="language-button is-active"
+                data-language="ar"
+                aria-pressed="true"
+                lang="ar"
+            >العربية</button>
+
+            <button
+                type="button"
+                class="language-button"
+                data-language="en"
+                aria-pressed="false"
+                lang="en"
+            >English</button>
+        </div>
+    </header>
+
     <div class="app-layout">
         <main class="card">
-            <div class="brand" dir="ltr">ExpoGreen</div>
+            <div class="experience-heading">
+                <span
+                    class="section-eyebrow"
+                    data-en="A small step. A lasting impact."
+                >خُطــــوة تصنع أثرًا</span>
+
+                <span class="experience-indicator" aria-hidden="true">
+                    <span></span><span></span><span></span>
+                </span>
+            </div>
+
             {% block content %}{% endblock %}
         </main>
 
         <aside class="tree-panel" aria-labelledby="tree-title">
             <div class="tree-heading">
-                <span class="tree-tag">كل مشاركة تصنع أثرًا</span>
-                <h2 id="tree-title">شجرة الأثر</h2>
-                <p>أسماء ساهمت في مستقبل أكثر استدامة</p>
+                <span class="tree-tag" data-en="Growing together">
+                    أثرٌ يبقــــى
+                </span>
+
+                <h2 id="tree-title" data-en="The Impact Tree">
+                    شجــــرة الأثر
+                </h2>
+
+                <p data-en="Every leaf represents a visitor who completed a sorting session.">
+                    كل ورقة تحمل اسم زائر أكمل عملية الفــــرز.
+                </p>
             </div>
 
             <svg
                 id="impact-tree"
                 viewBox="0 0 600 620"
                 role="img"
-                aria-label="شجرة تحمل أسماء المشاركين"
+                aria-label="شجرة الأثر"
+                data-en-aria="The Impact Tree"
             >
                 <defs>
-                    <linearGradient id="trunk-color" x2="0" y2="1">
-                        <stop offset="0%" stop-color="#78609f"/>
-                        <stop offset="100%" stop-color="#493966"/>
+                    <linearGradient id="trunk-color" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#89749c"/>
+                        <stop offset="100%" stop-color="#44334f"/>
                     </linearGradient>
+
                     <radialGradient id="tree-halo">
-                        <stop offset="0%" stop-color="#d4eee6"/>
-                        <stop offset="100%" stop-color="#d4eee6"
-                              stop-opacity="0"/>
+                        <stop offset="0%" stop-color="#dce9de" stop-opacity=".9"/>
+                        <stop offset="100%" stop-color="#dce9de" stop-opacity="0"/>
                     </radialGradient>
                 </defs>
 
-                <circle cx="300" cy="280" r="265"
-                        fill="url(#tree-halo)"/>
+                <g aria-hidden="true">
+                    <ellipse
+                        cx="300" cy="285" rx="275" ry="265"
+                        fill="url(#tree-halo)"
+                    />
 
-                <g fill="none" stroke="#9dbab0" opacity=".3">
-                    <circle cx="300" cy="280" r="225"/>
-                    <circle cx="300" cy="280" r="180"
-                            stroke-dasharray="3 12"/>
-                </g>
+                    <path
+                        d="M75 364C34 218 145 80 291 66
+                           M332 70C481 85 568 213 526 363"
+                        fill="none"
+                        stroke="#b7c9bd"
+                        stroke-width="1"
+                        opacity=".5"
+                    />
 
-                <ellipse cx="300" cy="565" rx="125" ry="15"
-                         fill="#493966" opacity=".09"/>
+                    <circle cx="89" cy="182" r="4" fill="#b2955c"/>
+                    <circle cx="499" cy="155" r="3" fill="#b2955c"/>
 
-                <path
-                    d="M272 560
-                       C286 480 279 405 294 330
-                       C310 405 308 480 329 560 Z"
-                    fill="url(#trunk-color)"
-                />
+                    <ellipse
+                        cx="300" cy="565" rx="115" ry="11"
+                        fill="#44334f" opacity=".08"
+                    />
 
-                <g
-                    fill="none"
-                    stroke="url(#trunk-color)"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-                    <path d="M300 485 Q225 425 155 395
-                             M301 448 Q374 410 443 370"
-                          stroke-width="17"/>
-                    <path d="M298 393 Q234 345 171 284
-                             M302 369 Q362 315 429 269"
-                          stroke-width="13"/>
-                    <path d="M297 345 Q269 260 232 208
-                             M301 331 Q325 249 370 193"
-                          stroke-width="10"/>
-                    <path d="M299 336 Q294 243 300 132"
-                          stroke-width="8"/>
-                    <path d="M216 433 L179 344
-                             M384 403 L422 315
-                             M221 337 L119 323
-                             M376 307 L473 316
-                             M267 274 L182 216
-                             M335 263 L430 206"
-                          stroke-width="6"/>
+                    <path
+                        d="M262 560
+                           C278 533 283 494 283 451
+                           C283 402 289 368 298 326
+                           C300 381 307 410 309 450
+                           C311 494 318 533 339 560
+                           C313 554 286 554 262 560Z"
+                        fill="url(#trunk-color)"
+                    />
+
+                    <g
+                        fill="none"
+                        stroke="url(#trunk-color)"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path
+                            d="M295 478C252 431 210 422 155 395
+                               M301 449C348 421 399 406 443 370"
+                            stroke-width="16"
+                        />
+                        <path
+                            d="M295 400C250 365 205 324 171 284
+                               M302 378C351 335 387 294 429 269"
+                            stroke-width="12"
+                        />
+                        <path
+                            d="M298 352C278 302 256 245 232 208
+                               M303 337C323 284 339 229 370 193"
+                            stroke-width="9"
+                        />
+                        <path
+                            d="M299 340C293 272 305 195 300 132"
+                            stroke-width="8"
+                        />
+                        <path
+                            d="M216 431C200 407 194 370 179 344
+                               M383 404C403 383 408 343 422 315
+                               M222 339C189 329 151 331 119 323
+                               M377 307C410 313 442 320 473 316
+                               M267 275C242 251 212 239 182 216
+                               M335 263C369 244 401 229 430 206
+                               M289 548Q263 568 233 568
+                               M310 550Q339 568 369 568"
+                            stroke-width="5"
+                        />
+                    </g>
                 </g>
 
                 <g id="tree-leaves"></g>
 
-                <text x="300" y="605" text-anchor="middle"
-                      class="tree-root-label">
-                    أثرنا يكبر معًا
-                </text>
+                <text
+                    x="300"
+                    y="605"
+                    text-anchor="middle"
+                    class="tree-root-label"
+                    data-en="Our impact grows together"
+                >أثرنــــا يكبر معًا</text>
             </svg>
 
             <div class="tree-footer">
-                <strong>{{ tree_total }}</strong>
-                <span>مشارك في شجرة الأثر</span>
+                <div class="tree-participant-count">
+                    <strong>{{ tree_total|default:0 }}</strong>
+                    <span data-en="participants in the Impact Tree">
+                        مشارك في شجــــرة الأثر
+                    </span>
+                </div>
+
+                <span class="tree-footer-mark" aria-hidden="true">↗</span>
             </div>
 
             {% if not tree_total %}
-                <p class="tree-empty">أول مشاركة ناجحة تنبت أول ورقة 🌱</p>
+                <p class="tree-empty" data-en="Be the first to add a leaf.">
+                    كن أول من يضيف ورقــــة.
+                </p>
             {% endif %}
         </aside>
     </div>

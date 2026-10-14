@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}إصدار تذكرة — ExpoGreen{% endblock %}
+{% block title %}ExpoGreen{% endblock %}
 
 {% block content %}
-    <h1>ابدأ رحلتك الخضراء 🌱</h1>
-    <p>اكتب اسمك للحصول على تذكرتك الخاصة.</p>
+    <h1 data-en="Your ticket. Your first step.">
+        تذكرتك، بداية أثــــرك
+    </h1>
 
-    <form method="post">
+    <p data-en="Enter your name to create your personal ticket.">
+        اكتب اسمك للحصول على تذكرتك الخاصــــة.
+    </p>
+
+    <form id="create-ticket-form" method="post">
         {% csrf_token %}
 
         <input
@@ -15,24 +20,40 @@
             value="{{ issue_token }}"
         >
 
-        {{ form.as_p }}
+        {{ form.non_field_errors }}
 
-        <button id="issue-ticket" type="submit">
-            إنشاء تذكرتي
-        </button>
+        <label
+            for="{{ form.name.id_for_label }}"
+            data-en="Your name"
+        >اسمــــك</label>
+
+        {{ form.name }}
+        {{ form.name.errors }}
+
+        <button
+            id="issue-ticket"
+            type="submit"
+            data-en="Create my ticket"
+        >إنشاء تذكــــرتي</button>
     </form>
 
-    <p class="hint">
+    <p class="hint" data-en="A demo ticket for ExpoGreen.">
         تذكرة تجريبية لمشروع ExpoGreen.
     </p>
 {% endblock %}
 
 {% block scripts %}
-<script>
-    document.querySelector("form").addEventListener("submit", () => {
-        const button = document.getElementById("issue-ticket");
-        button.disabled = true;
-        button.textContent = "جاري إنشاء التذكرة...";
-    });
-</script>
+    <script>
+        document.getElementById("create-ticket-form")
+            .addEventListener("submit", () => {
+                const button = document.getElementById("issue-ticket");
+                button.disabled = true;
+
+                window.ExpoGreen.setText(
+                    button,
+                    "جارٍ إنشاء التذكــــرة…",
+                    "Creating your ticket…"
+                );
+            });
+    </script>
 {% endblock %}

@@ -1,54 +1,62 @@
 {% extends "base.html" %}
 
-{% block title %}تذكرتك جاهزة — ExpoGreen{% endblock %}
+{% block title %}ExpoGreen{% endblock %}
 
 {% block content %}
-    <h1>تذكرتك جاهزة 🎉</h1>
+    <h1 data-en="Your ticket is ready">تذكرتك جــــاهزة</h1>
 
     <div class="visitor-ticket">
-        <span class="ticket-label">EXPOGREEN · DEMO PASS</span>
+        <span class="ticket-label" dir="ltr">
+            EXPOGREEN · DEMO PASS
+        </span>
 
-        <h2>{{ visitor.name }}</h2>
+        <h2><bdi>{{ visitor.name }}</bdi></h2>
 
         <img
             class="ticket-qr"
             src="{{ qr_data_url }}"
-            alt="رمز QR الخاص بتذكرة {{ visitor.name }}"
+            alt="رمز التذكرة"
+            data-en-alt="Ticket QR code"
         >
 
-        <p class="hint">رقم التذكرة</p>
+        <p class="hint" data-en="Ticket number">رقم التذكــــرة</p>
 
         <p class="ticket-number">
             <bdi>{{ visitor.ticket_code }}</bdi>
         </p>
 
-        <p>رصيدك: {{ visitor.points_balance }} نقطة</p>
+        <p>
+            <span data-en="Your balance:">رصيــــدك:</span>
+            <strong>{{ visitor.points_balance }}</strong>
+            <span data-en="points">نقــــطة</span>
+        </p>
     </div>
+
+    <a
+        class="ticket-download"
+        href="{{ qr_data_url }}"
+        download="ExpoGreen-QR.png"
+        data-en="Download QR code"
+    >تنزيل رمز التذكــــرة</a>
+
+    <p
+        class="hint"
+        data-en="Save the code on your phone and show it to the scanner at the sorting station."
+    >
+        احتفظ بالرمز على جوالك، واعرضه أمام ماسح شاشة الحــــاويات.
+    </p>
 
     <p>
         <a
-            class="ticket-download"
-            href="{{ qr_data_url }}"
-            download="ExpoGreen-QR.png"
-        >
-            تنزيل رمز QR
-        </a>
-    </p>
-
-    <p class="hint">
-        احتفظ بالرمز على جوالك واعرضه أمام ماسح شاشة الحاويات.
-        يمكنك أيضًا حفظ صورة للبطاقة كاملة.
+            href="{% url 'recycling:home' %}"
+            data-en="Go to the sorting station"
+        >الذهاب لشاشة الحــــاويات</a>
     </p>
 
     <p>
-        <a href="{% url 'recycling:home' %}">
-            الذهاب لشاشة الحاويات
-        </a>
-    </p>
-
-    <p>
-        <a href="{% url 'recycling:create_ticket' %}">
-            إصدار تذكرة جديدة
-        </a>
+        <a
+            href="{% url 'recycling:create_ticket' %}"
+            data-en="Create another ticket"
+        >إصدار تذكرة جديــــدة</a>
     </p>
 {% endblock %}

@@ -1,15 +1,37 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}التعرف على المخلف — ExpoGreen{% endblock %}
+{% block title %}ExpoGreen{% endblock %}
 
 {% block content %}
-    <h1>ارفع المخلف داخل الإطار</h1>
-    <p>قطعة واحدة فقط، وثبّتها حتى تظهر النتيجة.</p>
+    {% if session.visitor %}
+        <div class="visitor-summary">
+            <span>
+                <span data-en="Welcome,">أهــــلًا،</span>
+                <bdi>{{ session.visitor.name }}</bdi>
+            </span>
 
-    <form id="camera-config"
-          data-url="{% url 'recycling:live_classify' %}"
-          data-finalize="{% url 'recycling:finalize_live' %}">
+            <span>
+                <span data-en="Your balance:">رصيــــدك:</span>
+                <strong>{{ session.visitor.points_balance }}</strong>
+                <span data-en="points">نقــــطة</span>
+            </span>
+        </div>
+    {% endif %}
+
+    <h1 data-en="Place your item inside the frame">
+        ضع المخلف داخل الإطــــار
+    </h1>
+
+    <p data-en="One item only. Hold it steady until identification is complete.">
+        مخلف واحد فقط. ثبّته قليلًا حتى يكتمل التعــــرّف.
+    </p>
+
+    <form
+        id="camera-config"
+        data-url="{% url 'recycling:live_classify' %}"
+        data-finalize="{% url 'recycling:finalize_live' %}"
+    >
         {% csrf_token %}
     </form>
 
@@ -20,19 +42,43 @@
 
     <canvas id="live-canvas" hidden></canvas>
 
-    <h2 id="live-result">بانتظار المخلف</h2>
-    <p id="live-message" role="status">جاري تشغيل الكاميرا...</p>
-    <progress id="scan-progress" max="4" value="0"></progress>
+    <h2 id="live-result" data-en="Waiting for your item">
+        بانتظار المخــــلف
+    </h2>
 
-    <button id="retry-camera" type="button" hidden>
-        إعادة المحاولة
-    </button>
+    <p
+        id="live-message"
+        role="status"
+        data-en="Starting the camera…"
+    >جارٍ تشغيل الكاميــــرا…</p>
 
-    <p class="hint">
-        تجربة أولية — فتح الحاوية محاكاة عند تفعيل وضع المحاكاة.
+    <progress
+        id="scan-progress"
+        max="4"
+        value="0"
+        aria-label="تقدم التعرّف"
+        data-en-aria="Identification progress"
+    ></progress>
+
+    <button
+        id="retry-camera"
+        type="button"
+        data-en="Try again"
+        hidden
+    >إعادة المحــــاولة</button>
+
+    {% if simulation %}
+        <p
+            class="hint"
+            data-en="Demo mode: bin opening and disposal confirmation are simulated."
+        >وضع المحاكاة: فتح الحاوية وتأكيد الرمي تجريبيان.</p>
+    {% endif %}
+
+    <p>
+        <a href="{% url 'recycling:home' %}" data-en="Back to start">
+            العودة للبــــداية
+        </a>
     </p>
-
-    <a href="{% url 'recycling:home' %}">العودة للبداية</a>
 {% endblock %}
 
 {% block scripts %}

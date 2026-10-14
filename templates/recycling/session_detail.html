@@ -1,100 +1,104 @@
 {% extends "base.html" %}
 
-{% block title %}عملية الفرز — ExpoGreen{% endblock %}
+{% block title %}ExpoGreen{% endblock %}
 
 {% block content %}
+    {% if session.visitor %}
+        <div class="visitor-summary">
+            <span>
+                <span data-en="Welcome,">أهــــلًا،</span>
+                <bdi>{{ session.visitor.name }}</bdi>
+            </span>
+            <span>
+                <span data-en="Your balance:">رصيــــدك:</span>
+                <strong>{{ session.visitor.points_balance }}</strong>
+                <span data-en="points">نقــــطة</span>
+            </span>
+        </div>
+    {% endif %}
+
     {% if simulation %}
-        <p class="hint">
-            فتح الحاوية وإشارة الحساس في وضع المحاكاة.
-        </p>
+        <p
+            class="hint"
+            data-en="Demo mode: bin opening and sensor confirmation are simulated."
+        >وضع المحاكاة: فتح الحاوية وإشارة الحساس تجريبيان.</p>
     {% endif %}
 
     {% if error %}
         <p class="error" role="alert">{{ error }}</p>
     {% endif %}
 
-    {% if session.visitor %}
-        <p>
-            التذكرة:
-            <bdi>{{ session.visitor.ticket_code }}</bdi>
-        </p>
-        <p>رصيدك: {{ session.visitor.points_balance }} نقطة</p>
-    {% endif %}
-
     {% if session.status == "started" %}
         {% if session.mode == "sort" %}
-            <h1>التعرف على المخلف</h1>
-            <p>
-                افتح الكاميرا، ثم ضع مخلفًا واحدًا داخل الإطار
-                وثبّته حتى تظهر النتيجة.
+            <h1 data-en="Identify your waste">التعرّف على المخــــلف</h1>
+
+            <p data-en="Place one item inside the camera frame and hold it steady.">
+                ضع مخلفًا واحدًا داخل إطار الكاميرا وثبّته قليــــلًا.
             </p>
 
-            <p>
-                <a href="{% url 'recycling:live_test' %}">
-                    ابدأ التعرف بالكاميرا
-                </a>
-            </p>
+            <a
+                class="action-link"
+                href="{% url 'recycling:live_test' %}"
+                data-en="Continue to the camera"
+            >المتابعة إلى الكاميــــرا</a>
 
             {% if simulation %}
                 <details>
-                    <summary>اختبار التصنيف يدويًا</summary>
+                    <summary data-en="Manual classification test">
+                        اختبار التصنيف يدويًــــا
+                    </summary>
 
                     <form method="post">
                         {% csrf_token %}
-                        <input
-                            type="hidden"
-                            name="action"
-                            value="classify"
-                        >
+                        <input type="hidden" name="action" value="classify">
 
-                        <label for="waste_type">
-                            نوع المخلف التجريبي
+                        <label for="waste_type" data-en="Test waste type">
+                            نوع المخلف التجريبــــي
                         </label>
 
-                        <select
-                            id="waste_type"
-                            name="waste_type"
-                            required
-                        >
-                            {% for value, label in waste_types %}
-                                <option value="{{ value }}">
-                                    {{ label }}
-                                </option>
-                            {% endfor %}
+                        <select id="waste_type" name="waste_type" required>
+                            <option value="plastic" data-en="Plastic">بلاستيك</option>
+                            <option value="aluminum" data-en="Aluminum">ألمنيوم</option>
+                            <option value="paper" data-en="Paper">ورق</option>
+                            <option value="non_recyclable" data-en="Non-recyclable">
+                                غير قابل للتدوير
+                            </option>
+                            <option value="mixed" data-en="Mixed / Unknown">
+                                مختلط / غير محدد
+                            </option>
                         </select>
 
-                        <button type="submit">
-                            محاكاة نتيجة التصنيف
+                        <button type="submit" data-en="Simulate classification">
+                            محاكاة نتيجة التصنيــــف
                         </button>
                     </form>
                 </details>
             {% endif %}
         {% else %}
-            <h1>التخلص السريع</h1>
-            <p>سنستخدم الحاوية المختلطة، بدون نقاط.</p>
+            <h1 data-en="Quick disposal">التخلّص السريــــع</h1>
+
+            <p data-en="Use the mixed-waste bin. No points are awarded.">
+                سنستخدم الحاوية المختلطة، بدون نقــــاط.
+            </p>
 
             {% if simulation %}
                 <form method="post">
                     {% csrf_token %}
-                    <input
-                        type="hidden"
-                        name="action"
-                        value="classify"
-                    >
+                    <input type="hidden" name="action" value="classify">
 
-                    <button type="submit">
-                        تحديد الحاوية المختلطة
+                    <button type="submit" data-en="Select the mixed-waste bin">
+                        تحديد الحاوية المختلطــــة
                     </button>
                 </form>
             {% endif %}
         {% endif %}
 
     {% elif session.status == "classified" %}
-        <h1>تم تحديد الحاوية</h1>
-        <p>الحاوية: {{ session.bin.name }}</p>
+        <h1 data-en="Your bin is selected">تم تحديد الحــــاوية</h1>
+
         <p>
-            معرّف الجهاز:
-            <bdi>{{ session.bin.hardware_id }}</bdi>
+            <span data-en="Bin:">الحــــاوية:</span>
+            <bdi>{{ session.bin.name }}</bdi>
         </p>
 
         {% if simulation %}
@@ -102,54 +106,93 @@
                 {% csrf_token %}
                 <input type="hidden" name="action" value="open">
 
-                <button type="submit">
-                    محاكاة تأكيد فتح الحاوية
+                <button type="submit" data-en="Simulate bin opening">
+                    محاكاة فتح الحــــاوية
                 </button>
             </form>
         {% else %}
-            <p>بانتظار تأكيد فتح الحاوية من الجهاز.</p>
+            <p data-en="Waiting for the device to confirm opening.">
+                بانتظار تأكيد فتح الحاوية من الجهــــاز.
+            </p>
         {% endif %}
 
     {% elif session.status == "waiting" %}
-        <h1>بانتظار رمي المخلف</h1>
-        <p>الحاوية المختارة: {{ session.bin.name }}</p>
-        <p>لن تُضاف النقاط حتى تصل إشارة تأكيد الرمي.</p>
+        {% if simulation %}
+            <h1 data-en="Waiting for disposal confirmation">
+                بانتظار تأكيد الرمــــي
+            </h1>
+
+            <p
+                class="hint"
+                data-en="Opening was simulated. No physical lid was opened."
+            >تم تسجيل فتح الحاوية تجريبيًا؛ لم يُفتح غطاء فعلي.</p>
+        {% else %}
+            <h1 data-en="Place your item in the open bin">
+                ضع المخلف في الحاوية المفتوحــــة
+            </h1>
+        {% endif %}
+
+        <p>
+            <span data-en="Selected bin:">الحاوية المختــــارة:</span>
+            <bdi>{{ session.bin.name }}</bdi>
+        </p>
+
+        <p data-en="Points are added after the sensor confirms disposal.">
+            تُضاف النقاط بعد تأكيد الحساس إيداع المخــــلف.
+        </p>
 
         {% if simulation %}
-            <p class="hint">
-                تم تسجيل فتح الحاوية تجريبيًا؛
-                لم يُفتح غطاء فعلي.
-            </p>
-
             <form method="post">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="confirm">
 
-                <button type="submit">
-                    محاكاة إشارة الحساس
+                <button type="submit" data-en="Simulate disposal confirmation">
+                    محاكاة تأكيد الرمــــي
                 </button>
             </form>
         {% endif %}
 
     {% elif session.status == "completed" %}
-        <h1>اكتملت العملية ✅</h1>
+        <h1 data-en="Thank you. Sorting complete.">
+            شكرًا، اكتملت عملية الفــــرز
+        </h1>
 
         {% if reward %}
-            <p>كسبت {{ reward }} نقاط بهذه العملية!</p>
+            <p>
+                <span data-en="Added">أُضيفت</span>
+                <strong>{{ reward }}</strong>
+                <span data-en="points to your balance.">نقاط إلى رصيــــدك.</span>
+            </p>
+
+            <p data-en="Your contribution is now part of the Impact Tree.">
+                أصبحت مشاركتك جزءًا من شجــــرة الأثر.
+            </p>
         {% else %}
-            <p>تم تسجيل التخلص من المخلف بدون نقاط.</p>
+            <p data-en="Disposal recorded. No points were awarded.">
+                تم تسجيل التخلص من المخلف بدون نقــــاط.
+            </p>
         {% endif %}
 
-        <p>شكرًا لمساهمتك في الفرز.</p>
+    {% elif session.status == "expired" %}
+        <h1 data-en="Session timed out">انتهت المهلــــة</h1>
+
+        <p data-en="You can start a new session. No points were added.">
+            يمكنك بدء عملية جديدة. لم تُضف نقــــاط.
+        </p>
 
     {% else %}
-        <h1>العملية غير نشطة</h1>
-        <p>الحالة: {{ session.get_status_display }}</p>
+        <h1 data-en="Unable to complete this session">
+            تعذّر إكمال العمليــــة
+        </h1>
+
+        <p data-en="Return to the start and try again.">
+            ارجع إلى البداية وحاول مجــــددًا.
+        </p>
     {% endif %}
 
     <p>
-        <a href="{% url 'recycling:home' %}">
-            العودة للبداية
+        <a href="{% url 'recycling:home' %}" data-en="Back to start">
+            العودة للبــــداية
         </a>
     </p>
 {% endblock %}

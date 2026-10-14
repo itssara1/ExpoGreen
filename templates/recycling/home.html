@@ -1,11 +1,31 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}مسح التذكرة — ExpoGreen{% endblock %}
+{% block title %}ExpoGreen{% endblock %}
 
 {% block content %}
-    <h1>فرزك اليوم يصنع فرقًا</h1>
-    <p>امسح تذكرتك، ثم ارفع المخلف أمام الكاميرا.</p>
+    <h1 data-en="Your waste. Tomorrow’s impact.">
+        مخلفك اليوم، أثرٌ للغــــد
+    </h1>
+
+    <p data-en="Scan your ticket, sort your waste, and earn points.">
+        امسح تذكرتك، افرز مخلفك، واكسب نقــــاطًا.
+    </p>
+
+    <ol class="journey-steps">
+        <li>
+            <b>01</b>
+            <span data-en="Scan your ticket">امسح التذكــــرة</span>
+        </li>
+        <li>
+            <b>02</b>
+            <span data-en="Identify your item">عرّف المخــــلف</span>
+        </li>
+        <li>
+            <b>03</b>
+            <span data-en="Sort and earn">افــــرز واكسب</span>
+        </li>
+    </ol>
 
     {% if error %}
         <p class="error" role="alert">{{ error }}</p>
@@ -14,43 +34,39 @@
     <form id="ticket-form" method="post">
         {% csrf_token %}
         <input type="hidden" name="mode" value="sort">
-        <input
-            id="scanned-ticket"
-            type="hidden"
-            name="ticket_code"
-        >
+        <input id="scanned-ticket" type="hidden" name="ticket_code">
     </form>
 
-    <button id="scan-ticket" type="button">
-        مسح تذكرة QR
-    </button>
+    <button
+        id="scan-ticket"
+        type="button"
+        data-en="Scan your ticket"
+    >امسح التذكــــرة</button>
 
     <div id="ticket-scanner" hidden>
         <div class="camera-stage">
-    <video
-        id="ticket-video"
-        autoplay
-        playsinline
-        muted
-    ></video>
-
-    <div class="scan-frame" aria-hidden="true"></div>
-</div>
+            <video id="ticket-video" autoplay playsinline muted></video>
+            <div class="scan-frame" aria-hidden="true"></div>
+        </div>
 
         <canvas id="ticket-canvas" hidden></canvas>
 
-        <p id="ticket-message" role="status">
-            ضع رمز التذكرة أمام الكاميرا.
-        </p>
+        <p
+            id="ticket-message"
+            role="status"
+            data-en="Place your ticket QR code inside the frame."
+        >ضع رمز التذكرة داخل الإطــــار.</p>
     </div>
 
     <form id="quick-form" method="post">
         {% csrf_token %}
         <input type="hidden" name="mode" value="quick">
 
-        <button class="secondary" type="submit">
-            تخلص سريع بدون نقاط
-        </button>
+        <button
+            class="secondary"
+            type="submit"
+            data-en="Dispose without points"
+        >تخلّص من المخلف بدون نقــــاط</button>
     </form>
 {% endblock %}
 
@@ -60,8 +76,5 @@
         defer
     ></script>
 
-    <script
-        src="{% static 'js/ticket-scanner.js' %}"
-        defer
-    ></script>
+    <script src="{% static 'js/ticket-scanner.js' %}" defer></script>
 {% endblock %}

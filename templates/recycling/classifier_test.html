@@ -1,18 +1,42 @@
 {% extends "base.html" %}
 
-{% block title %}اختبار الموديل — ExpoGreen{% endblock %}
+{% block title %}ExpoGreen{% endblock %}
 
 {% block content %}
-    <h1>اختبار تصنيف المخلفات</h1>
-    <p>ارفعي صورة فيها قطعة واحدة وشوفي أعلى ثلاث نتائج.</p>
+    <h1 data-en="Waste classification test">
+        اختبار تصنيف المخــــلفات
+    </h1>
 
-    <form method="post" enctype="multipart/form-data">
+    <p data-en="Upload an image of one item to see the top three predictions.">
+        ارفع صورة لمخلف واحد لعرض أعلى ثلاث نتــــائج.
+    </p>
+
+    <form id="classifier-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
 
-        <img id="preview" class="image-preview" hidden alt="الصورة المختارة">
+        {{ form.non_field_errors }}
 
-        <button id="classify-button" type="submit">تصنيف الصورة</button>
+        <label
+            for="{{ form.image.id_for_label }}"
+            data-en="Choose an image"
+        >اختر صــــورة</label>
+
+        {{ form.image }}
+        {{ form.image.errors }}
+
+        <img
+            id="preview"
+            class="image-preview"
+            alt="الصورة المختارة"
+            data-en-alt="Selected image"
+            hidden
+        >
+
+        <button
+            id="classify-button"
+            type="submit"
+            data-en="Classify image"
+        >تصنيف الصــــورة</button>
     </form>
 
     {% if error %}
@@ -20,7 +44,7 @@
     {% endif %}
 
     {% if predictions %}
-        <h2>نتائج الموديل</h2>
+        <h2 data-en="Model predictions">نتائج التصنيــــف</h2>
 
         {% for prediction in predictions %}
             <p>
@@ -29,40 +53,55 @@
             </p>
         {% endfor %}
 
-        <p class="hint">
-            هذه درجات الموديل، وليست ضمانًا لصحة التصنيف.
-            الاختبار لا يفتح حاوية ولا يمنح نقاطًا.
+        <p
+            class="hint"
+            data-en="Model scores do not guarantee a correct classification. This test does not open a bin or award points."
+        >
+            درجات الموديل ليست ضمانًا لصحة التصنيف.
+            هذا الاختبار لا يفتح حاوية ولا يمنح نقــــاطًا.
         </p>
     {% endif %}
 
-    <p><a href="{% url 'recycling:home' %}">العودة للبداية</a></p>
+    <p>
+        <a href="{% url 'recycling:home' %}" data-en="Back to start">
+            العودة للبــــداية
+        </a>
+    </p>
 {% endblock %}
 
 {% block scripts %}
-<script>
-    const input = document.getElementById("id_image");
-    const preview = document.getElementById("preview");
-    let previewUrl = null;
+    <script>
+        const input = document.getElementById("id_image");
+        const preview = document.getElementById("preview");
+        let previewUrl = null;
 
-    input.addEventListener("change", () => {
-        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        input.addEventListener("change", () => {
+            if (previewUrl) {
+                URL.revokeObjectURL(previewUrl);
+                previewUrl = null;
+            }
 
-        const file = input.files[0];
-        preview.hidden = !file;
+            const file = input.files[0];
+            preview.hidden = !file;
 
-        if (file) {
-            previewUrl = URL.createObjectURL(file);
-            preview.src = previewUrl;
-        } else {
-            preview.removeAttribute("src");
-            previewUrl = null;
-        }
-    });
+            if (file) {
+                previewUrl = URL.createObjectURL(file);
+                preview.src = previewUrl;
+            } else {
+                preview.removeAttribute("src");
+            }
+        });
 
-    document.querySelector("form").addEventListener("submit", () => {
-        const button = document.getElementById("classify-button");
-        button.disabled = true;
-        button.textContent = "جاري التصنيف...";
-    });
-</script>
+        document.getElementById("classifier-form")
+            .addEventListener("submit", () => {
+                const button = document.getElementById("classify-button");
+                button.disabled = true;
+
+                window.ExpoGreen.setText(
+                    button,
+                    "جارٍ التصنيــــف…",
+                    "Classifying…"
+                );
+            });
+    </script>
 {% endblock %}
