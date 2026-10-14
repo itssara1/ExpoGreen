@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 
 {% block title %}البداية — ExpoGreen{% endblock %}
@@ -10,7 +11,7 @@
         <p class="error" role="alert">{{ error }}</p>
     {% endif %}
 
-    <form method="post">
+    <form method="post" id="ticket-form">
         {% csrf_token %}
         <input type="hidden" name="mode" value="sort">
 
@@ -22,6 +23,14 @@
             placeholder="EXPO-DEMO-001"
             required
         >
+
+        <button type="button" class="secondary" id="scan-btn">
+            مسح تذكرة QR
+        </button>
+
+        <div id="qr-reader" style="display: none; margin-top: 20px;"></div>
+
+        <p id="qr-message" role="status" aria-live="polite"></p>
 
         <button type="submit">افرز واكسب نقاط</button>
     </form>
@@ -39,4 +48,83 @@
         نسخة تجريبية — كود التذكرة:
         <bdi>EXPO-DEMO-001</bdi>
     </p>
+
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+    <script>
+        const scanBtn = document.getElementById("scan-btn");
+        const qrReader = document.getElementById("qr-reader");
+        const qrMessage = document.getElementById("qr-message");
+        const ticketInput = document.getElementById("ticket_code");
+
+        let scanner = null;
+        let isScanning = false;
+
+        scanBtn.addEventListener("click", async () => {
+            if (isScanning) return;
+
+            if (typeof Html5Qrcode === "undefined") {
+                qrMessage.textContent = "تعذر تحميل قارئ QR.";
+                return;
+            }
+
+            isScanning = true;
+            scanBtn.disabled = true;
+            qrReader.style.display = "block";
+            qrMessage.textContent = "وجهي الكاميرا نحو رمز QR.";
+
+            scanner = new Html5Qrcode("qr-reader");
+
+            try {
+                await scanner.start(
+                    { facingMode: "environment" },
+                    {
+                        fps: 10,
+                        qrbox: { width: 220, height: 220 }
+                    },
+                    async (decodedText) => {
+                        if (!isScanning) return;
+
+                        isScanning = false;
+
+                        const code = decodedText.trim();
+                        ticketInput.value = code;
+
+                        qrMessage.textContent =
+                            "تم مسح التذكرة بنجاح: " + code;
+
+                        try {
+                            await scanner.stop();
+                            scanner.clear();
+                        } catch (error) {
+                            console.error("Scanner stop error:", error);
+                        }
+
+                        scanner = null;
+                        qrReader.style.display = "none";
+                        scanBtn.disabled = false;
+
+                        ticketInput.focus();
+                    },
+                    () => {}
+                );
+            } catch (error) {
+                console.error("Camera error:", error);
+
+                qrMessage.textContent =
+                    "تعذر تشغيل الكاميرا. تأكدي من صلاحيات الكاميرا.";
+
+                isScanning = false;
+                scanBtn.disabled = false;
+                qrReader.style.display = "none";
+
+                if (scanner) {
+                    try {
+                        scanner.clear();
+                    } catch (e) {}
+                    scanner = null;
+                }
+            }
+        });
+    </script>
 {% endblock %}
