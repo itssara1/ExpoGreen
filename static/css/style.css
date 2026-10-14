@@ -207,3 +207,208 @@ select:focus-visible {
 #ticket-scanner[hidden] {
     display: none;
 }
+
+/* Shared layout and impact tree */
+body {
+    display: block;
+    padding: 28px;
+    background:
+        radial-gradient(circle at 10% 15%, #ded8ee 0, transparent 35%),
+        radial-gradient(circle at 90% 85%, #d5eee6 0, transparent 35%),
+        #f4f5f0;
+    color: #293b35;
+}
+
+.app-layout {
+    width: 100%;
+    max-width: 1320px;
+    min-height: calc(100vh - 56px);
+    margin: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: center;
+}
+
+.app-layout .card {
+    max-width: none;
+    padding: 36px;
+    border: 1px solid #ffffff;
+    box-shadow: 0 20px 60px #4939660c;
+}
+
+.brand {
+    color: #5f467d;
+    letter-spacing: -1px;
+}
+
+.tree-panel {
+    min-width: 0;
+    padding: 28px 20px;
+    border-radius: 28px;
+    background: #ffffff85;
+    border: 1px solid #ffffff;
+    text-align: center;
+    overflow: hidden;
+}
+
+.tree-tag {
+    display: inline-block;
+    padding: 7px 14px;
+    border-radius: 30px;
+    background: #ebe5f3;
+    color: #6c518c;
+    font-size: 13px;
+}
+
+.tree-heading h2 {
+    margin: 16px 0 6px;
+    color: #493966;
+    font-size: 32px;
+}
+
+.tree-heading p {
+    margin: 0;
+    color: #69786e;
+    font-size: 14px;
+}
+
+#impact-tree {
+    display: block;
+    width: 100%;
+    max-width: 570px;
+    margin: 0 auto;
+}
+
+.leaf-name {
+    fill: white;
+    font: bold 12px Tahoma, Arial, sans-serif;
+    pointer-events: none;
+}
+
+.participant-leaf {
+    filter: drop-shadow(0 4px 4px #49396618);
+}
+
+.new-leaf {
+    animation: leaf-arrival 1.8s cubic-bezier(.2, .75, .2, 1) both;
+}
+
+@keyframes leaf-arrival {
+    0% {
+        opacity: 0;
+        transform: translate(90px, -110px) rotate(-35deg) scale(.3);
+    }
+    55% {
+        opacity: 1;
+        transform: translate(-10px, 8px) rotate(10deg) scale(1.12);
+    }
+    80% {
+        transform: translate(4px, -3px) rotate(-4deg) scale(1.03);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(0, 0) rotate(0) scale(1);
+    }
+}
+
+.tree-root-label {
+    fill: #796989;
+    font: 16px Tahoma, Arial, sans-serif;
+}
+
+.tree-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    color: #677469;
+}
+
+.tree-footer strong {
+    color: #5f467d;
+    font-size: 30px;
+}
+
+.tree-empty {
+    color: #677469;
+    font-size: 14px;
+}
+
+@media (max-width: 900px) {
+    .app-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .tree-panel {
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 12px;
+    }
+
+    .app-layout .card {
+        padding: 24px;
+    }
+
+    .tree-panel {
+        padding: 24px 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .new-leaf {
+        animation: none;
+    }
+}
+
+.visitor-ticket {
+    margin-top: 24px;
+    padding: 28px 20px;
+    border: 1px solid #dcd3e8;
+    border-radius: 22px;
+    background: linear-gradient(145deg, #f4effa, #edf7f2);
+    text-align: center;
+}
+
+.ticket-label {
+    color: #7960a3;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+.visitor-ticket h2 {
+    color: #493966;
+    margin: 18px 0;
+}
+
+.ticket-qr {
+    display: block;
+    width: 220px;
+    max-width: 100%;
+    height: auto;
+    margin: 20px auto;
+    border-radius: 12px;
+}
+
+.ticket-number {
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.ticket-download {
+    display: block;
+    padding: 16px;
+    border-radius: 12px;
+    background: #5f467d;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+}
+
+.ticket-download:hover {
+    background: #493966;
+}

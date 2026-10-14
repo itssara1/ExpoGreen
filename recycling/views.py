@@ -23,6 +23,13 @@ from .services import (
     start_session,
 )
 
+import base64
+import uuid
+from io import BytesIO
+
+import qrcode
+
+from .forms import TicketCreateForm
 
 logger = logging.getLogger(__name__)
 
@@ -103,10 +110,27 @@ def session_detail(request):
                 if session.bin is None:
                     raise ValueError("No bin selected.")
 
+                was_completed = (
+                    session.status
+                    == DisposalSession.Status.COMPLETED
+                )
+
                 session = confirm_disposal(
                     session.id,
                     session.bin.hardware_id,
                 )
+
+                entry = getattr(session, "point_entry", None)
+
+                if (
+                    not was_completed
+                    and session.visitor_id
+                    and entry
+                    and entry.points > 0
+                ):
+                    request.session["tree_new_visitor"] = (
+                        session.visitor_id
+                    )
 
             else:
                 raise ValueError("Invalid action.")
@@ -387,3 +411,79 @@ def finalize_live(request):
     return JsonResponse({
         "redirect": reverse("recycling:session_detail"),
     })
+
+@require_http_methods(["GET", "POST"])
+def create_ticket(request):
+    if request.method == "POST":
+        form = TicketCreateForm(request.POST)
+
+        if form.is_valid():
+            # Avoid duplicate tickets when the same form is submitted twice.
+            token = request.POST.get("issue_token", "")
+            expected = request.session.get("ticket_issue_token")
+
+            if not expected or token != expected:
+                return redirect("recycling:create_ticket")
+
+            visitor = Visitor.objects.create(
+                name=form.cleaned_data["name"],
+                ticket_code=f"EXPO-{uuid.uuid4().hex.upper()}",
+            )
+
+            request.session.pop("ticket_issue_token", None)
+            request.session["issued_visitor_id"] = visitor.pk
+
+            return redirect("recycling:ticket_ready")
+    else:
+        form = TicketCreateForm()
+
+    if "ticket_issue_token" not in request.session:
+        request.session["ticket_issue_token"] = uuid.uuid4().hex
+
+    return render(
+        request,
+        "recycling/create_ticket.html",
+        {
+            "form": form,
+            "issue_token": request.session["ticket_issue_token"],
+        },
+    )
+
+
+@require_GET
+def ticket_ready(request):
+    visitor_id = request.session.get("issued_visitor_id")
+
+    if not visitor_id:
+        return redirect("recycling:create_ticket")
+
+    visitor = get_object_or_404(Visitor, pk=visitor_id)
+
+    qr = qrcode.QRCode(
+        error_correction=qrcode.constants.ERROR_CORRECT_M,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(visitor.ticket_code)
+    qr.make(fit=True)
+
+    image = qr.make_image(
+        fill_color="black",
+        back_color="white",
+    )
+
+    buffer = BytesIO()
+    image.save(buffer, format="PNG")
+
+    qr_base64 = base64.b64encode(
+        buffer.getvalue()
+    ).decode("ascii")
+
+    return render(
+        request,
+        "recycling/ticket_ready.html",
+        {
+            "visitor": visitor,
+            "qr_data_url": f"data:image/png;base64,{qr_base64}",
+        },
+    )

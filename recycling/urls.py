@@ -16,4 +16,14 @@ urlpatterns = [
     views.finalize_live,
     name="finalize_live",
 ),
+path(
+    "tickets/new/",
+    views.create_ticket,
+    name="create_ticket",
+),
+path(
+    "tickets/ready/",
+    views.ticket_ready,
+    name="ticket_ready",
+),
 ]

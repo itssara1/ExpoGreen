@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}تذكرتك جاهزة — ExpoGreen{% endblock %}
+
+{% block content %}
+    <h1>تذكرتك جاهزة 🎉</h1>
+
+    <div class="visitor-ticket">
+        <span class="ticket-label">EXPOGREEN · DEMO PASS</span>
+
+        <h2>{{ visitor.name }}</h2>
+
+        <img
+            class="ticket-qr"
+            src="{{ qr_data_url }}"
+            alt="رمز QR الخاص بتذكرة {{ visitor.name }}"
+        >
+
+        <p class="hint">رقم التذكرة</p>
+
+        <p class="ticket-number">
+            <bdi>{{ visitor.ticket_code }}</bdi>
+        </p>
+
+        <p>رصيدك: {{ visitor.points_balance }} نقطة</p>
+    </div>
+
+    <p>
+        <a
+            class="ticket-download"
+            href="{{ qr_data_url }}"
+            download="ExpoGreen-QR.png"
+        >
+            تنزيل رمز QR
+        </a>
+    </p>
+
+    <p class="hint">
+        احتفظ بالرمز على جوالك واعرضه أمام ماسح شاشة الحاويات.
+        يمكنك أيضًا حفظ صورة للبطاقة كاملة.
+    </p>
+
+    <p>
+        <a href="{% url 'recycling:home' %}">
+            الذهاب لشاشة الحاويات
+        </a>
+    </p>
+
+    <p>
+        <a href="{% url 'recycling:create_ticket' %}">
+            إصدار تذكرة جديدة
+        </a>
+    </p>
+{% endblock %}

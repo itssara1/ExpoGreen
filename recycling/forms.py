@@ -18,3 +18,25 @@ class ImageTestForm(forms.Form):
             )
 
         return image
+
+class TicketCreateForm(forms.Form):
+    name = forms.CharField(
+        label="اسم الزائر",
+        max_length=100,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "اكتب اسمك",
+                "autocomplete": "name",
+            }
+        ),
+    )
+
+    def clean_name(self):
+        name = " ".join(self.cleaned_data["name"].split())
+
+        if len(name) < 2:
+            raise forms.ValidationError(
+                "اكتب اسمًا من حرفين على الأقل."
+            )
+
+        return name

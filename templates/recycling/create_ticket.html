@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}إصدار تذكرة — ExpoGreen{% endblock %}
+
+{% block content %}
+    <h1>ابدأ رحلتك الخضراء 🌱</h1>
+    <p>اكتب اسمك للحصول على تذكرتك الخاصة.</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <input
+            type="hidden"
+            name="issue_token"
+            value="{{ issue_token }}"
+        >
+
+        {{ form.as_p }}
+
+        <button id="issue-ticket" type="submit">
+            إنشاء تذكرتي
+        </button>
+    </form>
+
+    <p class="hint">
+        تذكرة تجريبية لمشروع ExpoGreen.
+    </p>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.querySelector("form").addEventListener("submit", () => {
+        const button = document.getElementById("issue-ticket");
+        button.disabled = true;
+        button.textContent = "جاري إنشاء التذكرة...";
+    });
+</script>
+{% endblock %}

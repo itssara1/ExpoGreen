@@ -10,12 +10,105 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <main class="card">
-        <div class="brand" dir="ltr">ExpoGreen</div>
+    <div class="app-layout">
+        <main class="card">
+            <div class="brand" dir="ltr">ExpoGreen</div>
+            {% block content %}{% endblock %}
+        </main>
 
-        {% block content %}{% endblock %}
-    </main>
+        <aside class="tree-panel" aria-labelledby="tree-title">
+            <div class="tree-heading">
+                <span class="tree-tag">كل مشاركة تصنع أثرًا</span>
+                <h2 id="tree-title">شجرة الأثر</h2>
+                <p>أسماء ساهمت في مستقبل أكثر استدامة</p>
+            </div>
 
+            <svg
+                id="impact-tree"
+                viewBox="0 0 600 620"
+                role="img"
+                aria-label="شجرة تحمل أسماء المشاركين"
+            >
+                <defs>
+                    <linearGradient id="trunk-color" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#78609f"/>
+                        <stop offset="100%" stop-color="#493966"/>
+                    </linearGradient>
+                    <radialGradient id="tree-halo">
+                        <stop offset="0%" stop-color="#d4eee6"/>
+                        <stop offset="100%" stop-color="#d4eee6"
+                              stop-opacity="0"/>
+                    </radialGradient>
+                </defs>
+
+                <circle cx="300" cy="280" r="265"
+                        fill="url(#tree-halo)"/>
+
+                <g fill="none" stroke="#9dbab0" opacity=".3">
+                    <circle cx="300" cy="280" r="225"/>
+                    <circle cx="300" cy="280" r="180"
+                            stroke-dasharray="3 12"/>
+                </g>
+
+                <ellipse cx="300" cy="565" rx="125" ry="15"
+                         fill="#493966" opacity=".09"/>
+
+                <path
+                    d="M272 560
+                       C286 480 279 405 294 330
+                       C310 405 308 480 329 560 Z"
+                    fill="url(#trunk-color)"
+                />
+
+                <g
+                    fill="none"
+                    stroke="url(#trunk-color)"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M300 485 Q225 425 155 395
+                             M301 448 Q374 410 443 370"
+                          stroke-width="17"/>
+                    <path d="M298 393 Q234 345 171 284
+                             M302 369 Q362 315 429 269"
+                          stroke-width="13"/>
+                    <path d="M297 345 Q269 260 232 208
+                             M301 331 Q325 249 370 193"
+                          stroke-width="10"/>
+                    <path d="M299 336 Q294 243 300 132"
+                          stroke-width="8"/>
+                    <path d="M216 433 L179 344
+                             M384 403 L422 315
+                             M221 337 L119 323
+                             M376 307 L473 316
+                             M267 274 L182 216
+                             M335 263 L430 206"
+                          stroke-width="6"/>
+                </g>
+
+                <g id="tree-leaves"></g>
+
+                <text x="300" y="605" text-anchor="middle"
+                      class="tree-root-label">
+                    أثرنا يكبر معًا
+                </text>
+            </svg>
+
+            <div class="tree-footer">
+                <strong>{{ tree_total }}</strong>
+                <span>مشارك في شجرة الأثر</span>
+            </div>
+
+            {% if not tree_total %}
+                <p class="tree-empty">أول مشاركة ناجحة تنبت أول ورقة 🌱</p>
+            {% endif %}
+        </aside>
+    </div>
+
+    {{ tree_leaves|json_script:"tree-data" }}
+    {{ tree_new_visitor|json_script:"tree-new-visitor" }}
+
+    <script src="{% static 'js/impact-tree.js' %}" defer></script>
     {% block scripts %}{% endblock %}
 </body>
 </html>
