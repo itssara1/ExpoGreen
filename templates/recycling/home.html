@@ -1,41 +1,50 @@
-
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}البداية — ExpoGreen{% endblock %}
+{% block title %}مسح التذكرة — ExpoGreen{% endblock %}
 
 {% block content %}
     <h1>فرزك اليوم يصنع فرقًا</h1>
-    <p>عرّف مخلفك، ضعه في الحاوية المناسبة، واكسب نقاطًا.</p>
+    <p>امسح تذكرتك، ثم ارفع المخلف أمام الكاميرا.</p>
 
     {% if error %}
         <p class="error" role="alert">{{ error }}</p>
     {% endif %}
 
-    <form method="post" id="ticket-form">
+    <form id="ticket-form" method="post">
         {% csrf_token %}
         <input type="hidden" name="mode" value="sort">
-
-        <label for="ticket_code">كود التذكرة</label>
         <input
-            id="ticket_code"
+            id="scanned-ticket"
+            type="hidden"
             name="ticket_code"
-            maxlength="100"
-            placeholder="EXPO-DEMO-001"
-            required
         >
-
-        <button type="button" class="secondary" id="scan-btn">
-            مسح تذكرة QR
-        </button>
-
-        <div id="qr-reader" style="display: none; margin-top: 20px;"></div>
-
-        <p id="qr-message" role="status" aria-live="polite"></p>
-
-        <button type="submit">افرز واكسب نقاط</button>
     </form>
 
-    <form method="post">
+    <button id="scan-ticket" type="button">
+        مسح تذكرة QR
+    </button>
+
+    <div id="ticket-scanner" hidden>
+        <div class="camera-stage">
+    <video
+        id="ticket-video"
+        autoplay
+        playsinline
+        muted
+    ></video>
+
+    <div class="scan-frame" aria-hidden="true"></div>
+</div>
+
+        <canvas id="ticket-canvas" hidden></canvas>
+
+        <p id="ticket-message" role="status">
+            ضع رمز التذكرة أمام الكاميرا.
+        </p>
+    </div>
+
+    <form id="quick-form" method="post">
         {% csrf_token %}
         <input type="hidden" name="mode" value="quick">
 
@@ -43,88 +52,16 @@
             تخلص سريع بدون نقاط
         </button>
     </form>
+{% endblock %}
 
-    <p class="hint">
-        نسخة تجريبية — كود التذكرة:
-        <bdi>EXPO-DEMO-001</bdi>
-    </p>
+{% block scripts %}
+    <script
+        src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"
+        defer
+    ></script>
 
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-
-    <script>
-        const scanBtn = document.getElementById("scan-btn");
-        const qrReader = document.getElementById("qr-reader");
-        const qrMessage = document.getElementById("qr-message");
-        const ticketInput = document.getElementById("ticket_code");
-
-        let scanner = null;
-        let isScanning = false;
-
-        scanBtn.addEventListener("click", async () => {
-            if (isScanning) return;
-
-            if (typeof Html5Qrcode === "undefined") {
-                qrMessage.textContent = "تعذر تحميل قارئ QR.";
-                return;
-            }
-
-            isScanning = true;
-            scanBtn.disabled = true;
-            qrReader.style.display = "block";
-            qrMessage.textContent = "وجهي الكاميرا نحو رمز QR.";
-
-            scanner = new Html5Qrcode("qr-reader");
-
-            try {
-                await scanner.start(
-                    { facingMode: "environment" },
-                    {
-                        fps: 10,
-                        qrbox: { width: 220, height: 220 }
-                    },
-                    async (decodedText) => {
-                        if (!isScanning) return;
-
-                        isScanning = false;
-
-                        const code = decodedText.trim();
-                        ticketInput.value = code;
-
-                        qrMessage.textContent =
-                            "تم مسح التذكرة بنجاح: " + code;
-
-                        try {
-                            await scanner.stop();
-                            scanner.clear();
-                        } catch (error) {
-                            console.error("Scanner stop error:", error);
-                        }
-
-                        scanner = null;
-                        qrReader.style.display = "none";
-                        scanBtn.disabled = false;
-
-                        ticketInput.focus();
-                    },
-                    () => {}
-                );
-            } catch (error) {
-                console.error("Camera error:", error);
-
-                qrMessage.textContent =
-                    "تعذر تشغيل الكاميرا. تأكدي من صلاحيات الكاميرا.";
-
-                isScanning = false;
-                scanBtn.disabled = false;
-                qrReader.style.display = "none";
-
-                if (scanner) {
-                    try {
-                        scanner.clear();
-                    } catch (e) {}
-                    scanner = null;
-                }
-            }
-        });
-    </script>
+    <script
+        src="{% static 'js/ticket-scanner.js' %}"
+        defer
+    ></script>
 {% endblock %}

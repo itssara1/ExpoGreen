@@ -14,6 +14,7 @@ class WasteType(models.TextChoices):
 
 class Visitor(models.Model):
     ticket_code = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property
@@ -21,6 +22,9 @@ class Visitor(models.Model):
         return PointEntry.objects.filter(
             session__visitor=self
         ).aggregate(total=models.Sum("points"))["total"] or 0
+
+    def __str__(self):
+        return self.name or self.ticket_code
 
 
 class Bin(models.Model):

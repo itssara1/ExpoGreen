@@ -121,3 +121,89 @@ select:focus-visible {
     outline: 3px solid #d79725;
     outline-offset: 3px;
 }
+
+.image-preview {
+    display: block;
+    width: 100%;
+    max-height: 320px;
+    object-fit: contain;
+    margin-top: 20px;
+    border-radius: 12px;
+}
+
+.image-preview[hidden] {
+    display: none;
+}
+
+.errorlist {
+    color: #a12a20;
+}
+
+#live-video {
+    display: block;
+    width: 100%;
+    min-height: 200px;
+    border-radius: 16px;
+    background: #14271d;
+}
+
+#live-result {
+    color: #216746;
+}
+
+#live-canvas[hidden],
+#retry-camera[hidden] {
+    display: none;
+}
+
+.camera-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #14271d;
+}
+
+.camera-stage #live-video {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    object-fit: contain;
+}
+
+.scan-frame {
+    position: absolute;
+    width: 48.75%;
+    aspect-ratio: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 3px solid #8aefab;
+    border-radius: 12px;
+    pointer-events: none;
+}
+
+#scan-progress {
+    width: 100%;
+    height: 18px;
+    accent-color: #216746;
+}
+
+.camera-stage #ticket-video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+    object-fit: contain;
+    border-radius: 0;
+}
+
+#ticket-scanner {
+    margin-top: 20px;
+}
+
+#ticket-scanner[hidden] {
+    display: none;
+}

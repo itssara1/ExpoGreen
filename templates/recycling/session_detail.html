@@ -5,7 +5,7 @@
 {% block content %}
     {% if simulation %}
         <p class="hint">
-            وضع المحاكاة: التصنيف والفتح وإشارة الحساس تجريبية.
+            فتح الحاوية وإشارة الحساس في وضع المحاكاة.
         </p>
     {% endif %}
 
@@ -24,22 +24,50 @@
     {% if session.status == "started" %}
         {% if session.mode == "sort" %}
             <h1>التعرف على المخلف</h1>
-            <p>اختاري نوعًا لتجربة نتيجة الكاميرا مؤقتًا.</p>
+            <p>
+                افتح الكاميرا، ثم ضع مخلفًا واحدًا داخل الإطار
+                وثبّته حتى تظهر النتيجة.
+            </p>
+
+            <p>
+                <a href="{% url 'recycling:live_test' %}">
+                    ابدأ التعرف بالكاميرا
+                </a>
+            </p>
 
             {% if simulation %}
-                <form method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="action" value="classify">
+                <details>
+                    <summary>اختبار التصنيف يدويًا</summary>
 
-                    <label for="waste_type">نوع المخلف التجريبي</label>
-                    <select id="waste_type" name="waste_type" required>
-                        {% for value, label in waste_types %}
-                            <option value="{{ value }}">{{ label }}</option>
-                        {% endfor %}
-                    </select>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input
+                            type="hidden"
+                            name="action"
+                            value="classify"
+                        >
 
-                    <button type="submit">محاكاة نتيجة التصنيف</button>
-                </form>
+                        <label for="waste_type">
+                            نوع المخلف التجريبي
+                        </label>
+
+                        <select
+                            id="waste_type"
+                            name="waste_type"
+                            required
+                        >
+                            {% for value, label in waste_types %}
+                                <option value="{{ value }}">
+                                    {{ label }}
+                                </option>
+                            {% endfor %}
+                        </select>
+
+                        <button type="submit">
+                            محاكاة نتيجة التصنيف
+                        </button>
+                    </form>
+                </details>
             {% endif %}
         {% else %}
             <h1>التخلص السريع</h1>
@@ -48,8 +76,15 @@
             {% if simulation %}
                 <form method="post">
                     {% csrf_token %}
-                    <input type="hidden" name="action" value="classify">
-                    <button type="submit">تحديد الحاوية المختلطة</button>
+                    <input
+                        type="hidden"
+                        name="action"
+                        value="classify"
+                    >
+
+                    <button type="submit">
+                        تحديد الحاوية المختلطة
+                    </button>
                 </form>
             {% endif %}
         {% endif %}
@@ -57,14 +92,22 @@
     {% elif session.status == "classified" %}
         <h1>تم تحديد الحاوية</h1>
         <p>الحاوية: {{ session.bin.name }}</p>
-        <p>معرّف الجهاز: <bdi>{{ session.bin.hardware_id }}</bdi></p>
+        <p>
+            معرّف الجهاز:
+            <bdi>{{ session.bin.hardware_id }}</bdi>
+        </p>
 
         {% if simulation %}
             <form method="post">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="open">
-                <button type="submit">محاكاة تأكيد فتح الحاوية</button>
+
+                <button type="submit">
+                    محاكاة تأكيد فتح الحاوية
+                </button>
             </form>
+        {% else %}
+            <p>بانتظار تأكيد فتح الحاوية من الجهاز.</p>
         {% endif %}
 
     {% elif session.status == "waiting" %}
@@ -73,10 +116,18 @@
         <p>لن تُضاف النقاط حتى تصل إشارة تأكيد الرمي.</p>
 
         {% if simulation %}
+            <p class="hint">
+                تم تسجيل فتح الحاوية تجريبيًا؛
+                لم يُفتح غطاء فعلي.
+            </p>
+
             <form method="post">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="confirm">
-                <button type="submit">محاكاة إشارة الحساس</button>
+
+                <button type="submit">
+                    محاكاة إشارة الحساس
+                </button>
             </form>
         {% endif %}
 
@@ -97,6 +148,8 @@
     {% endif %}
 
     <p>
-        <a href="{% url 'recycling:home' %}">العودة للبداية</a>
+        <a href="{% url 'recycling:home' %}">
+            العودة للبداية
+        </a>
     </p>
 {% endblock %}

@@ -1,8 +1,20 @@
-from django.conf import settings
-from django.http import HttpResponseForbidden
-from django.shortcuts import get_object_or_404, redirect, render
-from django.views.decorators.http import require_GET, require_http_methods
+import logging
+import time
 
+from PIL import Image, UnidentifiedImageError
+
+from django.conf import settings
+from django.http import HttpResponseForbidden, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from django.views.decorators.http import (
+    require_GET,
+    require_http_methods,
+    require_POST,
+)
+
+from .classifier import classify_image
+from .forms import ImageTestForm
 from .models import Bin, DisposalSession, Visitor, WasteType
 from .services import (
     confirm_disposal,
@@ -10,6 +22,9 @@ from .services import (
     select_bin,
     start_session,
 )
+
+
+logger = logging.getLogger(__name__)
 
 
 @require_http_methods(["GET", "POST"])
@@ -20,22 +35,38 @@ def home(request):
         mode = request.POST.get("mode")
 
         if mode not in {"sort", "quick"}:
-            error = "اختاري طريقة التخلص من المخلف."
+            error = "اختاري مسح التذكرة أو التخلص السريع."
         else:
-            try:
-                session = start_session(
-                    ticket_code=request.POST.get("ticket_code"),
-                    quick=(mode == "quick"),
-                )
-            except Visitor.DoesNotExist:
-                error = "التذكرة غير موجودة."
-            except ValueError:
-                error = "أدخلي كود التذكرة أولًا."
-            else:
-                request.session["disposal_session_id"] = str(session.id)
-                return redirect("recycling:session_detail")
+            ticket_code = request.POST.get("ticket_code", "").strip()
 
-    return render(request, "recycling/home.html", {"error": error})
+            if mode == "sort" and len(ticket_code) > 100:
+                error = "رمز التذكرة غير صالح."
+            else:
+                try:
+                    session = start_session(
+                        ticket_code=ticket_code,
+                        quick=(mode == "quick"),
+                    )
+                except Visitor.DoesNotExist:
+                    error = "التذكرة غير موجودة في النظام."
+                except ValueError:
+                    error = "تعذر قراءة رمز التذكرة."
+                else:
+                    request.session["disposal_session_id"] = str(
+                        session.id
+                    )
+                    request.session.pop("live_candidate", None)
+
+                    if mode == "sort":
+                        return redirect("recycling:live_test")
+
+                    return redirect("recycling:session_detail")
+
+    return render(
+        request,
+        "recycling/home.html",
+        {"error": error},
+    )
 
 
 @require_http_methods(["GET", "POST"])
@@ -45,7 +76,10 @@ def session_detail(request):
     if not session_id:
         return redirect("recycling:home")
 
-    session = get_object_or_404(DisposalSession, pk=session_id)
+    session = get_object_or_404(
+        DisposalSession.objects.select_related("visitor", "bin"),
+        pk=session_id,
+    )
     error = None
     simulation = getattr(settings, "HARDWARE_SIMULATION", False)
 
@@ -91,7 +125,7 @@ def session_detail(request):
     reward = 0
 
     if session.status == DisposalSession.Status.COMPLETED:
-        entry = session.point_entry if hasattr(session, "point_entry") else None
+        entry = getattr(session, "point_entry", None)
         reward = entry.points if entry else 0
 
     return render(
@@ -105,3 +139,251 @@ def session_detail(request):
             "reward": reward,
         },
     )
+
+
+@require_http_methods(["GET", "POST"])
+def classifier_test(request):
+    if request.method == "POST":
+        form = ImageTestForm(request.POST, request.FILES)
+    else:
+        form = ImageTestForm()
+
+    predictions = None
+    error = None
+
+    if request.method == "POST" and form.is_valid():
+        try:
+            predictions = classify_image(
+                form.cleaned_data["image"]
+            )
+        except (
+            UnidentifiedImageError,
+            Image.DecompressionBombError,
+            OSError,
+            ValueError,
+        ):
+            error = "تعذر قراءة الصورة. جربي صورة JPG أو PNG واضحة وأصغر."
+        except Exception:
+            logger.exception("Classifier test failed.")
+            error = "تعذر تشغيل الموديل. راجعي الخطأ في التيرمنال."
+
+    return render(
+        request,
+        "recycling/classifier_test.html",
+        {
+            "form": form,
+            "predictions": predictions,
+            "error": error,
+        },
+    )
+
+
+@require_GET
+def live_test(request):
+    session_id = request.session.get("disposal_session_id")
+
+    if not session_id:
+        return redirect("recycling:home")
+
+    session = get_object_or_404(
+        DisposalSession.objects.select_related("visitor"),
+        pk=session_id,
+    )
+
+    if (
+        session.mode != DisposalSession.Mode.SORT
+        or session.status != DisposalSession.Status.STARTED
+    ):
+        return redirect("recycling:session_detail")
+
+    request.session.pop("live_candidate", None)
+
+    return render(
+        request,
+        "recycling/live_test.html",
+        {
+            "session": session,
+            "simulation": getattr(
+                settings,
+                "HARDWARE_SIMULATION",
+                False,
+            ),
+        },
+    )
+
+
+@require_POST
+def live_classify(request):
+    session_id = request.session.get("disposal_session_id")
+
+    if not session_id:
+        return JsonResponse(
+            {"error": "ابدئي من صفحة التذكرة."},
+            status=400,
+        )
+
+    session = get_object_or_404(
+        DisposalSession,
+        pk=session_id,
+    )
+
+    if (
+        session.mode != DisposalSession.Mode.SORT
+        or session.status != DisposalSession.Status.STARTED
+    ):
+        return JsonResponse(
+            {"error": "هذه العملية ليست جاهزة للتصنيف."},
+            status=409,
+        )
+
+    form = ImageTestForm(request.POST, request.FILES)
+
+    if not form.is_valid():
+        request.session.pop("live_candidate", None)
+
+        return JsonResponse(
+            {"error": "تعذر قراءة لقطة الكاميرا."},
+            status=400,
+        )
+
+    try:
+        predictions = classify_image(
+            form.cleaned_data["image"]
+        )
+    except Exception:
+        request.session.pop("live_candidate", None)
+        logger.exception("Live classification failed.")
+
+        return JsonResponse(
+            {"error": "تعذر تشغيل التصنيف. راجعي التيرمنال."},
+            status=503,
+        )
+
+    top = predictions[0]
+    gap = top["score"] - predictions[1]["score"]
+    now = time.monotonic()
+
+    # Initial demo thresholds; require camera testing.
+    acceptable = (
+        top["label"] in {"plastic", "metal", "paper", "cardboard"}
+        and top["score"] >= 85
+        and gap >= 20
+    )
+
+    if not acceptable:
+        request.session.pop("live_candidate", None)
+
+        return JsonResponse({
+            "stable": False,
+            "count": 0,
+            "message": "ارفع المخلف داخل الإطار أو غيّر زاويته.",
+        })
+
+    candidate = request.session.get("live_candidate")
+
+    if (
+        not candidate
+        or candidate["label"] != top["label"]
+        or now - candidate["last_seen"] > 10
+        or now < candidate["last_seen"]
+    ):
+        candidate = {
+            "label": top["label"],
+            "count": 1,
+            "started": now,
+            "last_seen": now,
+        }
+    else:
+        candidate["count"] += 1
+        candidate["last_seen"] = now
+
+    request.session["live_candidate"] = candidate
+
+    stable = (
+        candidate["count"] >= 4
+        and now - candidate["started"] >= 3
+    )
+
+    return JsonResponse({
+        "stable": stable,
+        "count": min(candidate["count"], 4),
+        "message": "ثبّت المخلف… جاري التعرف.",
+        "label": top["label"] if stable else None,
+    })
+
+
+@require_POST
+def finalize_live(request):
+    session_id = request.session.get("disposal_session_id")
+
+    if not session_id:
+        return JsonResponse(
+            {"error": "ابدئي من صفحة التذكرة."},
+            status=400,
+        )
+
+    session = get_object_or_404(
+        DisposalSession,
+        pk=session_id,
+    )
+
+    if session.status != DisposalSession.Status.STARTED:
+        return JsonResponse({
+            "redirect": reverse("recycling:session_detail"),
+        })
+
+    candidate = request.session.get("live_candidate")
+    now = time.monotonic()
+
+    if (
+        session.mode != DisposalSession.Mode.SORT
+        or not candidate
+        or candidate["count"] < 4
+        or not 0 <= now - candidate["last_seen"] <= 10
+        or candidate["last_seen"] - candidate["started"] < 3
+    ):
+        return JsonResponse(
+            {"error": "النتيجة غير مستقرة. أعيدي المحاولة."},
+            status=400,
+        )
+
+    # Temporary mapping for the controlled demo.
+    # "metal" does not specifically identify aluminum.
+    waste_mapping = {
+        "plastic": WasteType.PLASTIC,
+        "metal": WasteType.ALUMINUM,
+        "paper": WasteType.PAPER,
+        "cardboard": WasteType.PAPER,
+    }
+
+    waste_type = waste_mapping.get(candidate["label"])
+
+    if waste_type is None:
+        return JsonResponse(
+            {"error": "هذا النوع غير مدعوم في التجربة الحالية."},
+            status=400,
+        )
+
+    try:
+        session = select_bin(session.id, waste_type)
+
+        if getattr(settings, "HARDWARE_SIMULATION", False):
+            session = mark_bin_opened(session.id)
+
+    except Bin.DoesNotExist:
+        return JsonResponse(
+            {"error": "الحاوية المطلوبة غير متاحة."},
+            status=409,
+        )
+
+    except ValueError:
+        return JsonResponse(
+            {"error": "تغيرت حالة العملية. ارجعي للبداية."},
+            status=409,
+        )
+
+    request.session.pop("live_candidate", None)
+
+    return JsonResponse({
+        "redirect": reverse("recycling:session_detail"),
+    })

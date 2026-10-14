@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}التعرف على المخلف — ExpoGreen{% endblock %}
+
+{% block content %}
+    <h1>ارفع المخلف داخل الإطار</h1>
+    <p>قطعة واحدة فقط، وثبّتها حتى تظهر النتيجة.</p>
+
+    <form id="camera-config"
+          data-url="{% url 'recycling:live_classify' %}"
+          data-finalize="{% url 'recycling:finalize_live' %}">
+        {% csrf_token %}
+    </form>
+
+    <div class="camera-stage">
+        <video id="live-video" autoplay playsinline muted></video>
+        <div class="scan-frame" aria-hidden="true"></div>
+    </div>
+
+    <canvas id="live-canvas" hidden></canvas>
+
+    <h2 id="live-result">بانتظار المخلف</h2>
+    <p id="live-message" role="status">جاري تشغيل الكاميرا...</p>
+    <progress id="scan-progress" max="4" value="0"></progress>
+
+    <button id="retry-camera" type="button" hidden>
+        إعادة المحاولة
+    </button>
+
+    <p class="hint">
+        تجربة أولية — فتح الحاوية محاكاة عند تفعيل وضع المحاكاة.
+    </p>
+
+    <a href="{% url 'recycling:home' %}">العودة للبداية</a>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/live-camera.js' %}" defer></script>
+{% endblock %}

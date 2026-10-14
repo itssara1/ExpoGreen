@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}الكاميرا المباشرة — ExpoGreen{% endblock %}
+
+{% block content %}
+    <h1>ضع مخلفًا واحدًا أمام الكاميرا</h1>
+    <p>سيظهر النوع تلقائيًا، بدون الحاجة لالتقاط صورة.</p>
+
+    <form id="camera-config"
+          data-url="{% url 'recycling:live_classify' %}">
+        {% csrf_token %}
+    </form>
+
+    <video id="live-video" autoplay playsinline muted></video>
+    <canvas id="live-canvas" hidden></canvas>
+
+    <p id="live-message" role="status">جاري تشغيل الكاميرا...</p>
+    <h2 id="live-result">بانتظار المخلف</h2>
+    <p id="live-score"></p>
+    <p id="live-stability"></p>
+
+    <button id="retry-camera" type="button" hidden>
+        إعادة تشغيل الكاميرا
+    </button>
+
+    <p class="hint">
+        اختبار مباشر: النتائج لا تفتح حاوية ولا تضيف نقاطًا.
+        ثبات التصنيف لا يضمن صحته.
+    </p>
+
+    <a href="{% url 'recycling:home' %}">العودة للبداية</a>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/live-camera.js' %}" defer></script>
+{% endblock %}
