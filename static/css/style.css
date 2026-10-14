@@ -6,6 +6,14 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: "Thmanyah";
+    src: url("../fonts/Thmanyah-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     --background: #f6f5f0;
     --surface: #ffffff;
@@ -19,7 +27,7 @@
     --muted: #70766f;
     --border: #e2e4dc;
     --font-ar: "Thmanyah", Tahoma, Arial, sans-serif;
-    --font-en: Arial, Helvetica, sans-serif;
+    --font-en: "Thmanyah", Arial, Helvetica, sans-serif;
 }
 
 * {
