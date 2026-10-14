@@ -1,0 +1,10 @@
+{% load static %}
+<svg id="impact-tree" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1086 1448" role="img" aria-label="شجرة الأثر التي تنمو بمساهمات الزوار">
+  <defs>
+    <filter id="visitorLeafShadow" x="-30%" y="-40%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#081e15" flood-opacity="0.75"/>
+    </filter>
+  </defs>
+  <image id="saudi-tree-art" href="{% static 'images/saudi-tree.png' %}" x="0" y="0" width="1086" height="1448" preserveAspectRatio="xMidYMid meet" />
+  <g id="tree-leaves" aria-label="أوراق المشاركين"></g>
+</svg>

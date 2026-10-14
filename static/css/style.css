@@ -1,270 +1,441 @@
 @font-face {
+
     font-family: "Thmanyah";
+
     src: url("../fonts/Thmanyah-Regular.woff2") format("woff2");
+
     font-weight: 400;
+
     font-style: normal;
+
     font-display: swap;
+
 }
 
 @font-face {
+
     font-family: "Thmanyah";
+
     src: url("../fonts/Thmanyah-Bold.woff2") format("woff2");
+
     font-weight: 700;
+
     font-style: normal;
+
     font-display: swap;
+
 }
 
 :root {
     --background: #f6f5f0;
     --surface: #ffffff;
-    --purple: #513e64;
-    --purple-dark: #392b48;
-    --purple-soft: #eee9f2;
-    --green: #356c59;
-    --green-soft: #e7efe9;
+
+    /* Primary brand = green */
+    --purple: #2f6f57;
+    --purple-dark: #214d3d;
+    --purple-soft: #e8f3ee;
+
+    /* Supporting green tones */
+    --green: #2f6f57;
+    --green-dark: #214d3d;
+    --green-soft: #edf5f1;
+
+    /* Accent */
     --gold: #b2955c;
+
     --text: #292b2a;
     --muted: #70766f;
     --border: #e2e4dc;
+
     --font-ar: "Thmanyah", Tahoma, Arial, sans-serif;
     --font-en: "Thmanyah", Arial, Helvetica, sans-serif;
 }
 
 * {
+
     box-sizing: border-box;
+
 }
 
 [hidden] {
+
     display: none !important;
+
 }
 
 html {
+
     font-family: var(--font-ar);
+
     background: var(--background);
+
     color-scheme: light;
+
 }
 
 html[lang="en"] {
+
     font-family: var(--font-en);
+
 }
 
 body {
+
     margin: 0;
+
     min-height: 100vh;
+
     padding: 0 32px 32px;
+
     background: var(--background);
+
     color: var(--text);
+
     font-family: inherit;
+
     line-height: 1.7;
+
     -webkit-font-smoothing: antialiased;
+
 }
 
 button,
+
 input,
+
 select,
+
 textarea {
+
     font: inherit;
+
 }
 
 a {
-    color: var(--purple);
+    color: #2f6f57;
     text-underline-offset: 4px;
 }
 
 a:hover {
-    color: var(--purple-dark);
+    color: #214d3d;
 }
 
 button:focus-visible,
+
 a:focus-visible,
+
 input:focus-visible,
+
 select:focus-visible,
+
 textarea:focus-visible,
+
 summary:focus-visible {
+
     outline: 3px solid var(--gold);
+
     outline-offset: 4px;
+
 }
 
 .site-header {
+
     max-width: 1320px;
+
     min-height: 100px;
+
     margin-inline: auto;
+
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
+
     gap: 20px;
+
 }
 
 .brand {
+
     display: inline-flex;
+
     align-items: center;
+
     gap: 10px;
+
     text-decoration: none;
+
     color: var(--purple);
+
 }
 
 .brand-symbol {
+
     width: 42px;
+
     height: 42px;
+
     color: var(--green);
+
 }
 
 .brand-wordmark {
+
     font: 700 27px var(--font-en);
+
     letter-spacing: -1px;
+
 }
 
 .brand-wordmark span {
+
     color: var(--green);
+
 }
 
 .language-switch {
+
     display: inline-flex;
+
     gap: 4px;
+
     padding: 4px;
+
     border: 1px solid var(--border);
+
     border-radius: 12px;
+
     background: var(--surface);
+
 }
 
 .language-button {
+
     width: auto;
+
     min-height: 40px;
+
     margin: 0;
+
     padding: 7px 14px;
+
     border: 0;
+
     border-radius: 8px;
+
     background: transparent;
+
     color: var(--muted);
+
     font-size: 13px;
+
 }
 
 .language-button[lang="ar"] {
+
     font-family: var(--font-ar);
+
 }
 
 .language-button[lang="en"] {
+
     font-family: var(--font-en);
+
 }
 
 .language-button:hover {
-    background: var(--purple-soft);
-    color: var(--purple);
+
+    background: #2f6f57;
+    color: #fff;
+
 }
 
 .language-button.is-active {
-    background: var(--purple);
+    background: #2f6f57;
     color: #fff;
 }
 
 .app-layout {
+
     width: 100%;
+
     max-width: 1320px;
+
     min-height: calc(100vh - 132px);
+
     margin-inline: auto;
+
     display: grid;
+
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
     gap: 24px;
+
     align-items: stretch;
+
 }
 
 .card {
+
     min-width: 0;
+
     padding: clamp(28px, 3vw, 48px);
+
     border: 1px solid var(--border);
+
     border-radius: 24px;
+
     background: var(--surface);
+
 }
 
 .experience-heading {
+
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
+
     gap: 16px;
+
     margin-bottom: 36px;
+
 }
 
 .section-eyebrow {
+
     color: var(--green);
+
     font-size: 13px;
+
     font-weight: 700;
+
 }
 
 .experience-indicator {
+
     display: inline-flex;
+
     gap: 5px;
+
 }
 
 .experience-indicator span {
+
     width: 6px;
+
     height: 6px;
+
     border-radius: 50%;
+
     background: var(--border);
+
 }
 
 .experience-indicator span:first-child {
+
     width: 22px;
+
     border-radius: 8px;
+
     background: var(--green);
+
 }
 
 h1,
 h2,
 h3 {
-    color: var(--purple-dark);
+    color: #214d3d;
     line-height: 1.45;
     overflow-wrap: break-word;
 }
 
 h1 {
+
     margin: 0 0 18px;
+
     font-size: clamp(27px, 2.6vw, 36px);
+
 }
 
 h2 {
+
     font-size: 25px;
+
 }
 
 p {
+
     margin: 12px 0;
+
     line-height: 1.9;
+
 }
 
-.card > p {
+.card>p {
+
     color: var(--muted);
+
 }
 
 label {
+
     display: block;
+
     margin: 22px 0 9px;
+
     font-size: 14px;
+
     font-weight: 700;
+
 }
 
 input,
+
 select,
+
 textarea {
+
     display: block;
+
     width: 100%;
+
     min-height: 54px;
+
     padding: 13px 16px;
+
     border: 1px solid #cdd3ca;
+
     border-radius: 12px;
+
     background: var(--surface);
+
     color: var(--text);
+
     direction: inherit;
+
 }
 
 input[type="email"],
+
 input[type="url"],
+
 input[type="tel"],
+
 input[name="ticket_code"] {
+
     direction: ltr;
+
 }
 
 input::placeholder,
+
 textarea::placeholder {
+
     color: #8b9189;
+
 }
 
 button {
@@ -274,7 +445,7 @@ button {
     padding: 14px 20px;
     border: 1px solid transparent;
     border-radius: 12px;
-    background: var(--purple);
+    background: #2f6f57;
     color: #fff;
     font-weight: 700;
     line-height: 1.5;
@@ -283,342 +454,721 @@ button {
 }
 
 button:hover {
+
     background: var(--purple-dark);
+
 }
 
 button:disabled {
+
     opacity: .55;
+
     cursor: not-allowed;
+
 }
 
 .secondary {
+
     border-color: var(--border);
+
     background: var(--surface);
+
     color: var(--purple);
+
 }
 
 .secondary:hover {
+
     background: var(--purple-soft);
+
 }
 
 .error {
+
     padding: 13px 16px;
+
     border: 1px solid #efd5ce;
+
     border-radius: 12px;
+
     background: #fcf0ec;
+
     color: #a33c32 !important;
+
     font-size: 14px;
+
 }
 
 .errorlist {
+
     color: #a33c32;
+
     font-size: 14px;
+
 }
 
 .hint {
+
     color: var(--muted);
+
     font-size: 13px;
+
 }
 
 .journey-steps {
+
     display: flex;
+
     gap: 12px;
+
     list-style: none;
+
     padding: 0;
+
     margin: 30px 0;
+
 }
 
 .journey-steps li {
+
     flex: 1;
+
     display: flex;
+
     flex-direction: column;
+
     gap: 7px;
+
     padding-block-start: 12px;
+
     border-block-start: 1px solid var(--border);
+
 }
 
 .journey-steps b {
+
     color: var(--green);
+
     font: 12px var(--font-en);
+
 }
 
 .journey-steps span {
+
     color: var(--muted);
+
     font-size: 13px;
+
 }
 
 .visitor-summary {
+
     display: flex;
+
     justify-content: space-between;
+
     flex-wrap: wrap;
+
     gap: 12px;
+
     margin-bottom: 24px;
+
     padding: 14px 18px;
+
     border-radius: 12px;
+
     background: var(--green-soft);
+
     font-size: 14px;
+
 }
 
 .visitor-summary strong {
+
     color: var(--green);
+
 }
 
 details {
+
     margin-block: 22px;
+
     padding: 14px;
+
     border: 1px solid var(--border);
+
     border-radius: 12px;
+
 }
 
 summary {
+
     color: var(--muted);
+
     font-size: 13px;
+
     cursor: pointer;
+
 }
 
 /* الكاميرا */
 
 .camera-stage {
+
     position: relative;
+
     width: 100%;
+
     max-width: 480px;
+
     aspect-ratio: 4 / 3;
+
     margin: 24px auto 16px;
+
     overflow: hidden;
+
     border: 1px solid #35413c;
+
     border-radius: 18px;
+
     background: #17221c;
+
     isolation: isolate;
+
 }
 
 .camera-stage video {
+
     display: block;
+
     width: 100%;
+
     height: 100%;
+
     margin: 0;
+
     object-fit: contain;
+
 }
 
 .scan-frame {
+
     position: absolute;
+
     top: 50%;
+
     left: 50%;
+
     width: 48.75%;
+
     aspect-ratio: 1;
+
     transform: translate(-50%, -50%);
+
     border: 2px solid #bddfc8;
+
     border-radius: 14px;
+
     box-shadow: 0 0 0 100vmax rgb(0 0 0 / 18%);
+
     pointer-events: none;
+
 }
 
 #ticket-message {
+
     color: var(--muted);
+
     font-size: 14px;
+
     text-align: center;
+
 }
 
 #live-result {
+
     color: var(--green);
+
     font-size: 19px;
+
 }
 
 #live-message {
+
     min-height: 28px;
+
     color: var(--muted);
+
     font-size: 14px;
+
 }
 
 #scan-progress {
+
     display: block;
+
     width: 100%;
+
     height: 8px;
+
     margin: 18px 0;
+
     overflow: hidden;
+
     border: 0;
+
     border-radius: 20px;
+
     background: var(--green-soft);
+
     accent-color: var(--green);
+
 }
 
 #scan-progress::-webkit-progress-bar {
+
     background: var(--green-soft);
+
     border-radius: 20px;
+
 }
 
 #scan-progress::-webkit-progress-value {
+
     background: var(--green);
+
     border-radius: 20px;
+
 }
 
 #scan-progress::-moz-progress-bar {
+
     background: var(--green);
+
     border-radius: 20px;
+
 }
 
 .image-preview {
+
     display: block;
+
     width: 100%;
+
     max-height: 320px;
+
     margin-top: 20px;
+
     border-radius: 14px;
+
     object-fit: contain;
+
 }
 
-/* شجرة الأثر */
+/* شجرة الأثر: الرسم الأصلي بدقته الكاملة، مع أسماء ديناميكية */
 
 .tree-panel {
+
     min-width: 0;
-    padding: 34px 24px 24px;
+
     overflow: hidden;
-    border: 1px solid #dce3d8;
+
+    padding: 24px 14px 20px;
+
+    border: 1px solid #b18b49;
+
     border-radius: 24px;
-    background: #edf1e8;
+
+    background: #03162e;
+
+    color: #fce7ae;
+
     text-align: center;
+
+    box-shadow: 0 15px 45px rgb(3 16 44 / 18%), inset 0 0 38px rgb(22 66 97 / 25%);
+
 }
 
 .tree-tag {
-    color: var(--green);
+
+    color: #dbb970;
+
     font-size: 12px;
+
     font-weight: 700;
+
 }
 
 .tree-heading h2 {
+
+    color: #ffebb8;
+
     margin: 9px 0 8px;
+
     font-size: clamp(28px, 2.6vw, 36px);
+
 }
 
 .tree-heading p {
+
     max-width: 350px;
+
     margin: 0 auto;
-    color: #657261;
+
+    color: #bdd8ce;
+
     font-size: 14px;
+
+}
+
+.expo-tree-stage {
+
+    width: 100%;
+
+    margin: 10px auto 0;
+
+    isolation: isolate;
+
 }
 
 #impact-tree {
+
     display: block;
+
     width: 100%;
-    max-width: 530px;
+
     height: auto;
-    margin: 8px auto 0;
+
+    margin: auto;
+
+    overflow: visible;
+
+}
+
+/* Dynamic emerald leaves grow over leafless Expo 2030 branches. */
+
+.expo-tree-stage {
+
+    position: relative;
+
+}
+
+#impact-tree {
+
+    filter: drop-shadow(0 0 10px rgb(230 179 76 / 12%));
+
 }
 
 .participant-leaf {
-    filter: drop-shadow(0 3px 2px rgb(42 68 48 / 9%));
+
+    cursor: default;
+
+    transform-box: fill-box;
+
+    transform-origin: center;
+
+    filter: drop-shadow(0 0 4px rgb(255 209 100 / 35%));
+
+    transition: filter .35s ease;
+
+}
+
+.participant-leaf:focus-visible {
+
+    outline: none;
+
+    filter: drop-shadow(0 0 15px #ffe09d);
+
+}
+
+.participant-leaf:hover {
+
+    filter: drop-shadow(0 0 13px rgb(255 218 130 / 95%));
+
+}
+
+.name-halo {
+
+    pointer-events: none;
+
 }
 
 .leaf-name {
-    fill: #fff;
-    font-family: inherit;
-    font-size: 12px;
+
+    fill: #ffe4a2;
+
+    font-family: "Thmanyah", Tahoma, sans-serif;
+
     font-weight: 700;
+
+    paint-order: stroke;
+
+    stroke: #083d35;
+
+    stroke-width: 2.6px;
+
+    stroke-linejoin: round;
+
     text-anchor: middle;
+
     pointer-events: none;
+
+    filter: drop-shadow(0 0 4px rgb(255 211 91 / 65%));
+
 }
 
-.tree-root-label {
-    fill: #71766a;
-    font-family: inherit;
-    font-size: 15px;
+.participant-leaf.new-leaf {
+
+    animation: expo-leaf-arrive 2.2s cubic-bezier(.22, .8, .24, 1) both;
+
+}
+
+.participant-leaf.new-leaf .leaf-name {
+
+    animation: expo-leaf-illuminate 2.4s ease both;
+
+}
+
+@keyframes expo-leaf-arrive {
+
+    0% {
+
+        opacity: 0;
+
+        transform: translate(-32px, 25px) scale(.04);
+
+        filter: drop-shadow(0 0 2px #ffdb85);
+
+    }
+
+    65% {
+
+        opacity: 1;
+
+        transform: translateY(-7px) scale(1.1);
+
+        filter: drop-shadow(0 0 22px #ffe09d);
+
+    }
+
+    100% {
+
+        opacity: 1;
+
+        transform: translateY(0) scale(1);
+
+    }
+
+}
+
+@keyframes expo-leaf-illuminate {
+
+    0% {
+
+        opacity: 0;
+
+    }
+
+    40% {
+
+        opacity: 1;
+
+    }
+
+    70% {
+
+        filter: drop-shadow(0 0 19px #fff1b2);
+
+    }
+
+    100% {
+
+        filter: drop-shadow(0 0 4px rgb(255 211 91 / 65%));
+
+    }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .participant-leaf.new-leaf,
+
+    .participant-leaf.new-leaf .leaf-name {
+
+        animation: none;
+
+    }
+
 }
 
 .tree-footer {
+
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
+
     gap: 16px;
+
     max-width: 440px;
+
     margin: 14px auto 0;
+
     padding-top: 18px;
-    border-top: 1px solid #d4ddce;
+
+    border-top: 1px solid #426063;
+
     text-align: start;
+
 }
 
 .tree-participant-count {
+
     display: flex;
+
     align-items: center;
+
     gap: 12px;
+
 }
 
 .tree-participant-count strong {
-    color: var(--purple);
+
+    color: #ffe3a2;
+
     font: 700 32px var(--font-en);
+
 }
 
 .tree-participant-count span {
-    color: #657261;
+
+    color: #bdd8ce;
+
     font-size: 13px;
+
 }
 
 .tree-footer-mark {
-    color: var(--green);
+
+    color: #cfab66;
+
     font-size: 28px;
+
 }
 
 .tree-empty {
-    color: #657261;
+
+    color: #bdd8ce;
+
     font-size: 13px;
+
 }
 
 .new-leaf {
+
     transform-box: fill-box;
+
     transform-origin: center;
+
     animation: leaf-arrival 1.6s cubic-bezier(.22, .68, .3, 1) both;
+
 }
 
 @keyframes leaf-arrival {
+
     0% {
+
         opacity: 0;
+
         transform: translate(55px, -85px) rotate(-22deg) scale(.65);
+
     }
+
     65% {
+
         opacity: 1;
+
         transform: translate(-4px, 6px) rotate(5deg) scale(1.03);
+
     }
+
     100% {
+
         opacity: 1;
+
         transform: translate(0, 0) rotate(0deg) scale(1);
+
     }
+
 }
 
 /* التذكرة */
 
 .visitor-ticket {
+
     margin-top: 24px;
+
     padding: 28px 22px;
+
     border: 1px solid var(--border);
+
     border-top: 3px solid var(--green);
+
     border-radius: 18px;
+
     background: #fafbf7;
+
     text-align: center;
+
 }
 
 .ticket-label {
+
     color: var(--green);
+
     font-size: 12px;
+
     font-weight: 700;
+
 }
 
 .visitor-ticket h2 {
+
     margin: 16px 0;
+
 }
 
 .ticket-qr {
+
     display: block;
+
     width: 220px;
+
     max-width: 100%;
+
     height: auto;
+
     margin: 22px auto;
+
     padding: 10px;
+
     border: 1px solid var(--border);
+
     border-radius: 12px;
+
     background: #fff;
+
 }
 
 .ticket-number {
+
     color: var(--muted);
+
     font: 12px var(--font-en);
+
     overflow-wrap: anywhere;
+
 }
 
 .ticket-download,
@@ -630,102 +1180,1431 @@ summary {
     margin-top: 20px;
     padding: 14px 20px;
     border-radius: 12px;
-    background: var(--purple);
+    background: #2f6f57;
     color: #fff;
     font-weight: 700;
     text-align: center;
     text-decoration: none;
 }
 
+
 .ticket-download:hover,
 .action-link:hover {
-    background: var(--purple-dark);
+    background: #214d3d;
     color: #fff;
 }
 
 @media (max-width: 900px) {
+
     body {
+
         padding-inline: 20px;
+
     }
 
     .site-header {
+
         min-height: 88px;
+
     }
 
     .app-layout {
+
         max-width: 680px;
+
         min-height: auto;
+
         grid-template-columns: minmax(0, 1fr);
+
         gap: 20px;
+
     }
 
     .card {
+
         padding: 32px;
+
     }
+
 }
 
 @media (max-width: 480px) {
+
     body {
+
         padding: 0 12px 20px;
+
     }
 
     .site-header {
+
         min-height: 80px;
+
         gap: 10px;
+
     }
 
     .brand {
+
         gap: 6px;
+
     }
 
     .brand-symbol {
+
         width: 32px;
+
         height: 32px;
+
     }
 
     .brand-wordmark {
+
         font-size: 22px;
+
     }
 
     .language-button {
+
         min-height: 38px;
+
         padding: 6px 9px;
+
         font-size: 12px;
+
     }
 
     .card {
+
         padding: 25px 20px;
+
         border-radius: 20px;
+
     }
 
     .experience-heading {
+
         margin-bottom: 26px;
+
     }
 
     .section-eyebrow {
+
         font-size: 12px;
+
     }
 
     .tree-panel {
+
         padding: 26px 14px 22px;
+
         border-radius: 20px;
+
     }
 
     .tree-heading p {
+
         font-size: 13px;
+
     }
 
     .tree-participant-count span {
+
         font-size: 12px;
+
+    }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .new-leaf {
+
+        animation: none;
+
+    }
+
+    button {
+
+        transition: none;
+
+    }
+
+}
+
+/* TEMP TREE TEST panel: removable without touching hardware styles */
+
+.temp-tree-test {
+
+    margin: 18px 0;
+
+    padding: 18px;
+
+    border: 1px dashed #b18d48;
+
+    border-radius: 14px;
+
+    background: #fff8e9;
+
+    color: #263b38;
+
+    text-align: right;
+
+    direction: rtl
+}
+
+.temp-tree-test p {
+
+    font-size: .9rem;
+
+    line-height: 1.7
+}
+
+.temp-tree-test form {
+
+    display: grid;
+
+    gap: 10px
+}
+
+.temp-tree-test select {
+
+    min-height: 42px;
+
+    border: 1px solid #c9bea1;
+
+    border-radius: 9px;
+
+    padding: 8px
+}
+
+.temp-tree-test button {
+
+    background: #3e6e58;
+
+    color: white
+}
+
+/* Golden SVG: branches remain fully editable; participant leaves are independent. */
+
+.expo-tree-stage #impact-tree {
+
+    display: block;
+
+    width: 100%;
+
+    height: auto;
+
+    max-height: 760px;
+
+    overflow: visible;
+
+}
+
+.expo-dynamic-leaf {
+
+    transform-box: fill-box;
+
+    transform-origin: center;
+
+    filter: drop-shadow(0 0 5px rgba(254, 208, 112, .5));
+
+}
+
+.expo-dynamic-leaf:hover,
+
+.expo-dynamic-leaf:focus-visible {
+
+    filter: drop-shadow(0 0 13px #ffe4a0);
+
+    outline: none;
+
+}
+
+.expo-leaf-name {
+
+    fill: #fff0bf;
+
+    font-family: var(--font-ar), Tahoma, sans-serif;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    paint-order: stroke;
+
+    stroke: #075444;
+
+    stroke-width: 2.6px;
+
+    stroke-linejoin: round;
+
+    pointer-events: none;
+
+}
+
+.expo-dynamic-leaf.new-leaf {
+
+    animation: expo-new-leaf 1.8s cubic-bezier(.17, .83, .24, 1) both;
+
+}
+
+@keyframes expo-new-leaf {
+
+    0% {
+
+        opacity: 0;
+
+        transform: scale(.05) rotate(-18deg)
+    }
+
+    70% {
+
+        opacity: 1;
+
+        transform: scale(1.12) rotate(3deg)
+    }
+
+    100% {
+
+        opacity: 1;
+
+        transform: scale(1)
+    }
+
+}
+
+@media (prefers-reduced-motion:reduce) {
+
+    .expo-dynamic-leaf.new-leaf {
+
+        animation: none;
+
+    }
+
+}
+
+/* ======================================
+
+   SAUDI NATURAL IMPACT TREE
+
+   ====================================== */
+
+.expo-tree-stage {
+
+    width: 100%;
+
+    max-width: 560px;
+
+    margin: 0 auto;
+
+}
+
+.expo-tree-stage #impact-tree {
+
+    display: block;
+
+    width: 100%;
+
+    height: auto;
+
+    max-height: 720px;
+
+    overflow: visible;
+
+}
+
+#saudi-tree-art {
+
+    transform: translateY(10px);
+
+}
+
+/* الأوراق */
+
+.visitor-leaf-group {
+
+    transform-box: fill-box;
+
+    transform-origin: center;
+
+    filter: drop-shadow(0 2px 5px rgba(41, 111, 49, 0.16));
+
+    transition:
+
+        transform .25s ease,
+
+        filter .25s ease;
+
+}
+
+.visitor-leaf-group:hover,
+
+.visitor-leaf-group:focus-visible {
+
+    filter: drop-shadow(0 0 10px rgba(113, 226, 94, 0.55));
+
+    outline: none;
+
+}
+
+/* الاسم مباشرة على الورقة */
+
+.natural-leaf-name {
+
+    font-family: var(--font-ar), Tahoma, sans-serif;
+
+    font-size: 17px;
+
+    font-weight: 800;
+
+    fill: #fffdf2;
+
+    paint-order: stroke;
+
+    stroke: rgba(16, 70, 30, 0.45);
+
+    stroke-width: .55px;
+
+    letter-spacing: .2px;
+
+    pointer-events: none;
+
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+
+}
+
+.visitor-leaf-group.new-leaf {
+
+    animation: natural-leaf-grow 1.6s cubic-bezier(.18, .84, .29, 1) both;
+
+}
+
+@keyframes natural-leaf-grow {
+
+    0% {
+
+        opacity: 0;
+
+        transform: scale(.12) rotate(-14deg);
+
+    }
+
+    60% {
+
+        opacity: 1;
+
+        transform: scale(1.08) rotate(3deg);
+
+    }
+
+    100% {
+
+        opacity: 1;
+
+        transform: scale(1);
+
+    }
+
+}
+
+/* بطاقة الشجرة */
+
+.tree-panel {
+
+    background: linear-gradient(180deg, #032248 0%, #031d3d 100%);
+
+    border: 1px solid rgba(221, 190, 130, 0.16);
+
+    border-radius: 24px;
+
+    box-shadow: 0 18px 40px rgba(1, 18, 41, 0.16);
+
+}
+
+.tree-panel .tree-heading,
+
+.tree-panel h2,
+
+.tree-panel h3 {
+
+    color: #f4e0ab;
+
+}
+
+.tree-panel .tree-subtitle,
+
+.tree-panel p {
+
+    color: #e8f1ec;
+
+}
+
+/* العداد أسفل الشجرة */
+
+.tree-footer-stats {
+
+    border-top: 1px solid rgba(255, 239, 210, 0.18);
+
+    margin-top: 16px;
+
+    padding-top: 14px;
+
+}
+
+/* ======================================
+
+   SUCCESS PANEL TUNING
+
+   ====================================== */
+
+.success-experience {
+
+    gap: 10px;
+
+}
+
+.success-emblem {
+
+    width: 96px;
+
+    height: 96px;
+
+}
+
+.success-title {
+
+    font-size: clamp(26px, 2.4vw, 34px);
+
+}
+
+.success-description {
+
+    max-width: 330px;
+
+    font-size: 13px;
+
+    line-height: 1.9;
+
+}
+
+.success-reward-card {
+
+    max-width: 360px;
+
+    padding: 20px 18px;
+
+    border-radius: 18px;
+
+}
+
+.reward-amount strong {
+
+    font-size: clamp(46px, 5vw, 62px);
+
+}
+
+.success-tree-message {
+
+    max-width: 360px;
+
+    padding: 18px;
+
+    border-radius: 16px;
+
+}
+
+.success-home-button {
+
+    max-width: 360px;
+
+}
+
+.success-footer-note {
+
+    margin-top: 2px;
+
+}
+
+/* لو فيه عمودين في الصفحة */
+
+@media (min-width: 1024px) {
+
+    .page-layout,
+
+    .content-layout,
+
+    .expo-layout {
+
+        align-items: start;
+
+        gap: 18px;
+
+    }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .visitor-leaf-group.new-leaf {
+
+        animation: none;
+
+    }
+
+}
+
+/* ============================================================
+
+   EXPOGREEN — ONE WIDE CARD / LIGHT NATURAL TREE
+
+   Overrides legacy two-card layout without changing JS or Django.
+
+   ============================================================ */
+
+:root {
+
+    --expo-paper: #f8f6ef;
+
+    --expo-sand: #f1ede2;
+
+    --expo-earth: #866344;
+
+    --expo-forest: #356c59;
+
+    --expo-border: #e2ddd0;
+
+}
+
+body {
+
+    background: #f5f3ed;
+
+}
+
+.site-header {
+
+    max-width: 1380px;
+
+    min-height: 82px;
+
+}
+
+/* Outer surface is ONE horizontal card instead of two tall cards. */
+
+.app-layout {
+
+    width: 100%;
+
+    max-width: 1380px;
+
+    min-height: 0;
+
+    margin: 0 auto 22px;
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr);
+
+    gap: 0;
+
+    align-items: stretch;
+
+    border: 1px solid var(--expo-border);
+
+    border-radius: 26px;
+
+    background: #fff;
+
+    box-shadow: 0 18px 55px rgba(41, 48, 37, .06);
+
+    overflow: hidden;
+
+}
+
+/* The main experience sits on the right in RTL layouts. */
+
+.app-layout>.experience-card {
+
+    min-width: 0;
+
+    padding: clamp(24px, 3vw, 46px);
+
+    border: 0;
+
+    border-radius: 0;
+
+    background: #fff;
+
+    box-shadow: none;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+}
+
+.experience-card>.experience-heading {
+
+    margin-bottom: clamp(18px, 2vw, 26px);
+
+}
+
+/* The tree is part of the same card, with a soft light background. */
+
+.app-layout>.tree-panel {
+
+    min-width: 0;
+
+    padding: 22px clamp(18px, 2.2vw, 32px) 20px;
+
+    border: 0;
+
+    border-inline-start: 1px solid var(--expo-border);
+
+    border-radius: 0;
+
+    box-shadow: none;
+
+    background: radial-gradient(ellipse at 50% 43%, #fffdf6 0%, #f8f4e9 58%, #f1eee5 100%);
+
+    color: #403a32;
+
+    text-align: center;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+.tree-heading {
+
+    width: 100%;
+
+}
+
+.tree-panel .tree-tag {
+
+    color: #876340;
+
+    font-size: 12px;
+
+}
+
+.tree-panel .tree-heading h2,
+
+.tree-panel h2,
+
+.tree-panel h3 {
+
+    margin: 4px 0 4px;
+
+    color: #473729;
+
+    font-size: clamp(25px, 2.1vw, 30px);
+
+}
+
+.tree-panel .tree-heading p,
+
+.tree-panel .tree-subtitle,
+
+.tree-panel p {
+
+    color: #706958;
+
+    font-size: 12px;
+
+    line-height: 1.75;
+
+}
+
+.expo-tree-stage {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 100%;
+
+    max-width: 450px;
+
+    margin: 0 auto;
+
+    min-height: 0;
+
+    isolation: isolate;
+
+}
+
+.expo-tree-stage #impact-tree {
+
+    display: block;
+
+    width: auto;
+
+    max-width: 100%;
+
+    height: clamp(350px, 54vh, 535px);
+
+    max-height: none;
+
+    overflow: visible;
+
+    margin: 0 auto;
+
+    filter: drop-shadow(0 9px 12px rgba(79, 59, 35, .10));
+
+}
+
+/* Do not shift the artwork relative to its dynamic leaves. */
+
+#saudi-tree-art {
+
+    transform: none;
+
+}
+
+.tree-footer {
+
+    width: 100%;
+
+    max-width: 350px;
+
+    margin: 0 auto;
+
+    padding: 12px 0 0;
+
+    justify-content: center;
+
+    border-top: 1px solid #dcd1bd;
+
+    text-align: center;
+
+}
+
+.tree-participant-count {
+
+    justify-content: center;
+
+    gap: 12px;
+
+}
+
+.tree-participant-count strong {
+
+    color: #795634;
+
+    font-size: 29px;
+
+}
+
+.tree-participant-count span,
+
+.tree-panel .tree-participant-count span {
+
+    color: #695d4c;
+
+    font-size: 13px;
+
+}
+
+.tree-footer-mark {
+
+    display: none;
+
+}
+
+.tree-empty {
+
+    margin: 8px 0 0;
+
+    color: #7e7467;
+
+}
+
+/* Leaf names appear directly on the green leaves, with no label backing. */
+
+.natural-leaf-name {
+
+    fill: #fffced;
+
+    stroke: rgba(12, 57, 25, .5);
+
+    stroke-width: .7px;
+
+    font-size: 18px;
+
+}
+
+/* Compact success state: no unnecessarily tall empty right panel. */
+
+.success-experience {
+
+    width: 100%;
+
+    max-width: 520px;
+
+    margin-inline: auto;
+
+    padding: 2px 0 10px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 10px;
+
+    text-align: center;
+
+}
+
+.success-emblem {
+
+    width: 70px;
+
+    height: 70px;
+
+    margin-bottom: 2px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: #f0f5ed;
+
+    box-shadow: 0 0 0 1px #dce6d9;
+
+    animation: none;
+
+}
+
+.success-emblem svg {
+
+    width: 60px;
+
+    height: 60px;
+
+}
+
+.success-eyebrow {
+
+    font-size: 12px;
+
+    color: #7f704d;
+
+}
+
+.success-title {
+
+    margin: 0;
+
+    color: #3f3451;
+
+    font-size: clamp(27px, 2.8vw, 35px);
+
+    line-height: 1.45;
+
+}
+
+.success-description {
+
+    margin: 0;
+
+    max-width: 420px;
+
+    font-size: 13px;
+
+    color: #77766f;
+
+}
+
+.success-reward-card {
+
+    width: 100%;
+
+    max-width: 420px;
+
+    padding: 14px 18px;
+
+    margin: 8px auto 0;
+
+    display: flex;
+
+    flex-direction: row;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 6px 14px;
+
+    border: 1px solid #d7e4d5;
+
+    border-radius: 16px;
+
+    background: #eff5eb;
+
+    box-shadow: none;
+
+    color: #284e38;
+
+}
+
+.success-reward-card::before {
+    display: none;
+}
+
+.reward-label {
+    color: #47694f;
+    font-size: 13px;
+}
+
+.reward-message {
+    flex-basis: 100%;
+    color: #6a786a;
+    font-size: 12px;
+    text-align: start;
+}
+
+.reward-amount {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    direction: ltr;
+    color: #2d6948;
+}
+
+.reward-amount strong {
+    font-size: 37px;
+    line-height: 1;
+    color: #2d6948;
+    text-shadow: none;
+}
+
+.reward-plus {
+    font-size: 25px;
+}
+
+.reward-amount svg {
+    width: 18px;
+    height: 18px;
+    filter: none;
+}
+
+.success-tree-message {
+
+    width: 100%;
+
+    max-width: 420px;
+
+    margin: 2px auto 0;
+
+    padding: 16px 18px;
+
+    border: 1px solid #e7dfcd;
+
+    border-radius: 16px;
+
+    background: #faf7f0;
+
+    display: flex;
+
+    gap: 12px;
+
+    align-items: center;
+
+    text-align: start;
+
+}
+
+.success-tree-icon {
+
+    width: 34px;
+
+    height: 34px;
+
+    flex: 0 0 34px;
+
+    border-radius: 50%;
+
+    display: grid;
+
+    place-items: center;
+
+    background: #e9efdf;
+
+    color: #4b8056;
+
+}
+
+.success-tree-message h2 {
+    margin: 0 0 3px;
+    color: #40583d;
+    font-size: 17px;
+}
+
+.success-tree-message p {
+    margin: 0;
+    color: #6c7066;
+    font-size: 12px;
+    line-height: 1.75;
+}
+
+.success-visitor {
+    color: #386a42;
+    font-size: 13px;
+}
+
+.success-home-button {
+
+    width: 100%;
+
+    max-width: 420px;
+
+    min-height: 48px;
+
+    margin-top: 8px;
+
+    padding: 10px 18px;
+
+    border-radius: 12px;
+
+    background: #356c59;
+
+    color: #fff;
+
+    text-decoration: none;
+
+    font-weight: 700;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    transition: background .2s ease;
+
+}
+
+.success-home-button:hover {
+    background: #295644;
+    color: #fff;
+}
+
+.success-footer-note {
+    margin: 0;
+    font-size: 12px;
+    color: #827969;
+}
+
+/* The card stays comfortably horizontal on laptops, stacks on phones. */
+
+@media (max-width: 980px) {
+
+    .app-layout {
+
+        max-width: 760px;
+
+        grid-template-columns: minmax(0, 1fr);
+
+        border-radius: 22px;
+
+    }
+
+    .app-layout>.experience-card {
+
+        padding: 26px;
+
+    }
+
+    .app-layout>.tree-panel {
+
+        padding: 24px;
+
+        border-inline-start: 0;
+
+        border-top: 1px solid var(--expo-border);
+
+    }
+
+    .expo-tree-stage #impact-tree {
+
+        height: min(500px, 65vh);
+
+    }
+
+}
+
+@media (max-width: 520px) {
+
+    body {
+        padding-inline: 12px;
+    }
+
+    .site-header {
+        min-height: 76px;
+    }
+
+    .app-layout>.experience-card {
+        padding: 22px 18px;
+    }
+
+    .app-layout>.tree-panel {
+        padding: 20px 14px;
+    }
+
+    .expo-tree-stage #impact-tree {
+        height: min(420px, 60vh);
+    }
+
+    .success-reward-card {
+        padding: 14px;
+    }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .success-home-button {
+        transition: none;
+    }
+
+}
+
+/* ==================================================
+   SUCCESS SCREEN — compact results + full-page confetti
+   ================================================== */
+.success-experience--compact {
+    width: 100%;
+    max-width: 530px;
+    margin-inline: auto;
+    padding: 16px 0 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+    overflow: visible;
+    animation: none;
+}
+
+.success-checkmark {
+    display: grid;
+    place-items: center;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    border: 1px solid #DDEBDD;
+    background: #F1F7EF;
+}
+
+.success-experience--compact .success-title {
+    margin: 0;
+    color: #263D34;
+    font-size: clamp(26px, 2.6vw, 34px);
+    line-height: 1.45;
+}
+
+.success-experience--compact .success-description {
+    margin: 0 0 4px;
+    color: #758077;
+    font-size: 14px;
+    line-height: 1.75;
+}
+
+.success-results {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.success-result-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+    min-height: 122px;
+    padding: 16px 10px;
+    border-radius: 15px;
+}
+
+.success-result-item>span {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.success-result-points {
+    background: #EDF5EC;
+    border: 1px solid #D6E8D4;
+}
+
+.success-result-points>span {
+    color: #547562;
+}
+
+.success-result-points>strong {
+    color: #236C50;
+    font-family: var(--font-en), Arial, sans-serif;
+    font-size: 40px;
+    line-height: 1.1;
+}
+
+.success-result-leaf {
+    background: #F8F3E8;
+    border: 1px solid #E8DDC5;
+}
+
+.success-result-leaf>span {
+    color: #85734E;
+}
+
+.success-leaf-result {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.success-leaf-result strong {
+    color: #31644C;
+    font-size: 16px;
+}
+
+.success-tree-confirmation {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #E0E9DC;
+    border-radius: 14px;
+    background: #F7F9F5;
+    text-align: center;
+}
+
+.success-tree-confirmation p {
+    margin: 0 0 4px;
+    color: #315945;
+    font-size: 15px;
+    line-height: 1.75;
+}
+
+.success-tree-confirmation strong {
+    color: #216A4B;
+}
+
+.success-tree-confirmation>span {
+    display: block;
+    color: #7E887F;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.success-tree-confirmation.no-reward {
+    background: #F8F6EF;
+    border-color: #E6E0D2;
+}
+
+.success-experience--compact .success-home-button {
+    width: 100%;
+    max-width: none;
+    min-height: 52px;
+    margin-top: 2px;
+    background: #2F6F57;
+    border-color: #2F6F57;
+    color: white;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.success-experience--compact .success-home-button:hover {
+    background: #245C47;
+}
+
+/* Confetti is a sibling of the card's success section so it can't be clipped. */
+.success-confetti {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    width: 100%;
+    height: 100dvh;
+    overflow: hidden;
+    pointer-events: none;
+    contain: layout paint;
+}
+
+.confetti-piece {
+    position: absolute;
+    top: -30px;
+    left: var(--left);
+    opacity: 0;
+    will-change: transform, opacity;
+    animation: expogreen-confetti-fall var(--duration) var(--delay) linear forwards;
+}
+
+@keyframes expogreen-confetti-fall {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, -20px, 0) rotate(0deg);
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    82% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate3d(var(--drift), 110dvh, 0) rotate(var(--rotation));
+    }
+}
+
+@media (max-width: 520px) {
+    .success-experience--compact {
+        gap: 12px;
+        padding: 8px 0;
+    }
+
+    .success-results {
+        gap: 9px;
+    }
+
+    .success-result-item {
+        min-height: 108px;
+        padding: 12px 6px;
+    }
+
+    .success-result-points>strong {
+        font-size: 34px;
+    }
+
+    .success-leaf-result strong {
+        font-size: 13px;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .new-leaf {
-        animation: none;
-    }
-
-    button {
-        transition: none;
+    .success-confetti {
+        display: none;
     }
 }

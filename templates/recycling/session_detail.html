@@ -3,196 +3,722 @@
 {% block title %}ExpoGreen{% endblock %}
 
 {% block content %}
+
     {% if session.visitor %}
+
         <div class="visitor-summary">
+
             <span>
-                <span data-en="Welcome,">أهــــلًا،</span>
+
+                <span data-en="Welcome,">أهلًا،</span>
+
                 <bdi>{{ session.visitor.name }}</bdi>
+
             </span>
+
             <span>
-                <span data-en="Your balance:">رصيــــدك:</span>
+
+                <span data-en="Your balance:">رصيدك:</span>
+
                 <strong>{{ session.visitor.points_balance }}</strong>
-                <span data-en="points">نقــــطة</span>
+
+                <span data-en="points">نقطة</span>
+
             </span>
+
         </div>
+
     {% endif %}
 
     {% if simulation %}
+
         <p
+
             class="hint"
+
             data-en="Demo mode: bin opening and sensor confirmation are simulated."
-        >وضع المحاكاة: فتح الحاوية وإشارة الحساس تجريبيان.</p>
+
+        >
+
+            وضع المحاكاة: فتح الحاوية وإشارة الحساس تجريبيان.
+
+        </p>
+
     {% endif %}
 
     {% if error %}
+
         <p class="error" role="alert">{{ error }}</p>
+
     {% endif %}
 
     {% if session.status == "started" %}
+
         {% if session.mode == "sort" %}
-            <h1 data-en="Identify your waste">التعرّف على المخــــلف</h1>
+
+            <h1 data-en="Identify your waste">
+
+                التعرّف على المخلف
+
+            </h1>
 
             <p data-en="Place one item inside the camera frame and hold it steady.">
-                ضع مخلفًا واحدًا داخل إطار الكاميرا وثبّته قليــــلًا.
+
+                ضع مخلفًا واحدًا داخل إطار الكاميرا وثبّته قليلًا.
+
             </p>
 
             <a
+
                 class="action-link"
+
                 href="{% url 'recycling:live_test' %}"
+
                 data-en="Continue to the camera"
-            >المتابعة إلى الكاميــــرا</a>
+
+            >
+
+                المتابعة إلى الكاميرا
+
+            </a>
 
             {% if simulation %}
+
                 <details>
+
                     <summary data-en="Manual classification test">
-                        اختبار التصنيف يدويًــــا
+
+                        اختبار التصنيف يدويًا
+
                     </summary>
 
                     <form method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="action" value="classify">
 
-                        <label for="waste_type" data-en="Test waste type">
-                            نوع المخلف التجريبــــي
+                        {% csrf_token %}
+
+                        <input
+
+                            type="hidden"
+
+                            name="action"
+
+                            value="classify"
+
+                        >
+
+                        <label
+
+                            for="waste_type"
+
+                            data-en="Test waste type"
+
+                        >
+
+                            نوع المخلف التجريبي
+
                         </label>
 
-                        <select id="waste_type" name="waste_type" required>
-                            <option value="plastic" data-en="Plastic">بلاستيك</option>
-                            <option value="aluminum" data-en="Aluminum">ألمنيوم</option>
-                            <option value="paper" data-en="Paper">ورق</option>
-                            <option value="non_recyclable" data-en="Non-recyclable">
+                        <select
+
+                            id="waste_type"
+
+                            name="waste_type"
+
+                            required
+
+                        >
+
+                            <option value="plastic" data-en="Plastic">
+
+                                بلاستيك
+
+                            </option>
+
+                            <option value="aluminum" data-en="Aluminum">
+
+                                ألمنيوم
+
+                            </option>
+
+                            <option value="paper" data-en="Paper">
+
+                                ورق
+
+                            </option>
+
+                            <option
+
+                                value="non_recyclable"
+
+                                data-en="Non-recyclable"
+
+                            >
+
                                 غير قابل للتدوير
+
                             </option>
-                            <option value="mixed" data-en="Mixed / Unknown">
+
+                            <option
+
+                                value="mixed"
+
+                                data-en="Mixed / Unknown"
+
+                            >
+
                                 مختلط / غير محدد
+
                             </option>
+
                         </select>
 
-                        <button type="submit" data-en="Simulate classification">
-                            محاكاة نتيجة التصنيــــف
+                        <button
+
+                            type="submit"
+
+                            data-en="Simulate classification"
+
+                        >
+
+                            محاكاة نتيجة التصنيف
+
                         </button>
+
                     </form>
+
                 </details>
+
             {% endif %}
+
         {% else %}
-            <h1 data-en="Quick disposal">التخلّص السريــــع</h1>
+
+            <h1 data-en="Quick disposal">
+
+                التخلّص السريع
+
+            </h1>
 
             <p data-en="Use the mixed-waste bin. No points are awarded.">
-                سنستخدم الحاوية المختلطة، بدون نقــــاط.
+
+                سنستخدم الحاوية المختلطة، بدون نقاط.
+
             </p>
 
             {% if simulation %}
-                <form method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="action" value="classify">
 
-                    <button type="submit" data-en="Select the mixed-waste bin">
-                        تحديد الحاوية المختلطــــة
+                <form method="post">
+
+                    {% csrf_token %}
+
+                    <input
+
+                        type="hidden"
+
+                        name="action"
+
+                        value="classify"
+
+                    >
+
+                    <button
+
+                        type="submit"
+
+                        data-en="Select the mixed-waste bin"
+
+                    >
+
+                        تحديد الحاوية المختلطة
+
                     </button>
+
                 </form>
+
             {% endif %}
+
         {% endif %}
 
     {% elif session.status == "classified" %}
-        <h1 data-en="Your bin is selected">تم تحديد الحــــاوية</h1>
+
+        <h1 data-en="Your bin is selected">
+
+            تم تحديد الحاوية
+
+        </h1>
 
         <p>
-            <span data-en="Bin:">الحــــاوية:</span>
+
+            <span data-en="Bin:">الحاوية:</span>
+
             <bdi>{{ session.bin.name }}</bdi>
+
         </p>
 
         {% if simulation %}
-            <form method="post">
-                {% csrf_token %}
-                <input type="hidden" name="action" value="open">
 
-                <button type="submit" data-en="Simulate bin opening">
-                    محاكاة فتح الحــــاوية
+            <form method="post">
+
+                {% csrf_token %}
+
+                <input
+
+                    type="hidden"
+
+                    name="action"
+
+                    value="open"
+
+                >
+
+                <button
+
+                    type="submit"
+
+                    data-en="Simulate bin opening"
+
+                >
+
+                    محاكاة فتح الحاوية
+
                 </button>
+
             </form>
+
         {% else %}
+
             <p data-en="Waiting for the device to confirm opening.">
-                بانتظار تأكيد فتح الحاوية من الجهــــاز.
+
+                بانتظار تأكيد فتح الحاوية من الجهاز.
+
             </p>
+
         {% endif %}
 
     {% elif session.status == "waiting" %}
+
         {% if simulation %}
+
             <h1 data-en="Waiting for disposal confirmation">
-                بانتظار تأكيد الرمــــي
+
+                بانتظار تأكيد الرمي
+
             </h1>
 
             <p
+
                 class="hint"
+
                 data-en="Opening was simulated. No physical lid was opened."
-            >تم تسجيل فتح الحاوية تجريبيًا؛ لم يُفتح غطاء فعلي.</p>
+
+            >
+
+                تم تسجيل فتح الحاوية تجريبيًا؛ لم يُفتح غطاء فعلي.
+
+            </p>
+
         {% else %}
+
             <h1 data-en="Place your item in the open bin">
-                ضع المخلف في الحاوية المفتوحــــة
+
+                ضع المخلف في الحاوية المفتوحة
+
             </h1>
+
         {% endif %}
 
         <p>
-            <span data-en="Selected bin:">الحاوية المختــــارة:</span>
+
+            <span data-en="Selected bin:">
+
+                الحاوية المختارة:
+
+            </span>
+
             <bdi>{{ session.bin.name }}</bdi>
+
         </p>
 
         <p data-en="Points are added after the sensor confirms disposal.">
-            تُضاف النقاط بعد تأكيد الحساس إيداع المخــــلف.
+
+            تُضاف النقاط بعد تأكيد الحساس إيداع المخلف.
+
         </p>
 
         {% if simulation %}
-            <form method="post">
-                {% csrf_token %}
-                <input type="hidden" name="action" value="confirm">
 
-                <button type="submit" data-en="Simulate disposal confirmation">
-                    محاكاة تأكيد الرمــــي
+            <form method="post">
+
+                {% csrf_token %}
+
+                <input
+
+                    type="hidden"
+
+                    name="action"
+
+                    value="confirm"
+
+                >
+
+                <button
+
+                    type="submit"
+
+                    data-en="Simulate disposal confirmation"
+
+                >
+
+                    محاكاة تأكيد الرمي
+
                 </button>
+
             </form>
+
         {% endif %}
 
     {% elif session.status == "completed" %}
-        <h1 data-en="Thank you. Sorting complete.">
-            شكرًا، اكتملت عملية الفــــرز
-        </h1>
 
         {% if reward %}
-            <p>
-                <span data-en="Added">أُضيفت</span>
-                <strong>{{ reward }}</strong>
-                <span data-en="points to your balance.">نقاط إلى رصيــــدك.</span>
-            </p>
-
-            <p data-en="Your contribution is now part of the Impact Tree.">
-                أصبحت مشاركتك جزءًا من شجــــرة الأثر.
-            </p>
-        {% else %}
-            <p data-en="Disposal recorded. No points were awarded.">
-                تم تسجيل التخلص من المخلف بدون نقــــاط.
-            </p>
+            <div id="success-confetti" class="success-confetti"
+                 data-session-id="{{ session.id }}" aria-hidden="true"></div>
         {% endif %}
 
+        <!-- Success experience -->
+
+        <section class="success-experience success-experience--compact">
+
+            <!-- Success icon -->
+
+            <div class="success-checkmark" aria-hidden="true">
+
+                <svg
+
+                    viewBox="0 0 64 64"
+
+                    width="42"
+
+                    height="42"
+
+                    fill="none"
+
+                >
+
+                    <circle
+
+                        cx="32"
+
+                        cy="32"
+
+                        r="28"
+
+                        fill="#EAF3EB"
+
+                    />
+
+                    <path
+
+                        d="M19 32L28 41L46 23"
+
+                        stroke="#267453"
+
+                        stroke-width="4"
+
+                        stroke-linecap="round"
+
+                        stroke-linejoin="round"
+
+                    />
+
+                </svg>
+
+            </div>
+
+            <h1
+
+                class="success-title"
+
+                data-en="Great job! Sorting complete."
+
+            >
+
+                أحسنت، اكتمل الفرز!
+
+            </h1>
+
+            <p
+
+                class="success-description"
+
+                data-en="Thank you for helping create a cleaner environment."
+
+            >
+
+                شكرًا لمساهمتك في بيئة أنظف.
+
+            </p>
+
+            {% if reward %}
+
+                <!-- Results -->
+
+                <div class="success-results">
+
+                    <div class="success-result-item success-result-points">
+
+                        <span data-en="Points earned">
+
+                            نقاطك المكتسبة
+
+                        </span>
+
+                        <strong dir="ltr">
+
+                            +{{ reward }}
+
+                        </strong>
+
+                    </div>
+
+                    <div class="success-result-item success-result-leaf">
+
+                        <span data-en="Your contribution">
+
+                            مساهمتك في الشجرة
+
+                        </span>
+
+                        <div class="success-leaf-result">
+
+                            <svg
+
+                                viewBox="0 0 40 40"
+
+                                width="34"
+
+                                height="34"
+
+                                fill="none"
+
+                                aria-hidden="true"
+
+                            >
+
+                                <path
+
+                                    d="M32 7C16 7 8 15 8 26C8 31 11 34 16 34C27 34 34 22 32 7Z"
+
+                                    fill="#32875C"
+
+                                />
+
+                                <path
+
+                                    d="M12 30C17 24 23 18 30 13"
+
+                                    stroke="#D4B474"
+
+                                    stroke-width="2"
+
+                                    stroke-linecap="round"
+
+                                />
+
+                            </svg>
+
+                            <strong data-en="New leaf">
+
+                                ورقة جديدة
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Tree confirmation -->
+
+                <div class="success-tree-confirmation">
+
+                    {% if session.visitor %}
+
+                        <p>
+
+                            <span data-en="A leaf with your name">
+
+                                ورقة باسم
+
+                            </span>
+
+                            <strong>
+
+                                <bdi>{{ session.visitor.name }}</bdi>
+
+                            </strong>
+
+                            <span data-en="has grown on the Impact Tree.">
+
+                                نمت على شجرة الأثر.
+
+                            </span>
+
+                        </p>
+
+                    {% else %}
+
+                        <p data-en="Your leaf has grown on the Impact Tree.">
+
+                            نمت ورقتك على شجرة الأثر.
+
+                        </p>
+
+                    {% endif %}
+
+                    <span
+
+                        data-en="See your contribution on the tree beside you."
+
+                    >
+
+                        شاهد مساهمتك على الشجرة بجانبك.
+
+                    </span>
+
+                </div>
+
+            {% else %}
+
+                <!-- Completed without reward -->
+
+                <div class="success-tree-confirmation no-reward">
+
+                    <p data-en="Your disposal was recorded successfully.">
+
+                        تم تسجيل التخلص من المخلف بنجاح.
+
+                    </p>
+
+                    <span data-en="No points were awarded for this disposal.">
+
+                        لم تُمنح نقاط لهذه العملية.
+
+                    </span>
+
+                </div>
+
+            {% endif %}
+
+            <!-- Next action -->
+
+            <a
+
+                class="success-home-button"
+
+                href="{% url 'recycling:home' %}"
+
+            >
+
+                <span data-en="Start a new sorting session">
+
+                    ابدأ فرزًا جديدًا
+
+                </span>
+
+            </a>
+
+        </section>
+
     {% elif session.status == "expired" %}
-        <h1 data-en="Session timed out">انتهت المهلــــة</h1>
+
+        <h1 data-en="Session timed out">
+
+            انتهت المهلة
+
+        </h1>
 
         <p data-en="You can start a new session. No points were added.">
-            يمكنك بدء عملية جديدة. لم تُضف نقــــاط.
+
+            يمكنك بدء عملية جديدة. لم تُضف نقاط.
+
         </p>
 
     {% else %}
+
         <h1 data-en="Unable to complete this session">
-            تعذّر إكمال العمليــــة
+
+            تعذّر إكمال العملية
+
         </h1>
 
         <p data-en="Return to the start and try again.">
-            ارجع إلى البداية وحاول مجــــددًا.
+
+            ارجع إلى البداية وحاول مجددًا.
+
         </p>
+
     {% endif %}
 
-    <p>
-        <a href="{% url 'recycling:home' %}" data-en="Back to start">
-            العودة للبــــداية
-        </a>
-    </p>
+    {% if session.status != "completed" %}
+
+        <p>
+
+            <a
+
+                href="{% url 'recycling:home' %}"
+
+                data-en="Back to start"
+
+            >
+
+                العودة للبداية
+
+            </a>
+
+        </p>
+
+    {% endif %}
+
+{% endblock %}
+
+
+{% block scripts %}
+{% if session.status == "completed" and reward %}
+<script>
+(() => {
+    "use strict";
+    const container = document.getElementById("success-confetti");
+    if (!container || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const key = "expogreen-confetti-" + container.dataset.sessionId;
+    try {
+        if (sessionStorage.getItem(key) === "played") return;
+        sessionStorage.setItem(key, "played");
+    } catch (_) {
+        // The animation can still play if storage is unavailable.
+    }
+
+    const colors = ["#2F8864", "#E5B653", "#F18A91", "#8065AD", "#64A6C8", "#A0C879", "#F0C86E"];
+    const fragment = document.createDocumentFragment();
+
+    for (let i = 0; i < 125; i++) {
+        const piece = document.createElement("span");
+        piece.className = "confetti-piece";
+        piece.style.setProperty("--left", `${Math.random() * 100}%`);
+        piece.style.setProperty("--drift", `${(Math.random() - 0.5) * 190}px`);
+        piece.style.setProperty("--duration", `${3.2 + Math.random() * 1.7}s`);
+        piece.style.setProperty("--delay", `${Math.random() * 0.8}s`);
+        piece.style.setProperty("--rotation", `${360 + Math.random() * 720}deg`);
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.width = `${5 + Math.random() * 6}px`;
+        piece.style.height = `${8 + Math.random() * 8}px`;
+        piece.style.borderRadius = Math.random() > 0.7 ? "50%" : "2px";
+        fragment.appendChild(piece);
+    }
+
+    container.appendChild(fragment);
+    window.setTimeout(() => container.remove(), 6200);
+})();
+</script>
+{% endif %}
 {% endblock %}
