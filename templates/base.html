@@ -56,8 +56,8 @@
         </div>
     </header>
 
-    <div class="app-layout">
-        <main class="card">
+    <div class="app-layout" aria-label="تجربة الفرز وشجرة الأثر">
+        <main class="card experience-card">
             <div class="experience-heading">
                 <span
                     class="section-eyebrow"
@@ -87,107 +87,9 @@
                 </p>
             </div>
 
-            <svg
-                id="impact-tree"
-                viewBox="0 0 600 620"
-                role="img"
-                aria-label="شجرة الأثر"
-                data-en-aria="The Impact Tree"
-            >
-                <defs>
-                    <linearGradient id="trunk-color" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stop-color="#89749c"/>
-                        <stop offset="100%" stop-color="#44334f"/>
-                    </linearGradient>
-
-                    <radialGradient id="tree-halo">
-                        <stop offset="0%" stop-color="#dce9de" stop-opacity=".9"/>
-                        <stop offset="100%" stop-color="#dce9de" stop-opacity="0"/>
-                    </radialGradient>
-                </defs>
-
-                <g aria-hidden="true">
-                    <ellipse
-                        cx="300" cy="285" rx="275" ry="265"
-                        fill="url(#tree-halo)"
-                    />
-
-                    <path
-                        d="M75 364C34 218 145 80 291 66
-                           M332 70C481 85 568 213 526 363"
-                        fill="none"
-                        stroke="#b7c9bd"
-                        stroke-width="1"
-                        opacity=".5"
-                    />
-
-                    <circle cx="89" cy="182" r="4" fill="#b2955c"/>
-                    <circle cx="499" cy="155" r="3" fill="#b2955c"/>
-
-                    <ellipse
-                        cx="300" cy="565" rx="115" ry="11"
-                        fill="#44334f" opacity=".08"
-                    />
-
-                    <path
-                        d="M262 560
-                           C278 533 283 494 283 451
-                           C283 402 289 368 298 326
-                           C300 381 307 410 309 450
-                           C311 494 318 533 339 560
-                           C313 554 286 554 262 560Z"
-                        fill="url(#trunk-color)"
-                    />
-
-                    <g
-                        fill="none"
-                        stroke="url(#trunk-color)"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <path
-                            d="M295 478C252 431 210 422 155 395
-                               M301 449C348 421 399 406 443 370"
-                            stroke-width="16"
-                        />
-                        <path
-                            d="M295 400C250 365 205 324 171 284
-                               M302 378C351 335 387 294 429 269"
-                            stroke-width="12"
-                        />
-                        <path
-                            d="M298 352C278 302 256 245 232 208
-                               M303 337C323 284 339 229 370 193"
-                            stroke-width="9"
-                        />
-                        <path
-                            d="M299 340C293 272 305 195 300 132"
-                            stroke-width="8"
-                        />
-                        <path
-                            d="M216 431C200 407 194 370 179 344
-                               M383 404C403 383 408 343 422 315
-                               M222 339C189 329 151 331 119 323
-                               M377 307C410 313 442 320 473 316
-                               M267 275C242 251 212 239 182 216
-                               M335 263C369 244 401 229 430 206
-                               M289 548Q263 568 233 568
-                               M310 550Q339 568 369 568"
-                            stroke-width="5"
-                        />
-                    </g>
-                </g>
-
-                <g id="tree-leaves"></g>
-
-                <text
-                    x="300"
-                    y="605"
-                    text-anchor="middle"
-                    class="tree-root-label"
-                    data-en="Our impact grows together"
-                >أثرنــــا يكبر معًا</text>
-            </svg>
+            <div class="expo-tree-stage" data-expo-tree>
+                {% include "recycling/impact_tree_art.svg" %}
+            </div>
 
             <div class="tree-footer">
                 <div class="tree-participant-count">
@@ -197,7 +99,7 @@
                     </span>
                 </div>
 
-                <span class="tree-footer-mark" aria-hidden="true">↗</span>
+                
             </div>
 
             {% if not tree_total %}
@@ -211,6 +113,7 @@
     {{ tree_leaves|json_script:"tree-data" }}
     {{ tree_new_visitor|json_script:"tree-new-visitor" }}
 
+    <script>window.EXPOGREEN_LEAF_URL = "{% static 'images/visitor-leaf.png' %}";</script>
     <script src="{% static 'js/impact-tree.js' %}" defer></script>
     {% block scripts %}{% endblock %}
 </body>
