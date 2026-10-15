@@ -1,16 +1,19 @@
 <div align="center">
 
+<img src="docs/assets/expogreen-banner.gif" alt="ExpoGreen: identify, sort, confirm and grow. Animated plant in green, violet and gold." width="1000">
+
+
 # ExpoGreen · فرز
 
 ### One item. The right bin. A growing impact.
 
 A smart recycling experience combining **computer vision**, **QR tickets**, and **connected bins**.
 
-<img alt="Python" src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white">
-<img alt="Django" src="https://img.shields.io/badge/Django-092E20?style=flat-square&logo=django&logoColor=white">
-<img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white">
-<img alt="ESP32" src="https://img.shields.io/badge/ESP32-USB_Serial-6B5B80?style=flat-square">
-<img alt="Arabic and English visitor interface" src="https://img.shields.io/badge/Interface-AR_%2F_EN-39846A?style=flat-square">
+<img alt="Python" src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
+<img alt="Django" src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white">
+<img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white">
+<img alt="ESP32" src="https://img.shields.io/badge/ESP32-USB_Serial-6B5B80?style=for-the-badge">
+<img alt="Arabic and English visitor interface" src="https://img.shields.io/badge/Interface-AR_%2F_EN-39846A?style=for-the-badge">
 
 [Experience](#visitor-experience) · [Features](#features) · [Quick start](#quick-start) · [Hardware](#esp32-integration) · [العربية](#نبذة-بالعربية)
 
@@ -18,7 +21,9 @@ A smart recycling experience combining **computer vision**, **QR tickets**, and 
 
 ---
 
-## About the project
+<a id="about-the-project"></a>
+
+## 🌿 About the project
 
 ExpoGreen turns waste sorting into a guided, rewarding visitor experience. Built as a sustainability prototype for the Expo 2030 context, it connects a camera-based classifier to a disposal workflow: identify an item, select its bin, confirm disposal, and record the visitor's contribution.
 
@@ -46,7 +51,9 @@ For staff, a separate operations dashboard brings together recorded bin conditio
 
 > **Project status:** hackathon prototype with software simulation and an ESP32 USB integration path. Tickets are project-issued; official Expo ticketing and commercial reward redemption are outside the current implementation.
 
-## Visitor experience
+<a id="visitor-experience"></a>
+
+## 🎫 Visitor experience
 
 1. **Issue a ticket:** enter a name to generate a unique ticket number and downloadable QR image.
 2. **Scan to participate:** the kiosk validates the ticket and opens the recognition camera automatically.
@@ -57,7 +64,9 @@ For staff, a separate operations dashboard brings together recorded bin conditio
 
 Visitors can also choose **quick disposal**: use the mixed-waste bin without a ticket, camera classification, or points.
 
-## Features
+<a id="features"></a>
+
+## ✨ Features
 
 ### Visitor application
 
@@ -88,7 +97,9 @@ Visitors can also choose **quick disposal**: use the mixed-waste bin without a t
 
 **Current scope:** fill levels are updated manually through the dashboard. The USB bridge reports disposal events; it does not stream fill percentages. Maps are conceptual illustrations, and route ordering uses fullness priority followed by approximate map proximity, rather than road routing.
 
-## See the sorting happen
+<a id="see-the-sorting-happen"></a>
+
+## ♻️ See the sorting happen
 
 The final section of the camera and session pages visualizes the sorting station:
 
@@ -104,7 +115,9 @@ The final section of the camera and session pages visualizes the sorting station
 
 The animation follows the application state. It does not independently confirm a physical lid position or sensor event, and it never awards points by itself. In software simulation, the visitor still uses the disposal-confirmation button.
 
-## Technology
+<a id="technology"></a>
+
+## 🧩 Technology
 
 | Layer | Implementation |
 | --- | --- |
@@ -122,7 +135,9 @@ The animation follows the application state. It does not independently confirm a
 
 Exact Python dependencies are listed in [requirements.txt](requirements.txt). The committed project was developed with Python 3.13.7 and declares Django 6.1.2.
 
-## Classification model
+<a id="classification-model"></a>
+
+## 👁️ Classification model
 
 **Model:** [yangy50/garbage-classification](https://huggingface.co/yangy50/garbage-classification)
 
@@ -153,7 +168,9 @@ These thresholds are prototype heuristics. Confidence and repeated agreement do 
 
 The `metal` mapping is an application category mapping; the model does not specifically distinguish aluminum from other metals. The application uses computer vision, not an LLM.
 
-## Quick start
+<a id="quick-start"></a>
+
+## 🚀 Quick start
 
 ### 1. Clone and install
 
@@ -217,7 +234,9 @@ For the operations dashboard, create active **Collection points** and link bins 
 
 Use `localhost` or HTTPS for camera access. Opening the site over a plain HTTP LAN IP may allow ticket issuance, but browser camera access can be unavailable.
 
-## ESP32 integration
+<a id="esp32-integration"></a>
+
+## 🔌 ESP32 integration
 
 The current physical mapping is:
 
@@ -276,7 +295,9 @@ Events must match the active session UUID and physical bin number. `OPENED` is a
 
 If the bridge is interrupted, it does not automatically resend an unfinished opening command. Inspect/reset the device before restarting. Hardware behavior must be verified on the assembled prototype; the presence of integration code alone does not establish a successful physical test.
 
-## Project structure
+<a id="project-structure"></a>
+
+## 🗂️ Project structure
 
 | Path | Responsibility |
 | --- | --- |
@@ -303,7 +324,9 @@ The active live camera template is `templates/recycling/live_test.html`. Root ZI
 
 Disposal status progresses through `started → classified → waiting → completed`, with `expired` and `failed` terminal alternatives. Transactions and a one-to-one reward relation prevent repeated confirmation from issuing a second reward for the same session.
 
-## Main pages and endpoints
+<a id="main-pages-and-endpoints"></a>
+
+## 🧭 Main pages and endpoints
 
 | Path | Purpose |
 | --- | --- |
@@ -321,7 +344,9 @@ Disposal status progresses through `started → classified → waiting → compl
 
 Visitor flow endpoints use the browser's Django session. State-changing forms and camera requests use CSRF protection. Operations views require staff access.
 
-## Verification and prototype scope
+<a id="verification-and-prototype-scope"></a>
+
+## 🔎 Verification and prototype scope
 
 Useful checks after installation:
 
@@ -348,13 +373,17 @@ Current prototype boundaries:
 - The Impact Tree aggregates rewarded participants and renders a limited number of leaves.
 - Settings currently target local development. Public deployment requires production configuration, including secret management, `DEBUG=False`, allowed hosts, HTTPS, and static-file serving.
 
-## Acknowledgements
+<a id="acknowledgements"></a>
+
+## 🤝 Acknowledgements
 
 - Classification model: [yangy50/garbage-classification](https://huggingface.co/yangy50/garbage-classification).
 - QR decoding: [jsQR](https://github.com/cozmo/jsQR).
 - Arabic typography: Thmanyah Sans; source and licensing references are documented in [static/fonts/README.md](static/fonts/README.md).
 
-## نبذة بالعربية
+<a id="نبذة-بالعربية"></a>
+
+## 🌱 نبذة بالعربية
 
 **فرز — ExpoGreen** نموذج أولي يجمع التذاكر الرقمية والتصنيف البصري والحاويات المتصلة، لتشجيع الزائر على فرز مخلفاته. يمسح الزائر تذكرته، ويعرض المخلف على الكاميرا، ثم تُحدَّد الحاوية وتُضاف النقاط بعد تأكيد الرمي. ويتيح خيار التخلص السريع استخدام الحاوية المختلطة دون نقاط.
 
