@@ -1,0 +1,107 @@
+/* ExpoGreen Operations: additive styles for interactive conceptual map and routes */
+.expo-map { padding: 0; overflow: hidden; }
+.expo-map svg { display: block; width: 100%; aspect-ratio: 10 / 7; }
+.expo-map-marker { cursor: pointer; stroke: white; stroke-width: 1; }
+.expo-map-marker--full { fill: #c74747; }
+.expo-map-marker--warning { fill: #d2a13e; }
+.expo-map-marker--normal { fill: #2f8060; }
+.expo-map-label { font-size: 2.6px; text-anchor: middle; fill: #254c3d; font-weight: 700; paint-order: stroke; stroke: #fff; stroke-width: .5px; pointer-events: none; }
+.ops-stop-number { font-size: 2px; font-weight: 700; text-anchor: middle; fill: #21543e; pointer-events: none; }
+.ops-map-note { font-size: 12px; color: #758479; margin: 12px 0 4px; }
+.ops-suggestion { border: 1px solid #cddfd2; border-radius: 16px; background: #eef6ef; padding: 16px; margin-bottom: 16px; }
+.ops-suggestion strong { color: #20533d; }
+.ops-suggestion p { font-size: 13px; color: #657568; margin: 6px 0 12px; }
+.ops-suggestion form { margin: 0; }
+.ops-suggestion button { margin: 0; }
+.ops-suggestion button:disabled { opacity: .5; cursor: not-allowed; }
+.ops-manual { border: 1px solid #e0e9df; border-radius: 13px; padding: 12px; }
+.ops-manual summary { font-weight: 700; color: #27543d; cursor: pointer; }
+.ops-manual .route-builder { margin-top: 12px; }
+.ops-messages { border-radius: 12px; padding: 4px 12px; background: #eaf3e9; margin-bottom: 14px; }
+.ops-messages p { color: #315742; margin: 8px 0; }
+@media (max-width: 750px) { .expo-map svg { min-height: 240px; } }
+
+/* Interactive street map - extra to the original dashboard styles */
+.ops-grid {grid-template-columns: minmax(0, 1.55fr) minmax(320px, .85fr);}
+.ops-live-map-frame {position:relative; padding:0; overflow:hidden; border-radius:18px; border:1px solid #dfe7da;}
+#expo-live-map {width:100%;height:550px;min-height:420px;z-index:1;direction:ltr;background:#e9f0e8;}
+.ops-map-key {position:absolute;top:14px;right:14px;z-index:500;background:#fffdf5ee;border:1px solid #d8e4d8;border-radius:12px;padding:10px 14px;pointer-events:none;box-shadow:0 4px 14px #1d49321a;display:grid;gap:3px;}
+.ops-map-key strong{font-size:13px;color:#23533c}.ops-map-key span{font-size:11px;color:#737f72}
+.ops-map-pin{width:33px;height:33px;display:grid;place-items:center;border-radius:50% 50% 50% 5px;transform:rotate(-45deg);border:3px solid white;box-shadow:0 2px 8px #15372750;color:white;font-weight:800;font-size:12px;}
+.ops-map-pin span{transform:rotate(45deg)}
+.ops-map-pin.full{background:#c74646}.ops-map-pin.warning{background:#d39b34}.ops-map-pin.normal{background:#28835e}
+.ops-map-pin.stop{background:#6345ab}
+.ops-leaflet-popup{font-family:inherit;text-align:right;direction:rtl;min-width:190px}
+.ops-leaflet-popup strong{color:#20533d;font-size:15px}.ops-leaflet-popup p{margin:5px 0;font-size:13px}.ops-leaflet-popup a{font-weight:bold;color:#326b57}
+.leaflet-control-attribution{font-size:10px!important}
+@media(max-width:1050px){.ops-grid{grid-template-columns:1fr}#expo-live-map{height:450px}}
+@media(max-width:520px){#expo-live-map{height:360px;min-height:360px}.ops-map-key{top:8px;right:8px}}
+
+/* Offline interactive SVG map — no map API, Leaflet or tile provider */
+#expo-live-map { height:auto; min-height:0; aspect-ratio:10/7; cursor:grab; overflow:hidden; touch-action:none; position:relative; background:#eef4ea; }
+#expo-live-map.is-dragging { cursor:grabbing; }
+#expo-live-map svg { display:block; width:100%; height:100%; aspect-ratio:auto; user-select:none; }
+#expo-live-map .ops-point-pin { cursor:pointer; outline:none; }
+#expo-live-map .ops-point-pin circle { stroke:#fff; stroke-width:5; filter:drop-shadow(0 4px 5px #21402b66); }
+#expo-live-map .ops-point-pin text { fill:white; text-anchor:middle; font:bold 15px Arial,sans-serif; pointer-events:none; }
+#expo-live-map .ops-point-label { font:bold 15px Tahoma,Arial,sans-serif; fill:#173b2e; text-anchor:middle; paint-order:stroke; stroke:#fffdf4; stroke-width:5; pointer-events:none; }
+#expo-live-map .ops-route-line { fill:none; stroke:#7754af; stroke-width:8; stroke-dasharray:14 9; stroke-linecap:round; stroke-linejoin:round; vector-effect:non-scaling-stroke; }
+#expo-live-map .ops-route-pin circle { fill:#7754af; stroke:#fff; stroke-width:5; }
+#expo-live-map .ops-route-pin text { fill:white; font:bold 16px Arial,sans-serif; text-anchor:middle; pointer-events:none; }
+.ops-map-controls {position:absolute; bottom:14px; left:14px; z-index:5; display:flex; gap:6px; direction:ltr;}
+.ops-map-controls button {width:38px;min-height:38px;margin:0;padding:0;border:1px solid #dae4d8;border-radius:9px;background:#fff;color:#27513e;font:bold 20px Arial;box-shadow:0 2px 8px #0002;}
+.ops-map-controls button:hover {background:#ecf4eb;}
+.ops-map-tooltip {position:absolute;right:14px;bottom:14px;z-index:4;max-width:min(280px,55%);padding:11px 15px;border:1px solid #dce7d8;border-radius:12px;background:#fffdf8;box-shadow:0 4px 16px #1d49321c;direction:rtl;text-align:right;font-size:12px;}
+.ops-map-tooltip strong{display:block;color:#20523f;font-size:14px}.ops-map-tooltip a{color:#256d4e;font-weight:700}
+@media(max-width:520px){#expo-live-map{height:auto;min-height:0;aspect-ratio:10/7}.ops-map-controls{bottom:8px;left:8px}.ops-map-controls button{width:32px;min-height:32px}}
+
+/* Interactive two-level Expo site — conceptual illustrative background */
+.expo-zones-map{background:#001d19;border:1px solid #1f9c7d;border-radius:18px;overflow:hidden;color:#ecfff6;min-height:300px}
+.zone-map-view{position:relative;aspect-ratio:1672/941;overflow:hidden}
+.zone-map-view>img{width:100%;height:100%;object-fit:cover;display:block}
+.zone-hotspot{position:absolute;width:18%;height:15%;border:1px solid transparent;border-radius:18px;background:transparent;cursor:pointer;margin:0;padding:0;min-height:0;transition:box-shadow .2s,border .2s}
+.zone-hotspot:hover,.zone-hotspot:focus-visible{outline:2px solid #e7ffcf;outline-offset:0;box-shadow:0 0 35px #0fffa355;background:#07cd9b17}
+.zone-hotspot.kingdom{top:23%;left:43%}.zone-hotspot.sustainability{top:36%;left:21%}.zone-hotspot.technology{top:37%;left:60%}.zone-hotspot.prosperity{top:60%;left:23%}.zone-hotspot.collaboration{top:61%;left:60%}
+.zone-detail{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(230px,.85fr);direction:ltr;min-height:450px}
+.zone-detail[hidden],.zone-map-view[hidden]{display:none!important}
+.zone-detail-map{position:relative;aspect-ratio:1672/941;min-height:420px;overflow:hidden;background:#00221d;direction:ltr}
+.zone-detail-map>img{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0}
+.zone-detail-map.zone-crop>img{width:165%;height:165%;max-width:none;object-fit:fill;transform-origin:0 0;transform:translate(var(--crop-x),var(--crop-y))}
+#zone-route-overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.zone-detail-sidebar{direction:rtl;padding:17px;background:#002c24;border-inline-start:1px solid #177e69;overflow:auto;max-height:540px}
+.zone-detail-sidebar h3{color:white;margin:14px 0;font-size:21px}.zone-demo-note{font-size:12px;color:#9cc8b9}
+.zone-return{width:auto;min-height:0;padding:10px 12px;margin:0;color:#d9fff3;background:#075742;border:1px solid #158769;border-radius:9px;font-size:12px}
+.zone-summary{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.zone-summary span{padding:7px 11px;border:1px solid #2f806b;border-radius:9px;color:#bff4df;font-size:12px}
+.zone-station-details{display:grid;gap:10px}.zone-station-details article{background:#063a30;border:1px solid #136f5a;padding:12px;border-radius:11px}.zone-station-details h4{color:white;margin:0 0 6px}.zone-station-details p{margin:5px 0;color:#c1e6d7;font-size:12px}.zone-station-details strong{font-weight:700}
+.zone-pin{position:absolute;transform:translate(-50%,-100%);width:32px;height:36px;border:2px solid white;border-radius:50% 50% 50% 5px;rotate:-45deg;display:grid;place-items:center;padding:0;margin:0;min-height:0;cursor:pointer;box-shadow:0 0 15px #000a;z-index:3;transition:scale .2s}.zone-pin span{rotate:45deg;color:white;font-weight:bold;font-size:12px}.zone-pin.full{background:#db5557}.zone-pin.warning{background:#c89828}.zone-pin.normal{background:#1caa78}.zone-pin:hover,.zone-pin:focus-visible{scale:1.22;outline:2px solid white}
+.zone-station-details .full{color:#ff8585}.zone-station-details .warning{color:#f5c35c}.zone-station-details .normal{color:#77efbb}
+.zone-stop-list{font-size:12px;color:#d5f7e9;margin-top:14px}.zone-empty{color:#a5d4c1;font-size:13px;line-height:1.8}.zone-station-details a{color:#a4f9cf}
+@media(max-width:1000px){.zone-detail{grid-template-columns:1fr}.zone-detail-map{min-height:0;aspect-ratio:1672/941}.zone-detail-sidebar{max-height:none}.ops-grid{grid-template-columns:1fr}}
+@media(max-width:580px){.zone-map-view{min-height:215px}.zone-map-view>img{object-fit:cover}.zone-detail-map{min-height:250px}.zone-hotspot{width:22%;height:20%}}
+
+/* Expose real DB bins without fabricating a zone for existing hardware */
+.zone-unassigned-open{position:absolute;right:2%;bottom:2%;width:auto;min-height:0;margin:0;padding:9px 13px;border:1px solid #56a48d;border-radius:10px;background:#002a25db;color:#ebfff7;font-size:12px;cursor:pointer;z-index:3}.zone-unassigned-open:hover{background:#115b4b}.zone-unassigned-open span{color:#ebcf75}.zone-detail-sidebar .zone-station-details article p{overflow-wrap:anywhere}
+
+/* Interactive full-bleed zone map: overlays instead of a separate sidebar */
+.expo-zones-map {width:100%;position:relative;}
+.zone-map-view {width:100%;aspect-ratio:1672 / 941;min-height:0;}
+.zone-map-view > img {position:absolute;inset:0;width:100%;height:100%;object-fit:contain;}
+.zone-detail {display:block!important;min-height:0;width:100%;}
+.zone-detail[hidden]{display:none!important;}
+.zone-detail-map {aspect-ratio:1672 / 941;min-height:0;width:100%;overflow:hidden;}
+.zone-detail-map > img {object-fit:fill;}
+.zone-return {position:absolute;top:14px;right:14px;z-index:7;box-shadow:0 5px 18px #0007;}
+.zone-map-heading {position:absolute;top:14px;left:14px;z-index:5;max-width:62%;padding:8px 12px;border:1px solid #187e67;border-radius:12px;background:#00231ed9;direction:rtl;text-align:right;pointer-events:none;}
+.zone-map-heading h3 {margin:0 0 4px;color:#eafff7;font-size:clamp(12px,1.5vw,19px);}
+.zone-map-heading .zone-summary {margin:0;gap:5px;}
+.zone-map-heading .zone-summary span {font-size:clamp(9px,1vw,12px);padding:3px 6px;background:#064234bb;}
+.zone-map-popup {position:absolute;z-index:9;transform:translate(-50%,-50%);width:min(295px,58%);max-height:75%;overflow:auto;direction:rtl;text-align:right;border:1px solid #41ae8b;border-radius:14px;background:#00342df2;box-shadow:0 12px 36px #000b;padding:15px 13px 12px;backdrop-filter:blur(8px);}
+.zone-map-popup[hidden] {display:none!important;}
+.zone-map-popup.zone-popup-unassigned {width:min(420px,82%);max-height:77%;}
+.zone-map-popup .zone-station-details {display:block;padding-top:15px;}
+.zone-map-popup .zone-station-details article {background:transparent;border:0;padding:2px;}
+.zone-map-popup .zone-station-details article h4 {font-size:15px;line-height:1.4;color:#f7fffb;}
+.zone-map-popup .zone-station-details article p {font-size:12px;line-height:1.6;}
+.zone-popup-close {position:absolute;left:7px;top:7px;width:26px;height:26px;min-height:0;margin:0;padding:0;border:1px solid #45947e;border-radius:7px;background:#105a49;color:#fff;font-size:20px;line-height:1;z-index:10;}
+.zone-stop-list {position:absolute;left:12px;bottom:8px;right:auto;max-width:85%;z-index:4;margin:0;padding:5px 9px;background:#00251edb;border:1px solid #176a58;border-radius:9px;color:#ddf9ed;font-size:11px;pointer-events:none;}
+@media(max-width:580px){.zone-map-heading{max-width:65%;left:6px;top:6px;padding:5px 7px}.zone-return{top:6px;right:6px;padding:6px;font-size:10px}.zone-map-popup{width:min(280px,75%);max-height:85%;padding:10px}.zone-map-view{min-height:0}.zone-detail-map{min-height:0}.zone-stop-list{display:none}}

@@ -31,4 +31,29 @@ path(
         views.session_status,
         name="session_status",
     ),
+    path(
+    "ops/dashboard/",
+    views.operations_dashboard,
+    name="operations_dashboard",
+),
+    path(
+    "ops/bins/<int:bin_id>/level/",
+    views.update_bin_level,
+    name="update_bin_level",
+    ),
+    path(
+    "ops/bins/<int:bin_id>/emptied/",
+    views.mark_bin_emptied,
+    name="mark_bin_emptied",
+),
+    path(
+    "ops/routes/<int:route_id>/start/",
+    views.start_route,
+    name="start_route",
+),
+    path(
+    "ops/routes/<int:route_id>/complete/",
+    views.complete_route,
+    name="complete_route",
+),
 ]

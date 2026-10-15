@@ -2608,3 +2608,403 @@ body {
         display: none;
     }
 }
+
+/* ============================
+   Operations Dashboard
+   ============================ */
+
+.ops-body {
+    background: #f4f7f1;
+    color: #24352d;
+}
+
+.ops-shell {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+}
+
+.ops-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.ops-eyebrow {
+    margin: 0 0 8px;
+    color: #6f8a7a;
+    font-size: 13px;
+    letter-spacing: .4px;
+}
+
+.ops-subtitle {
+    margin: 8px 0 0;
+    color: #6b776f;
+    max-width: 760px;
+    line-height: 1.9;
+}
+
+.ops-home-link {
+    align-self: center;
+    text-decoration: none;
+    color: #2f6f57;
+    font-weight: 700;
+}
+
+.ops-kpis {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.ops-kpi {
+    background: #fff;
+    border: 1px solid #e4eadf;
+    border-radius: 18px;
+    padding: 18px;
+}
+
+.ops-kpi span {
+    display: block;
+    color: #6f786f;
+    margin-bottom: 8px;
+}
+
+.ops-kpi strong {
+    font-size: 34px;
+    color: #214d3d;
+}
+
+.ops-kpi--danger strong { color: #b34242; }
+.ops-kpi--warning strong { color: #b67a1f; }
+.ops-kpi--good strong { color: #2f6f57; }
+
+.ops-grid {
+    display: grid;
+    grid-template-columns: 1.15fr .85fr;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.ops-card {
+    background: #fff;
+    border: 1px solid #e4eadf;
+    border-radius: 22px;
+    padding: 22px;
+    margin-bottom: 18px;
+}
+
+.ops-card-head h2 {
+    margin: 0 0 6px;
+    color: #214d3d;
+}
+
+.ops-card-head p {
+    margin: 0 0 16px;
+    color: #7a857d;
+    line-height: 1.8;
+}
+
+.expo-map {
+    background: linear-gradient(180deg, #fbfcf8 0%, #f0f5ed 100%);
+    border: 1px solid #e5ece0;
+    border-radius: 20px;
+    padding: 14px;
+}
+
+.expo-map svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.expo-map-bg {
+    fill: #f7faf3;
+    stroke: #dbe6d5;
+    stroke-width: 1.2;
+}
+
+.expo-map-marker {
+    stroke: #fff;
+    stroke-width: 1.1;
+    transition: transform .2s ease;
+}
+
+.expo-map-marker:hover {
+    transform: scale(1.08);
+}
+
+.expo-map-marker--full { fill: #d64e4e; }
+.expo-map-marker--warning { fill: #d9a234; }
+.expo-map-marker--normal { fill: #2f8a60; }
+
+.expo-map-label {
+    font-size: 3px;
+    text-anchor: middle;
+    fill: #415147;
+}
+
+.ops-map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 12px;
+    color: #6e776f;
+    font-size: 14px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 6px;
+}
+.dot--danger { background: #d64e4e; }
+.dot--warning { background: #d9a234; }
+.dot--good { background: #2f8a60; }
+
+.route-builder {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.ops-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ops-field input,
+.ops-field textarea {
+    border: 1px solid #d6e1d2;
+    border-radius: 12px;
+    padding: 12px 14px;
+    background: #fff;
+}
+
+.route-candidates {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 320px;
+    overflow: auto;
+    padding-inline-end: 4px;
+}
+
+.route-candidate {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    border: 1px solid #edf2eb;
+    border-radius: 14px;
+    padding: 12px;
+    background: #fbfcfa;
+}
+
+.route-candidate span {
+    display: block;
+    color: #707970;
+    margin-top: 4px;
+    font-size: 14px;
+}
+
+.ops-btn {
+    border: 0;
+    background: #2f6f57;
+    color: #fff;
+    border-radius: 12px;
+    padding: 12px 18px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.ops-btn--secondary {
+    background: #dcebdd;
+    color: #214d3d;
+}
+
+.ops-btn--ghost {
+    background: #f4f8f3;
+    color: #2f6f57;
+    border: 1px solid #d7e4d7;
+}
+
+.ops-btn--small {
+    padding: 10px 12px;
+    min-width: 88px;
+}
+
+.route-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.status-badge--draft {
+    background: #eef4ea;
+    color: #4f6c5b;
+}
+
+.status-badge--active {
+    background: #e5f3eb;
+    color: #2f6f57;
+}
+
+.status-badge--completed {
+    background: #f2efe5;
+    color: #7b6d46;
+}
+
+.route-stop-list {
+    margin: 0;
+    padding-inline-start: 20px;
+    color: #435147;
+    line-height: 1.9;
+}
+
+.point-list {
+    display: grid;
+    gap: 16px;
+}
+
+.point-card {
+    border: 1px solid #e8eee4;
+    border-radius: 18px;
+    padding: 18px;
+    background: #fcfdfb;
+}
+
+.point-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.point-card-head h3 {
+    margin: 0 0 6px;
+}
+
+.point-card-head p,
+.point-stats span {
+    color: #748077;
+    font-size: 14px;
+}
+
+.point-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.bin-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.bin-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+    border-radius: 16px;
+    padding: 14px;
+    border: 1px solid #e7eee4;
+}
+
+.bin-row--full {
+    background: #fff3f3;
+    border-color: #f0caca;
+}
+
+.bin-row--warning {
+    background: #fff9ee;
+    border-color: #f2ddae;
+}
+
+.bin-row--normal {
+    background: #f7fbf7;
+    border-color: #dfeadd;
+}
+
+.bin-main span,
+.bin-main small {
+    display: block;
+    color: #6f786f;
+    margin-top: 4px;
+}
+
+.bin-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.bin-actions form {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.bin-actions input[type="number"] {
+    width: 92px;
+    border: 1px solid #d6e1d2;
+    border-radius: 10px;
+    padding: 9px 10px;
+}
+
+.recent-routes {
+    display: grid;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.recent-routes li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #fbfcfa;
+    border: 1px solid #eef3ec;
+    border-radius: 14px;
+}
+
+.ops-empty {
+    color: #778078;
+    margin: 0;
+}
+
+@media (max-width: 1000px) {
+    .ops-kpis,
+    .ops-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ops-header,
+    .point-card-head,
+    .route-status,
+    .bin-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-labelledby="title desc"><title id="title">ExpoGreen — مخطط تصوري تفصيلي لمناطق معرض إكسبو الرياض 2030</title><desc id="desc">رسم تشغيلي تصوري مستند إلى فكرة المناطق الخمس والممرات الخضراء والأجنحة؛ وليس مخططًا جغرافيًا رسميًا ولا يحدد مواقع الحاويات الفعلية.</desc><defs><linearGradient id="ground" x2="1" y2="1"><stop stop-color="#f8faf5"/><stop offset="1" stop-color="#eef4ea"/></linearGradient><linearGradient id="spine" x2="1" y2="1"><stop stop-color="#c5e1d1"/><stop offset="1" stop-color="#91baa6"/></linearGradient><pattern id="grain" patternUnits="userSpaceOnUse" width="28" height="28"><circle cx="3" cy="3" r="1" fill="#c6d3c4" opacity=".5"/></pattern><filter id="shadow" x="-15%" y="-15%" width="130%" height="150%"><feDropShadow dx="0" dy="5" stdDeviation="10" flood-color="#607761" flood-opacity=".13"/></filter></defs>
+<rect width="1000" height="700" rx="24" fill="url(#ground)"/><rect width="1000" height="700" rx="24" fill="url(#grain)"/>
+<path d="M177 112 Q273 61 405 74 Q512 37 642 82 Q759 68 830 132 Q904 198 887 326 Q920 454 813 550 Q704 633 544 607 Q416 653 291 593 Q178 583 133 467 Q105 360 137 249 Z" fill="#fffefa" stroke="#d8e3d6" stroke-width="21" filter="url(#shadow)"/><path d="M177 112 Q273 61 405 74 Q512 37 642 82 Q759 68 830 132 Q904 198 887 326 Q920 454 813 550 Q704 633 544 607 Q416 653 291 593 Q178 583 133 467 Q105 360 137 249 Z" fill="none" stroke="#fff" stroke-width="4" stroke-dasharray="8 11" opacity=".95"/>
+<path d="M220 179 Q398 225 507 330 T788 455" stroke="#e5ebe1" stroke-width="24" fill="none" stroke-linecap="round"/><path d="M220 179 Q398 225 507 330 T788 455" stroke="#ffffff" stroke-width="11" fill="none" stroke-linecap="round"/>
+<path d="M310 529 Q409 450 501 330 Q610 220 771 179" stroke="#e5ebe1" stroke-width="24" fill="none" stroke-linecap="round"/><path d="M310 529 Q409 450 501 330 Q610 220 771 179" stroke="#ffffff" stroke-width="11" fill="none" stroke-linecap="round"/>
+<path d="M212 383 Q344 351 500 331 Q649 321 837 339" stroke="#e5ebe1" stroke-width="24" fill="none" stroke-linecap="round"/><path d="M212 383 Q344 351 500 331 Q649 321 837 339" stroke="#ffffff" stroke-width="11" fill="none" stroke-linecap="round"/>
+<path d="M522 104 Q528 233 501 330 Q485 463 556 587" stroke="#e5ebe1" stroke-width="24" fill="none" stroke-linecap="round"/><path d="M522 104 Q528 233 501 330 Q485 463 556 587" stroke="#ffffff" stroke-width="11" fill="none" stroke-linecap="round"/>
+<path d="M270 250 Q365 290 450 305" stroke="#e5ebe1" stroke-width="24" fill="none" stroke-linecap="round"/><path d="M270 250 Q365 290 450 305" stroke="#ffffff" stroke-width="11" fill="none" stroke-linecap="round"/>
+<path d="M740 492 Q658 431 565 365" stroke="#e5ebe1" stroke-width="24" fill="none" stroke-linecap="round"/><path d="M740 492 Q658 431 565 365" stroke="#ffffff" stroke-width="11" fill="none" stroke-linecap="round"/>
+<path d="M214 161 Q273 115 363 155 L413 267 Q358 301 249 285 Z" fill="#dfeee2" fill-opacity=".82" stroke="#7eac8b" stroke-width="2.5"/>
+<rect x="253" y="166" width="24" height="21" rx="5" fill="#fffef9" stroke="#7eac8b" stroke-width="1.8" opacity=".98"/>
+<path d="M258 172H272" stroke="#7eac8b" stroke-width="1" opacity=".35"/>
+<rect x="286" y="153" width="30" height="20" rx="5" fill="#fffef9" stroke="#7eac8b" stroke-width="1.8" opacity=".98"/>
+<path d="M291 159H311" stroke="#7eac8b" stroke-width="1" opacity=".35"/>
+<rect x="325" y="168" width="28" height="24" rx="5" fill="#fffef9" stroke="#7eac8b" stroke-width="1.8" opacity=".98"/>
+<path d="M330 174H348" stroke="#7eac8b" stroke-width="1" opacity=".35"/>
+<rect x="267" y="203" width="28" height="25" rx="5" fill="#fffef9" stroke="#7eac8b" stroke-width="1.8" opacity=".98"/>
+<path d="M272 209H290" stroke="#7eac8b" stroke-width="1" opacity=".35"/>
+<rect x="312" y="203" width="37" height="24" rx="5" fill="#fffef9" stroke="#7eac8b" stroke-width="1.8" opacity=".98"/>
+<path d="M317 209H344" stroke="#7eac8b" stroke-width="1" opacity=".35"/>
+<path d="M463 107 Q549 70 637 123 L649 251 Q563 276 465 243 Z" fill="#e0ebf2" fill-opacity=".82" stroke="#779dae" stroke-width="2.5"/>
+<rect x="498" y="130" width="24" height="21" rx="5" fill="#fffef9" stroke="#779dae" stroke-width="1.8" opacity=".98"/>
+<path d="M503 136H517" stroke="#779dae" stroke-width="1" opacity=".35"/>
+<rect x="531" y="117" width="30" height="20" rx="5" fill="#fffef9" stroke="#779dae" stroke-width="1.8" opacity=".98"/>
+<path d="M536 123H556" stroke="#779dae" stroke-width="1" opacity=".35"/>
+<rect x="570" y="132" width="28" height="24" rx="5" fill="#fffef9" stroke="#779dae" stroke-width="1.8" opacity=".98"/>
+<path d="M575 138H593" stroke="#779dae" stroke-width="1" opacity=".35"/>
+<rect x="512" y="167" width="28" height="25" rx="5" fill="#fffef9" stroke="#779dae" stroke-width="1.8" opacity=".98"/>
+<path d="M517 173H535" stroke="#779dae" stroke-width="1" opacity=".35"/>
+<rect x="557" y="167" width="37" height="24" rx="5" fill="#fffef9" stroke="#779dae" stroke-width="1.8" opacity=".98"/>
+<path d="M562 173H589" stroke="#779dae" stroke-width="1" opacity=".35"/>
+<path d="M696 155 Q762 129 832 204 L833 313 Q746 347 660 276 Z" fill="#e8e2f1" fill-opacity=".82" stroke="#a097bd" stroke-width="2.5"/>
+<rect x="686" y="172" width="24" height="21" rx="5" fill="#fffef9" stroke="#a097bd" stroke-width="1.8" opacity=".98"/>
+<path d="M691 178H705" stroke="#a097bd" stroke-width="1" opacity=".35"/>
+<rect x="719" y="159" width="30" height="20" rx="5" fill="#fffef9" stroke="#a097bd" stroke-width="1.8" opacity=".98"/>
+<path d="M724 165H744" stroke="#a097bd" stroke-width="1" opacity=".35"/>
+<rect x="758" y="174" width="28" height="24" rx="5" fill="#fffef9" stroke="#a097bd" stroke-width="1.8" opacity=".98"/>
+<path d="M763 180H781" stroke="#a097bd" stroke-width="1" opacity=".35"/>
+<rect x="700" y="209" width="28" height="25" rx="5" fill="#fffef9" stroke="#a097bd" stroke-width="1.8" opacity=".98"/>
+<path d="M705 215H723" stroke="#a097bd" stroke-width="1" opacity=".35"/>
+<rect x="745" y="209" width="37" height="24" rx="5" fill="#fffef9" stroke="#a097bd" stroke-width="1.8" opacity=".98"/>
+<path d="M750 215H777" stroke="#a097bd" stroke-width="1" opacity=".35"/>
+<path d="M690 405 Q774 384 846 462 L792 547 Q703 577 637 488 Z" fill="#f5eadb" fill-opacity=".82" stroke="#c6a06d" stroke-width="2.5"/>
+<rect x="674" y="438" width="24" height="21" rx="5" fill="#fffef9" stroke="#c6a06d" stroke-width="1.8" opacity=".98"/>
+<path d="M679 444H693" stroke="#c6a06d" stroke-width="1" opacity=".35"/>
+<rect x="707" y="425" width="30" height="20" rx="5" fill="#fffef9" stroke="#c6a06d" stroke-width="1.8" opacity=".98"/>
+<path d="M712 431H732" stroke="#c6a06d" stroke-width="1" opacity=".35"/>
+<rect x="746" y="440" width="28" height="24" rx="5" fill="#fffef9" stroke="#c6a06d" stroke-width="1.8" opacity=".98"/>
+<path d="M751 446H769" stroke="#c6a06d" stroke-width="1" opacity=".35"/>
+<rect x="688" y="475" width="28" height="25" rx="5" fill="#fffef9" stroke="#c6a06d" stroke-width="1.8" opacity=".98"/>
+<path d="M693 481H711" stroke="#c6a06d" stroke-width="1" opacity=".35"/>
+<rect x="733" y="475" width="37" height="24" rx="5" fill="#fffef9" stroke="#c6a06d" stroke-width="1.8" opacity=".98"/>
+<path d="M738 481H765" stroke="#c6a06d" stroke-width="1" opacity=".35"/>
+<path d="M229 428 Q338 390 421 457 L383 572 Q284 600 200 527 Z" fill="#efe6d9" fill-opacity=".82" stroke="#ad9274" stroke-width="2.5"/>
+<rect x="244" y="464" width="24" height="21" rx="5" fill="#fffef9" stroke="#ad9274" stroke-width="1.8" opacity=".98"/>
+<path d="M249 470H263" stroke="#ad9274" stroke-width="1" opacity=".35"/>
+<rect x="277" y="451" width="30" height="20" rx="5" fill="#fffef9" stroke="#ad9274" stroke-width="1.8" opacity=".98"/>
+<path d="M282 457H302" stroke="#ad9274" stroke-width="1" opacity=".35"/>
+<rect x="316" y="466" width="28" height="24" rx="5" fill="#fffef9" stroke="#ad9274" stroke-width="1.8" opacity=".98"/>
+<path d="M321 472H339" stroke="#ad9274" stroke-width="1" opacity=".35"/>
+<rect x="258" y="501" width="28" height="25" rx="5" fill="#fffef9" stroke="#ad9274" stroke-width="1.8" opacity=".98"/>
+<path d="M263 507H281" stroke="#ad9274" stroke-width="1" opacity=".35"/>
+<rect x="303" y="501" width="37" height="24" rx="5" fill="#fffef9" stroke="#ad9274" stroke-width="1.8" opacity=".98"/>
+<path d="M308 507H335" stroke="#ad9274" stroke-width="1" opacity=".35"/>
+<path d="M131 337 C246 307 308 392 412 365 S574 272 665 319 S805 389 870 312" stroke="#e0f0e1" stroke-width="95" fill="none" stroke-linecap="round" opacity=".85"/><path d="M131 337 C246 307 308 392 412 365 S574 272 665 319 S805 389 870 312" stroke="url(#spine)" stroke-width="66" fill="none" stroke-linecap="round" opacity=".86"/><path d="M131 337 C246 307 308 392 412 365 S574 272 665 319 S805 389 870 312" stroke="#fafcf4" stroke-width="3" stroke-dasharray="6 12" fill="none" stroke-linecap="round"/>
+<circle cx="182" cy="324" r="5" fill="#4b9673" opacity=".55"/>
+<circle cx="210" cy="344" r="5" fill="#4b9673" opacity=".55"/>
+<circle cx="395" cy="372" r="5" fill="#4b9673" opacity=".55"/>
+<circle cx="635" cy="306" r="5" fill="#4b9673" opacity=".55"/>
+<circle cx="823" cy="362" r="5" fill="#4b9673" opacity=".55"/>
+<circle cx="775" cy="365" r="5" fill="#4b9673" opacity=".55"/>
+<circle cx="545" cy="282" r="5" fill="#4b9673" opacity=".55"/>
+<circle cx="341" cy="332" r="5" fill="#4b9673" opacity=".55"/>
+<circle cx="508" cy="336" r="62" fill="#fffdf2" stroke="#e3dcc8" stroke-width="13"/><circle cx="508" cy="336" r="48" fill="#f0e7ce" stroke="#afba9f" stroke-width="2"/><path d="M493 369L508 291L525 369Z" fill="#356c59"/><path d="M508 295L508 370" stroke="#b7d4bc" stroke-width="3"/>
+<path d="M510 72L510 112" stroke="#9db29d" stroke-width="3" stroke-dasharray="3 4"/><circle cx="510" cy="72" r="7" fill="#fff" stroke="#64886c" stroke-width="3"/>
+<path d="M575 610L575 590" stroke="#9db29d" stroke-width="3" stroke-dasharray="3 4"/><circle cx="575" cy="610" r="7" fill="#fff" stroke="#64886c" stroke-width="3"/>
+<path d="M161 524L200 515" stroke="#9db29d" stroke-width="3" stroke-dasharray="3 4"/><circle cx="161" cy="524" r="7" fill="#fff" stroke="#64886c" stroke-width="3"/>
+<path d="M855 188L819 213" stroke="#9db29d" stroke-width="3" stroke-dasharray="3 4"/><circle cx="855" cy="188" r="7" fill="#fff" stroke="#64886c" stroke-width="3"/>
+<g><rect x="240" y="234" width="130" height="27" rx="9" fill="#fffdf8" opacity=".93"/><text x="305" y="252" fill="#284939" text-anchor="middle" font-family="Tahoma,Arial,sans-serif" font-size="16" font-weight="bold">حلول مستدامة</text></g>
+<g><rect x="487" y="202" width="130" height="27" rx="9" fill="#fffdf8" opacity=".93"/><text x="552" y="220" fill="#284939" text-anchor="middle" font-family="Tahoma,Arial,sans-serif" font-size="16" font-weight="bold">تقنيات تحولية</text></g>
+<g><rect x="679" y="245" width="130" height="27" rx="9" fill="#fffdf8" opacity=".93"/><text x="744" y="263" fill="#284939" text-anchor="middle" font-family="Tahoma,Arial,sans-serif" font-size="16" font-weight="bold">تعاون عالمي</text></g>
+<g><rect x="670" y="505" width="130" height="27" rx="9" fill="#fffdf8" opacity=".93"/><text x="735" y="523" fill="#284939" text-anchor="middle" font-family="Tahoma,Arial,sans-serif" font-size="16" font-weight="bold">مجتمع مزدهر</text></g>
+<g><rect x="238" y="529" width="130" height="27" rx="9" fill="#fffdf8" opacity=".93"/><text x="303" y="547" fill="#284939" text-anchor="middle" font-family="Tahoma,Arial,sans-serif" font-size="16" font-weight="bold">منطقة المملكة</text></g>
+<g font-family="Tahoma,Arial,sans-serif" text-anchor="middle" font-weight="bold" fill="#214839"><text x="509" y="419" font-size="17">المعلم المركزي</text><text x="510" y="49" font-size="15">مدخل الشمال</text><text x="592" y="648" font-size="15">مدخل الجنوب</text><text x="96" y="561" font-size="15">مدخل سدرة</text><text x="917" y="161" font-size="15">مدخل الملك سلمان</text></g>
+<g font-family="Tahoma,Arial,sans-serif"><rect x="34" y="24" width="256" height="61" rx="14" fill="#ffffff" fill-opacity=".92" stroke="#dde8d9"/><text x="52" y="47" font-size="17" font-weight="bold" fill="#205640">ExpoGreen | Expo 2030</text><text x="52" y="69" font-size="13" fill="#7e8c7c">تصور تشغيلي متعدد المناطق</text><g transform="translate(936 36)"><path d="M0 21L10 0L20 21L10 16Z" fill="#3c7957"/><text x="10" y="-7" font-size="14" font-weight="bold" text-anchor="middle" fill="#3c7957">N</text></g></g>
+<g font-family="Tahoma,Arial,sans-serif"><rect x="40" y="603" width="381" height="66" rx="11" fill="#fffefa" fill-opacity=".96" stroke="#d9e3d3"/><text x="55" y="623" font-size="13" font-weight="bold" fill="#315740">دليل المخطط</text><path d="M55 640H93" stroke="#9bcdb4" stroke-width="12" stroke-linecap="round"/><text x="101" y="644" font-size="12" fill="#5e7364">ممر مشاة مظلل</text><rect x="235" y="632" width="22" height="16" rx="3" fill="#f6eadb" stroke="#c6a06d"/><text x="265" y="644" font-size="12" fill="#5e7364">مجموعة أجنحة</text><text x="56" y="661" font-size="10.5" fill="#788678">الأشكال والمواقع والطرق تقديرية؛ ليست بيانات مساحية</text></g>
+</svg>
