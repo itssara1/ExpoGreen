@@ -1,6 +1,8 @@
 from django.db import transaction
 from django.utils import timezone
 
+from config import settings
+
 from .models import Bin, DisposalSession, PointEntry, Visitor, WasteType
 
 
@@ -47,11 +49,13 @@ def select_bin(session_id, waste_type):
     if waste_type not in WasteType.values:
         raise ValueError("Invalid waste type.")
 
-    selected_bin = Bin.objects.get(
-        waste_type=waste_type,
-        is_available=True,
-    )
+    station = getattr(settings, "HARDWARE_STATION", "main")
 
+    selected_bin = Bin.objects.get(
+    station=station,
+    waste_type=waste_type,
+    is_available=True,
+    )
     session.detected_waste = waste_type
     session.bin = selected_bin
     session.status = DisposalSession.Status.CLASSIFIED

@@ -1,0 +1,265 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExpoGreen | لوحة التشغيل</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ops-dashboard.css' %}">
+</head>
+<body class="ops-body">
+    <div class="ops-shell">
+        <header class="ops-header">
+            <div>
+                <p class="ops-eyebrow">ExpoGreen | Operations Dashboard</p>
+                <h1>لوحة تشغيل الحاويات ومسارات الجمع</h1>
+                <p class="ops-subtitle">
+                    متابعة حالة الحاويات في نقاط إكسبو المختلفة وتحديد مسارات التفريغ والتجديد.
+                </p>
+            </div>
+            <a class="ops-home-link" href="{% url 'recycling:home' %}">
+                العودة للموقع
+            </a>
+        </header>
+        {% if messages %}
+        <div class="ops-messages" role="status">
+            {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+        </div>
+        {% endif %}
+        <section class="ops-kpis">
+            <article class="ops-kpi">
+                <span>إجمالي الحاويات</span>
+                <strong>{{ all_bins|length }}</strong>
+            </article>
+            <article class="ops-kpi ops-kpi--danger">
+                <span>ممتلئة</span>
+                <strong>{{ full_bins|length }}</strong>
+            </article>
+            <article class="ops-kpi ops-kpi--warning">
+                <span>قريبة من الامتلاء</span>
+                <strong>{{ warning_bins|length }}</strong>
+            </article>
+            <article class="ops-kpi ops-kpi--good">
+                <span>طبيعية</span>
+                <strong>{{ normal_bins|length }}</strong>
+            </article>
+        </section>
+        <section class="ops-grid">
+            <div class="ops-card">
+                <div class="ops-card-head">
+                    <h2>خريطة توزيع محطات الفرز</h2>
+                    <p>خريطة تصورية للمناطق، وأعداد الحاويات وحالاتها تُقرأ من قاعدة بيانات المشروع.</p>
+                </div>
+                <div class="expo-zones-map" id="expo-zones-map"
+                    data-overview="{% static 'images/expo-zones-overview.png' %}"
+                    data-sustainability="{% static 'images/expo-zone-sustainability.png' %}">
+                    <div class="zone-map-view" id="zone-overview" aria-label="خريطة مناطق إكسبو">
+                        <img src="{% static 'images/expo-zones-overview.png' %}" alt="مخطط فني تصوري لمناطق إكسبو الخمس" />
+                        <button type="button" class="zone-hotspot kingdom" data-zone="kingdom" aria-label="فتح منطقة المملكة"></button>
+                        <button type="button" class="zone-hotspot sustainability" data-zone="sustainability" aria-label="فتح الحلول المستدامة"></button>
+                        <button type="button" class="zone-hotspot technology" data-zone="technology" aria-label="فتح التقنيات التحولية"></button>
+                        <button type="button" class="zone-hotspot prosperity" data-zone="prosperity" aria-label="فتح الازدهار"></button>
+                        <button type="button" class="zone-hotspot collaboration" data-zone="collaboration" aria-label="فتح التعاون العالمي"></button>
+                        <button type="button" class="zone-unassigned-open" data-zone="unassigned">عرض الحاويات غير المرتبطة بمنطقة <span id="unassigned-count"></span></button>
+                    </div>
+                    <div class="zone-detail" id="zone-detail" hidden>
+                        <div class="zone-detail-map" id="zone-detail-map" role="group" aria-label="محطات الفرز في المنطقة">
+                            <img id="zone-detail-image" alt="خريطة تفصيلية تصورية للمنطقة" />
+                            <svg id="zone-route-overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+                            <div id="zone-station-pins"></div>
+                            <button type="button" class="zone-return" id="zone-return">العودة إلى المناطق ←</button>
+                            <div class="zone-map-heading">
+                                <h3 id="zone-title"></h3>
+                                <div class="zone-summary" id="zone-summary"></div>
+                            </div>
+                            <aside class="zone-map-popup" id="zone-map-popup" hidden aria-live="polite" aria-label="بيانات محطة الفرز">
+                                <button type="button" id="zone-popup-close" class="zone-popup-close" aria-label="إغلاق التفاصيل">×</button>
+                                <div class="zone-station-details" id="zone-station-details"></div>
+                            </aside>
+                            <div class="zone-stop-list" id="zone-stop-list"></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="ops-map-note">اضغطي على المنطقة لعرض محطاتها. الحاويات غير المرتبطة بمنطقة تُعرض منفصلة دون افتراض مواقع لها.</p>
+                <div class="ops-map-legend">
+                    <span><i class="dot dot--danger"></i> ممتلئة</span>
+                    <span><i class="dot dot--warning"></i> قريبة من الامتلاء</span>
+                    <span><i class="dot dot--good"></i> طبيعية</span>
+                </div>
+            </div>
+            <div class="ops-card">
+                <div class="ops-card-head">
+                    <h2>إنشاء مسار جمع</h2>
+                    <p>حددي الحاويات الحرجة وسيبني النظام مسارًا أوليًا لفريق الجمع.</p>
+                </div>
+                <div class="ops-suggestion">
+                    <div><strong>اقتراح مسار تلقائي</strong>
+                        <p>تبدأ الأولوية بالحاويات الممتلئة، ثم الأقرب على المخطط التصوري.</p>
+                    </div>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="suggest_route">
+                        <button type="submit" class="ops-btn" {% if not route_candidates %}disabled{% endif %}>
+                            اقتراح مسار جمع
+                        </button>
+                    </form>
+                </div>
+                <details class="ops-manual">
+                  <summary>إنشاء مسار مخصص يدويًا</summary>
+                <form method="post" class="route-builder">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="create_route">
+                    <label class="ops-field">
+                        <span>اسم المسار</span>
+                        <input type="text" name="title" placeholder="مثال: مسار المنطقة الشمالية">
+                    </label>
+                    <label class="ops-field">
+                        <span>ملاحظات</span>
+                        <textarea name="notes" rows="3" placeholder="أولوية عالية - قبل فترة الذروة"></textarea>
+                    </label>
+                    <div class="route-candidates">
+                        {% if route_candidates %}
+                            {% for bin in route_candidates %}
+                                <label class="route-candidate">
+                                    <input type="checkbox" name="bin_ids" value="{{ bin.id }}">
+                                    <div>
+                                        <strong>{{ bin.name }}</strong>
+                                        <span>
+                                            {{ bin.collection_point.zone_code|default:"بدون نقطة" }}
+                                            - {{ bin.get_waste_type_display }}
+                                            - {{ bin.fill_level }}%
+                                        </span>
+                                    </div>
+                                </label>
+                            {% endfor %}
+                        {% else %}
+                            <p class="ops-empty">لا توجد حاويات تحتاج جمع حاليًا.</p>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="ops-btn">
+                        إنشاء المسار
+                    </button>
+                </form>
+                </details>
+            </div>
+        </section>
+        {% if active_route %}
+            <section class="ops-card">
+                <div class="ops-card-head">
+                    <h2>المسار الحالي</h2>
+                    <p>{{ active_route.title }}</p>
+                </div>
+                <div class="route-status">
+                    <span class="status-badge status-badge--{{ active_route.status }}">
+                        {{ active_route.get_status_display }}
+                    </span>
+                    <div class="route-actions">
+                        {% if active_route.status == "draft" %}
+                            <form method="post" action="{% url 'recycling:start_route' active_route.id %}">
+                                {% csrf_token %}
+                                <button class="ops-btn ops-btn--secondary" type="submit">
+                                    بدء المسار
+                                </button>
+                            </form>
+                        {% endif %}
+                        {% if active_route.status == "active" %}
+                            <form method="post" action="{% url 'recycling:complete_route' active_route.id %}">
+                                {% csrf_token %}
+                                <button class="ops-btn" type="submit">
+                                    إنهاء المسار بعد تأكيد التفريغ
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+                <ol class="route-stop-list">
+                    {% for stop in active_route.stops.all %}
+                        <li>
+                            <strong>توقف {{ stop.stop_order }} — {{ stop.bin.collection_point.zone_code }}</strong>
+                            - {{ stop.bin.name }}
+                            ({{ stop.bin.get_waste_type_display }})
+                            <span>{{ stop.fill_snapshot }}% — {% if stop.status == "serviced" %}تم التفريغ{% else %}بانتظار التفريغ{% endif %}</span>
+                        </li>
+                    {% endfor %}
+                </ol>
+            </section>
+        {% endif %}
+        <section class="ops-card">
+            <div class="ops-card-head">
+                <h2>نقاط إكسبو وحالة الحاويات</h2>
+                <p>عرض تفصيلي لكل نقطة مع القدرة على تحديث نسبة الامتلاء أو تأكيد التفريغ.</p>
+            </div>
+            <div class="point-list">
+                {% for point in points %}
+                    <article class="point-card" id="point-{{ point.id }}">
+                        <div class="point-card-head">
+                            <div>
+                                <h3>{{ point.zone_code }} - {{ point.name }}</h3>
+                                <p>{{ point.description }}</p>
+                            </div>
+                            <div class="point-stats">
+                                <span>أعلى امتلاء: {{ point.max_fill }}%</span>
+                                <span>عدد الحاويات: {{ point.total_bins }}</span>
+                            </div>
+                        </div>
+                        <div class="bin-list">
+                            {% for bin in point.point_bins %}
+                                <div class="bin-row bin-row--{{ bin.alert_level }}">
+                                    <div class="bin-main">
+                                        <strong>{{ bin.name }}</strong>
+                                        <span>{{ bin.get_waste_type_display }} — {{ bin.fill_level }}%</span>
+                                        <small>{{ bin.alert_label }}</small>
+                                    </div>
+                                    <div class="bin-actions">
+                                        <form method="post" action="{% url 'recycling:update_bin_level' bin.id %}">
+                                            {% csrf_token %}
+                                            <input
+                                                type="number"
+                                                name="fill_level"
+                                                value="{{ bin.fill_level }}"
+                                                min="0"
+                                                max="100"
+                                            >
+                                            <button type="submit" class="ops-btn ops-btn--small">
+                                                تحديث
+                                            </button>
+                                        </form>
+                                        <form method="post" action="{% url 'recycling:mark_bin_emptied' bin.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="ops-btn ops-btn--small ops-btn--ghost">
+                                                تم التفريغ
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <p class="ops-empty">لا توجد حاويات مرتبطة بهذه النقطة.</p>
+                            {% endfor %}
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+        {% if recent_routes %}
+            <section class="ops-card">
+                <div class="ops-card-head">
+                    <h2>المسارات المكتملة مؤخرًا</h2>
+                </div>
+                <ul class="recent-routes">
+                    {% for route in recent_routes %}
+                        <li>
+                            <strong>{{ route.title }}</strong>
+                            <span>
+                                {{ route.completed_at|date:"Y-m-d H:i" }}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% endif %}
+    </div>
+    {{ zone_data|json_script:"expo-zone-data" }}
+    <script src="{% static 'js/ops-zone-map.js' %}" defer></script>
+</body>
+</html>
