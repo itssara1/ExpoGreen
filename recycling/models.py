@@ -118,3 +118,49 @@ class PointEntry(models.Model):
 
     def __str__(self):
         return f"{self.points} points - {self.session_id}"
+
+
+class HardwareJob(models.Model):
+    session = models.OneToOneField(
+        DisposalSession,
+        on_delete=models.PROTECT,
+        related_name="hardware_job",
+    )
+    station = models.CharField(
+        max_length=30,
+        default="main",
+    )
+    bin_number = models.PositiveSmallIntegerField()
+    state = models.CharField(
+        max_length=20,
+        default="queued",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    sent_at = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+    error = models.CharField(
+        max_length=250,
+        blank=True,
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["station"],
+                condition=Q(
+                    state__in=[
+                        "queued",
+                        "sent",
+                        "opened",
+                        "armed",
+                    ]
+                ),
+                name="one_active_hardware_job_per_station",
+            ),
+            models.CheckConstraint(
+                condition=Q(bin_number__in=[1, 2]),
+                name="hardware_bin_is_one_or_two",
+            ),
+        ]

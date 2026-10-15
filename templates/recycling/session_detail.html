@@ -683,6 +683,56 @@
 
 
 {% block scripts %}
+{% if not simulation %}
+    {% if session.status == "classified" or session.status == "waiting" %}
+        <script>
+            (() => {
+                const initialStatus = "{{ session.status|escapejs }}";
+                const url = "{% url 'recycling:session_status' %}";
+                let stopped = false;
+                let timer = null;
+
+                async function checkStatus() {
+                    if (stopped) return;
+
+                    try {
+                        const response = await fetch(url, {
+                            cache: "no-store",
+                            headers: {
+                                "Accept": "application/json",
+                            },
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+
+                            if (
+                                data.status
+                                && data.status !== initialStatus
+                            ) {
+                                window.location.reload();
+                                return;
+                            }
+                        }
+                    } catch {
+                        // Retry if the connection briefly fails.
+                    }
+
+                    if (!stopped) {
+                        timer = setTimeout(checkStatus, 1000);
+                    }
+                }
+
+                window.addEventListener("pagehide", () => {
+                    stopped = true;
+                    clearTimeout(timer);
+                });
+
+                checkStatus();
+            })();
+        </script>
+    {% endif %}
+{% endif %}
 {% if session.status == "completed" and reward %}
 <script>
 (() => {

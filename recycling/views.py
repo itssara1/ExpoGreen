@@ -30,6 +30,7 @@ from io import BytesIO
 import qrcode
 
 from .forms import TicketCreateForm
+from .hardware import select_for_hardware
 
 logger = logging.getLogger(__name__)
 
@@ -37,37 +38,67 @@ logger = logging.getLogger(__name__)
 @require_http_methods(["GET", "POST"])
 def home(request):
     error = None
+    simulation = getattr(
+        settings,
+        "HARDWARE_SIMULATION",
+        False,
+    )
 
     if request.method == "POST":
         mode = request.POST.get("mode")
+        ticket_code = request.POST.get(
+            "ticket_code",
+            "",
+        ).strip()
 
         if mode not in {"sort", "quick"}:
-            error = "اختاري مسح التذكرة أو التخلص السريع."
+            error = "اختاري مسح التذكرة أو التخلص بدون نقاط."
+
+        elif mode == "sort" and len(ticket_code) > 100:
+            error = "رمز التذكرة غير صالح."
+
         else:
-            ticket_code = request.POST.get("ticket_code", "").strip()
+            try:
+                session = start_session(
+                    ticket_code=ticket_code,
+                    quick=(mode == "quick"),
+                )
 
-            if mode == "sort" and len(ticket_code) > 100:
-                error = "رمز التذكرة غير صالح."
+                if mode == "quick" and not simulation:
+                    try:
+                        session = select_for_hardware(
+                            session.id,
+                            WasteType.MIXED,
+                        )
+
+                    except (ValueError, Bin.DoesNotExist):
+                        session.status = (
+                            DisposalSession.Status.FAILED
+                        )
+                        session.save(update_fields=["status"])
+                        raise ValueError(
+                            "Mixed bin unavailable."
+                        )
+
+            except Visitor.DoesNotExist:
+                error = "التذكرة غير موجودة في النظام."
+
+            except ValueError:
+                error = (
+                    "تعذر بدء العملية. تأكدي من التذكرة "
+                    "وتوفّر الحاوية وانتهاء العملية السابقة."
+                )
+
             else:
-                try:
-                    session = start_session(
-                        ticket_code=ticket_code,
-                        quick=(mode == "quick"),
-                    )
-                except Visitor.DoesNotExist:
-                    error = "التذكرة غير موجودة في النظام."
-                except ValueError:
-                    error = "تعذر قراءة رمز التذكرة."
-                else:
-                    request.session["disposal_session_id"] = str(
-                        session.id
-                    )
-                    request.session.pop("live_candidate", None)
+                request.session["disposal_session_id"] = str(
+                    session.id
+                )
+                request.session.pop("live_candidate", None)
 
-                    if mode == "sort":
-                        return redirect("recycling:live_test")
+                if mode == "sort":
+                    return redirect("recycling:live_test")
 
-                    return redirect("recycling:session_detail")
+                return redirect("recycling:session_detail")
 
     return render(
         request,
@@ -146,6 +177,23 @@ def session_detail(request):
 
         session.refresh_from_db()
 
+
+        if session.status == DisposalSession.Status.COMPLETED:
+            entry = getattr(session, "point_entry", None)
+
+        if (
+            request.session.get("tree_seen_session")
+            != str(session.id)
+            and session.visitor_id
+            and entry
+            and entry.points > 0
+        ):
+            request.session["tree_new_visitor"] = (
+                session.visitor_id
+            )
+            request.session["tree_seen_session"] = str(
+                session.id
+            )
     reward = 0
 
     if session.status == DisposalSession.Status.COMPLETED:
@@ -284,6 +332,21 @@ def live_classify(request):
         )
 
     top = predictions[0]
+    if (
+        not getattr(settings, "HARDWARE_SIMULATION", False)
+        and top["label"] != "plastic"
+    ):
+        request.session.pop("live_candidate", None)
+
+        return JsonResponse({
+            "stable": False,
+            "count": 0,
+            "unsupported": True,
+            "message": (
+                "النموذج الحالي يدعم البلاستيك فقط. "
+                "يمكنك استخدام التخلص بدون نقاط."
+            ),
+        })
     gap = top["score"] - predictions[1]["score"]
     now = time.monotonic()
 
@@ -371,8 +434,12 @@ def finalize_live(request):
             status=400,
         )
 
-    # Temporary mapping for the controlled demo.
-    # "metal" does not specifically identify aluminum.
+    simulation = getattr(
+        settings,
+        "HARDWARE_SIMULATION",
+        False,
+    )
+
     waste_mapping = {
         "plastic": WasteType.PLASTIC,
         "metal": WasteType.ALUMINUM,
@@ -384,15 +451,31 @@ def finalize_live(request):
 
     if waste_type is None:
         return JsonResponse(
-            {"error": "هذا النوع غير مدعوم في التجربة الحالية."},
+            {"error": "هذا النوع غير مدعوم."},
+            status=400,
+        )
+
+    if not simulation and waste_type != WasteType.PLASTIC:
+        return JsonResponse(
+            {
+                "error": (
+                    "النموذج الحالي يدعم البلاستيك فقط. "
+                    "استخدمي التخلص بدون نقاط لباقي المخلفات."
+                )
+            },
             status=400,
         )
 
     try:
-        session = select_bin(session.id, waste_type)
-
-        if getattr(settings, "HARDWARE_SIMULATION", False):
+        if simulation:
+            session = select_bin(session.id, waste_type)
             session = mark_bin_opened(session.id)
+
+        else:
+            session = select_for_hardware(
+                session.id,
+                waste_type,
+            )
 
     except Bin.DoesNotExist:
         return JsonResponse(
@@ -402,7 +485,12 @@ def finalize_live(request):
 
     except ValueError:
         return JsonResponse(
-            {"error": "تغيرت حالة العملية. ارجعي للبداية."},
+            {
+                "error": (
+                    "المحطة مشغولة أو تغيّرت حالة العملية. "
+                    "انتظري انتهاء العملية الحالية وحاولي مجددًا."
+                )
+            },
             status=409,
         )
 
@@ -411,6 +499,8 @@ def finalize_live(request):
     return JsonResponse({
         "redirect": reverse("recycling:session_detail"),
     })
+
+
 
 @require_http_methods(["GET", "POST"])
 def create_ticket(request):
@@ -487,3 +577,25 @@ def ticket_ready(request):
             "qr_data_url": f"data:image/png;base64,{qr_base64}",
         },
     )
+
+@require_GET
+def session_status(request):
+    session_id = request.session.get("disposal_session_id")
+
+    if not session_id:
+        return JsonResponse(
+            {"error": "No active session."},
+            status=400,
+        )
+
+    session = get_object_or_404(
+        DisposalSession,
+        pk=session_id,
+    )
+
+    response = JsonResponse({
+        "status": session.status,
+    })
+    response["Cache-Control"] = "no-store"
+
+    return response

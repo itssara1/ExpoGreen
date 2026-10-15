@@ -118,6 +118,24 @@
 
             const prediction = await post(config.dataset.url, body);
             if (!running) return;
+            if (prediction.unsupported) {
+    progress.value = 0;
+
+    say(
+        result,
+        "هذه التجربة مخصصة للبلاستيك",
+        "This demo supports plastic only"
+    );
+
+    say(
+        message,
+        "للمخلفات الأخرى، اختاري الحاوية المختلطة بدون نقاط.",
+        "For other items, use the mixed-waste option without points."
+    );
+
+    timer = setTimeout(analyze, 800);
+    return;
+}
 
             progress.value = prediction.count || 0;
 
@@ -244,6 +262,9 @@
 
     retry.addEventListener("click", () => window.location.reload());
     window.addEventListener("pagehide", stopCamera);
+
+    document.getElementById("mixed-disposal-form")
+    ?.addEventListener("submit", stopCamera);
 
     start();
 })();

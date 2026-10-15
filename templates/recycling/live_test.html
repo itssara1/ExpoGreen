@@ -79,6 +79,22 @@
             العودة للبــــداية
         </a>
     </p>
+    <form
+    id="mixed-disposal-form"
+    method="post"
+    action="{% url 'recycling:home' %}"
+>
+    {% csrf_token %}
+    <input type="hidden" name="mode" value="quick">
+
+    <button
+        type="submit"
+        class="secondary"
+        data-en="Use the mixed-waste bin without points"
+    >
+        استخدام الحاوية المختلطة بدون نقاط
+    </button>
+</form>
 {% endblock %}
 
 {% block scripts %}

@@ -26,4 +26,9 @@ path(
     views.ticket_ready,
     name="ticket_ready",
 ),
+    path(
+        "session/status/",
+        views.session_status,
+        name="session_status",
+    ),
 ]
