@@ -1,12 +1,50 @@
-# ExpoGreen | فرز
+<div align="center">
 
-**Smart waste sorting that turns visitor participation into visible impact.**
+# ExpoGreen · فرز
 
-ExpoGreen is a Django prototype designed for an Expo 2030 sustainability experience. Visitors scan a project-issued QR ticket, show one waste item to a camera, and receive sorting guidance. In hardware mode, an ESP32 opens the selected bin and reports disposal events over USB. Eligible completed sessions earn points and contribute to a shared Impact Tree.
+### One item. The right bin. A growing impact.
 
-The project also includes a staff operations dashboard for monitoring recorded bin fill levels and planning collection rounds.
+A smart recycling experience combining **computer vision**, **QR tickets**, and **connected bins**.
 
-> Hackathon prototype. Ticketing, rewards, maps, and collection workflows are project features; no official Expo ticketing or sponsor redemption integration is implemented.
+<img alt="Python" src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white">
+<img alt="Django" src="https://img.shields.io/badge/Django-092E20?style=flat-square&logo=django&logoColor=white">
+<img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white">
+<img alt="ESP32" src="https://img.shields.io/badge/ESP32-USB_Serial-6B5B80?style=flat-square">
+<img alt="Arabic and English visitor interface" src="https://img.shields.io/badge/Interface-AR_%2F_EN-39846A?style=flat-square">
+
+[Experience](#visitor-experience) · [Features](#features) · [Quick start](#quick-start) · [Hardware](#esp32-integration) · [العربية](#نبذة-بالعربية)
+
+</div>
+
+---
+
+## About the project
+
+ExpoGreen turns waste sorting into a guided, rewarding visitor experience. Built as a sustainability prototype for the Expo 2030 context, it connects a camera-based classifier to a disposal workflow: identify an item, select its bin, confirm disposal, and record the visitor's contribution.
+
+Every eligible completed session earns **10 points**. A shared **Impact Tree** gives participation a visible presence through leaves carrying visitors' names.
+
+For staff, a separate operations dashboard brings together recorded bin conditions, collection points, and collection rounds.
+
+| For visitors | For operations teams |
+| --- | --- |
+| Scan a QR ticket and start sorting | View recorded bin fill levels |
+| Follow live camera instructions | Identify bins that need collection |
+| Watch the selected bin animate | Build and track collection rounds |
+| Earn points after confirmation | Manage stations through Django Admin |
+
+<details>
+<summary><strong>A closer look at the Impact Tree artwork</strong></summary>
+
+<br>
+
+<img src="static/images/saudi-tree.png" alt="Impact Tree artwork used in the visitor interface" width="420">
+
+*Project artwork. Participant names are added dynamically by the application.*
+
+</details>
+
+> **Project status:** hackathon prototype with software simulation and an ESP32 USB integration path. Tickets are project-issued; official Expo ticketing and commercial reward redemption are outside the current implementation.
 
 ## Visitor experience
 
@@ -31,6 +69,7 @@ Visitors can also choose **quick disposal**: use the mixed-waste bin without a t
 - Separate guided sorting and quick-disposal flows.
 - Points ledger with one reward entry per disposal session.
 - Shared Impact Tree with participant names and contribution counts.
+- Animated bin visualization driven by classification and session state.
 - Arabic/English switching on the shared visitor interface, including RTL/LTR layout.
 - Responsive layouts and reduced-motion handling.
 
@@ -48,6 +87,22 @@ Visitors can also choose **quick disposal**: use the mixed-waste bin without a t
 - Route completion blocked while stops remain pending.
 
 **Current scope:** fill levels are updated manually through the dashboard. The USB bridge reports disposal events; it does not stream fill percentages. Maps are conceptual illustrations, and route ordering uses fullness priority followed by approximate map proximity, rather than road routing.
+
+## See the sorting happen
+
+The final section of the camera and session pages visualizes the sorting station:
+
+| Moment | On-screen experience |
+| --- | --- |
+| Identifying | Bins stay closed while the visitor holds the item steady |
+| Stable classification | The matching bin is highlighted |
+| Waiting for disposal | The selected lid opens in the illustration |
+| Completed session | An item-drop animation plays and the lid closes |
+| Failed or expired session | The illustration resets and displays the session message |
+
+**Simulation mode** displays plastic, metal, paper/cardboard, and mixed-waste bins. **Hardware mode** displays the two supported physical categories: plastic and mixed waste.
+
+The animation follows the application state. It does not independently confirm a physical lid position or sensor event, and it never awards points by itself. In software simulation, the visitor still uses the disposal-confirmation button.
 
 ## Technology
 
@@ -98,7 +153,7 @@ These thresholds are prototype heuristics. Confidence and repeated agreement do 
 
 The `metal` mapping is an application category mapping; the model does not specifically distinguish aluminum from other metals. The application uses computer vision, not an LLM.
 
-## Run locally
+## Quick start
 
 ### 1. Clone and install
 
@@ -122,7 +177,7 @@ For a software-only demonstration, edit `config/settings.py`:
 HARDWARE_SIMULATION = True
 ```
 
-The committed setting currently uses `False`. Change it before trying the application without a connected device.
+The repository currently defaults to simulation mode. No ESP32 is required for this mode; disposal is confirmed using the simulation button.
 
 ### 3. Create the database and administrator
 
@@ -158,11 +213,11 @@ For the operations dashboard, create active **Collection points** and link bins 
 - In simulation mode, complete the displayed simulated disposal confirmation.
 - Check the updated points balance and shared tree.
 
-The first model request downloads weights and preprocessing files from Hugging Face. Allow time for this initial download. Later requests reuse the local cache. The QR reader is loaded from jsDelivr, so that CDN must also be reachable.
+> **First run:** The first model request downloads weights and preprocessing files from Hugging Face. Allow time for this initial download. Later requests reuse the local cache. The QR reader is loaded from jsDelivr, so that CDN must also be reachable.
 
 Use `localhost` or HTTPS for camera access. Opening the site over a plain HTTP LAN IP may allow ticket issuance, but browser camera access can be unavailable.
 
-## Connect an ESP32 over USB
+## ESP32 integration
 
 The current physical mapping is:
 
@@ -221,7 +276,7 @@ Events must match the active session UUID and physical bin number. `OPENED` is a
 
 If the bridge is interrupted, it does not automatically resend an unfinished opening command. Inspect/reset the device before restarting. Hardware behavior must be verified on the assembled prototype; the presence of integration code alone does not establish a successful physical test.
 
-## Application structure
+## Project structure
 
 | Path | Responsibility |
 | --- | --- |
@@ -266,7 +321,7 @@ Disposal status progresses through `started → classified → waiting → compl
 
 Visitor flow endpoints use the browser's Django session. State-changing forms and camera requests use CSRF protection. Operations views require staff access.
 
-## Verification and current limits
+## Verification and prototype scope
 
 Useful checks after installation:
 
@@ -293,7 +348,7 @@ Current prototype boundaries:
 - The Impact Tree aggregates rewarded participants and renders a limited number of leaves.
 - Settings currently target local development. Public deployment requires production configuration, including secret management, `DEBUG=False`, allowed hosts, HTTPS, and static-file serving.
 
-## Credits
+## Acknowledgements
 
 - Classification model: [yangy50/garbage-classification](https://huggingface.co/yangy50/garbage-classification).
 - QR decoding: [jsQR](https://github.com/cozmo/jsQR).
