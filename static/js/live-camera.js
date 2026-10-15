@@ -26,6 +26,12 @@
     let startedAt = 0;
     let controller = null;
 
+    function visualize(label, phase) {
+        document.dispatchEvent(new CustomEvent("expogreen:classification", {
+            detail: { label, phase },
+        }));
+    }
+
     function say(node, arabic, english) {
         window.ExpoGreen.setText(node, arabic, english);
     }
@@ -119,6 +125,7 @@
             const prediction = await post(config.dataset.url, body);
             if (!running) return;
             if (prediction.unsupported) {
+    visualize("", "unsupported");
     progress.value = 0;
 
     say(
@@ -140,6 +147,7 @@
             progress.value = prediction.count || 0;
 
             if (prediction.stable) {
+                visualize(prediction.label, "selected");
                 running = false;
 
                 const label = labels[prediction.label] || [
@@ -170,6 +178,7 @@
             }
 
             if (prediction.count > 0) {
+                visualize("", "scanning");
                 say(
                     result,
                     "ثبّت المخــــلف",
@@ -182,6 +191,7 @@
                     "Keep the item steady until identification is complete."
                 );
             } else {
+                visualize("", "started");
                 say(
                     result,
                     "ضع المخلف داخل الإطــــار",
@@ -198,6 +208,8 @@
             timer = setTimeout(analyze, 800);
         } catch (error) {
             if (error.name === "AbortError") return;
+
+            visualize("", "failed");
 
             stopCamera();
 

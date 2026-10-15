@@ -4,6 +4,8 @@
 
 {% block content %}
 
+    {% include "recycling/bin_visualization.html" %}
+
     {% if session.visitor %}
 
         <div class="visitor-summary">
@@ -772,3 +774,4 @@
 </script>
 {% endif %}
 {% endblock %}
+

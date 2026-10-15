@@ -1,0 +1,26 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bin-visualization.css' %}">
+<section class="bin-viz" data-bin-visualization
+    data-waste="{{ session.detected_waste|default:'' }}"
+    data-status="{{ session.status|default:'started' }}"
+    data-simulation="{{ simulation|yesno:'true,false' }}">
+    <div class="bin-viz-heading">
+        <div>
+            <span class="bin-viz-eyebrow" data-en="SORTING STATION">محطة الفرز</span>
+            <h2 data-en="A place for every item">لكل مخلف مكانه</h2>
+        </div>
+        <span class="bin-viz-badge" data-en="Visual simulation">محاكاة مرئية</span>
+    </div>
+    <p class="bin-viz-status" role="status" aria-live="polite"
+       data-en="Your bin appears here after identification.">بعد التعرّف، تظهر الحاوية المناسبة هنا.</p>
+    <div class="bin-viz-row">
+        {% include "recycling/bin_visual.html" with kind="plastic" arabic="بلاستيك" english="Plastic" symbol="PET" %}
+        {% if simulation %}
+            {% include "recycling/bin_visual.html" with kind="aluminum" arabic="معادن" english="Metal" symbol="AL" %}
+            {% include "recycling/bin_visual.html" with kind="paper" arabic="ورق وكرتون" english="Paper" symbol="PAP" %}
+        {% endif %}
+        {% include "recycling/bin_visual.html" with kind="mixed" arabic="مختلط" english="Mixed" symbol="—" %}
+    </div>
+    <p class="bin-viz-note" data-en="The illustration does not confirm physical opening or disposal. Points follow the session confirmation.">الرسم لا يؤكد فتح الغطاء الفعلي أو الرمي. تُضاف النقاط بعد تأكيد العملية.</p>
+</section>
+<script src="{% static 'js/bin-visualization.js' %}" defer></script>
